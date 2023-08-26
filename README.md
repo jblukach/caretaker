@@ -32,7 +32,7 @@ The complied threat feed that focuses on North Dakota gets updated every hour.
 
 The critical part is making the results usable by anyone with a website visit!
 
-The lookup completes using the Internet address your connection originates from to maintain the potential sensitivity of the returned results.
+The lookup completes using the Internet address your connection originates from to protect the potential sensitivity of the returned results.
 
 We don't want to tip the hand like playing cards, losing the advantage!
 
