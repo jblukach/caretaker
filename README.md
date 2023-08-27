@@ -1,6 +1,6 @@
 # caretaker
 
-Reputation is the most critical asset available when using the Internet, as it helps us decide which services we feel safe using. It can also impact an end-users ability to use the web if the connection had previous suspect behavior. Project Caretaker aims to provide a Threat Feed for North Dakota that anyone can verify.
+Reputation is the most critical asset available when using the Internet, as it helps us decide which services we feel safe using. It can also impact an end-users ability to use the web if the connection had previous suspect behavior. Project Caretaker aims to provide a Threat Feed for North Dakota that anyone can verify Internet reputation.
 
 Every Monday at 10 AM UTC, a.ka. 5 AM CST, the Internet addresses for the Broadband Association of North Dakota (BAND) members, North Dakota Univesity System (NDUS), and the State of North Dakota (ITD) get updated from Security Trails, a Recorded Future company.
 
@@ -30,7 +30,7 @@ The complied threat feed that focuses on North Dakota gets updated every hour.
 
 - https://feed.tundralabs.org
 
-The critical part is making the results usable by anyone with a website visit!
+The critical part is making the results usable by anyone with just a website visit!
 
 The lookup completes using the Internet address your connection originates from to protect the potential sensitivity of the returned results.
 
