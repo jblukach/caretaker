@@ -140,6 +140,7 @@ class CaretakerStack(Stack):
             code = _lambda.DockerImageCode.from_image_asset('maxmind'),
             timeout = Duration.seconds(900),
             environment = dict(
+                AWS_ACCOUNT = account,
                 MAP_TABLE = map.table_name
             ),
             memory_size = 512,
@@ -149,7 +150,7 @@ class CaretakerStack(Stack):
         logs = _logs.LogGroup(
             self, 'logs',
             log_group_name = '/aws/lambda/'+maxmind.function_name,
-            retention = _logs.RetentionDays.ONE_WEEK,
+            retention = _logs.RetentionDays.ONE_MONTH,
             removal_policy = RemovalPolicy.DESTROY
         )
 

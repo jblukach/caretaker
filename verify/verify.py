@@ -19,7 +19,7 @@ def handler(event, context):
 
         try:
 
-            ip = event['requestContext']['http']['sourceIp']
+            ip = event['headers']['x-forwarded-for']
             iptype = ipaddress.ip_address(ip)
 
             dynamodb = boto3.resource('dynamodb')

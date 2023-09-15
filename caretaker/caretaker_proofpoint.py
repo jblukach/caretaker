@@ -84,9 +84,10 @@ class CaretakerProofPoint(Stack):
 
         proofpoint = _lambda.DockerImageFunction(
             self, 'proofpoint',
-            code = _lambda.DockerImageCode.from_image_asset('proofpoint'),
+            code = _lambda.DockerImageCode.from_image_asset('sources/proofpoint'),
             timeout = Duration.seconds(900),
             environment = dict(
+                AWS_ACCOUNT = account,
                 DYNAMODB_TABLE = 'distillery',
                 FEED_TABLE = 'feed',
                 VERIFY_TABLE = 'verify'
@@ -98,7 +99,7 @@ class CaretakerProofPoint(Stack):
         logs = _logs.LogGroup(
             self, 'logs',
             log_group_name = '/aws/lambda/'+proofpoint.function_name,
-            retention = _logs.RetentionDays.ONE_WEEK,
+            retention = _logs.RetentionDays.ONE_MONTH,
             removal_policy = RemovalPolicy.DESTROY
         )
 

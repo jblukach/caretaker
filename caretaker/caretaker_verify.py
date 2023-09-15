@@ -43,7 +43,7 @@ class CaretakerVerify(Stack):
 
         layer = _lambda.LayerVersion.from_layer_version_arn(
             self, 'layer',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:7'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:9'
         )
 
     ### ERROR ###
@@ -90,11 +90,12 @@ class CaretakerVerify(Stack):
         verify = _lambda.Function(
             self, 'verify',
             function_name = 'verify',
-            runtime = _lambda.Runtime.PYTHON_3_10,
+            runtime = _lambda.Runtime.PYTHON_3_11,
             code = _lambda.Code.from_asset('verify'),
             timeout = Duration.seconds(3),
             handler = 'verify.handler',
             environment = dict(
+                AWS_ACCOUNT = account,
                 VERIFY_TABLE = 'verify'
             ),
             memory_size = 128,
@@ -111,7 +112,7 @@ class CaretakerVerify(Stack):
         logs = _logs.LogGroup(
             self, 'logs',
             log_group_name = '/aws/lambda/'+verify.function_name,
-            retention = _logs.RetentionDays.ONE_WEEK,
+            retention = _logs.RetentionDays.ONE_MONTH,
             removal_policy = RemovalPolicy.DESTROY
         )
 

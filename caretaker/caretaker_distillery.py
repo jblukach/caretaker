@@ -136,6 +136,7 @@ class CaretakerDistillery(Stack):
             code = _lambda.DockerImageCode.from_image_asset('distillery'),
             timeout = Duration.seconds(900),
             environment = dict(
+                AWS_ACCOUNT = account,
                 DYNAMODB_TABLE = table.table_name
             ),
             memory_size = 512,
