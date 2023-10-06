@@ -66,7 +66,6 @@ class CaretakerStack(Stack):
                 'type': _dynamodb.AttributeType.STRING
             },
             billing_mode = _dynamodb.BillingMode.PAY_PER_REQUEST,
-            stream = _dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
             removal_policy = RemovalPolicy.DESTROY,
             point_in_time_recovery = True,
             deletion_protection = True
@@ -101,6 +100,7 @@ class CaretakerStack(Stack):
                 'type': _dynamodb.AttributeType.STRING
             },
             billing_mode = _dynamodb.BillingMode.PAY_PER_REQUEST,
+            stream = _dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
             removal_policy = RemovalPolicy.DESTROY,
             point_in_time_recovery = True,
             deletion_protection = True
@@ -170,7 +170,7 @@ class CaretakerStack(Stack):
 
         maxmind.add_event_source(
             _sources.DynamoEventSource(
-                table = feed,
+                table = verify,
                 starting_position = _lambda.StartingPosition.LATEST
             )
         )
