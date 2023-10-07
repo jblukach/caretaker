@@ -20,10 +20,18 @@ I appreciate all the work that goes into maintaining these lists - thank you!
 
 - https://cinsscore.com
 - https://feodotracker.abuse.ch
+- https://github.com/stamparm
+- https://jamesbrine.com.au
+- https://osint.digitalside.it
 - https://otx.alienvault.com
+- https://report.cs.rutgers.edu
+- https://securityscorecard.com
+- https://www.binarydefense.com
 - https://www.blocklist.de
 - https://www.dan.me.uk
+- https://www.nubi-network.com
 - https://www.proofpoint.com
+- https://www.rescure.me
 - https://www.spamhaus.org
 
 The complied threat feed that focuses on North Dakota gets updated every hour.
