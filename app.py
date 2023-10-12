@@ -7,6 +7,7 @@ from caretaker.caretaker_abusech import CaretakerAbuseCH
 from caretaker.caretaker_alienvault import CaretakerAlienVault
 from caretaker.caretaker_binarydefense import CaretakerBinaryDefense
 from caretaker.caretaker_blocklist import CaretakerBlockList
+from caretaker.caretaker_censys import CaretakerCensys
 from caretaker.caretaker_cinsscore import CaretakerCinsScore
 from caretaker.caretaker_digitalside import CaretakerDigitalSide
 from caretaker.caretaker_distillery import CaretakerDistillery
@@ -59,6 +60,17 @@ CaretakerBinaryDefense(
 
 CaretakerBlockList(
     app, 'CaretakerBlockList',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerCensys(
+    app, 'CaretakerCensys',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'

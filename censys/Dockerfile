@@ -7,6 +7,6 @@ WORKDIR /opt
 COPY --from=layer /opt/ .
 ### function code ###
 WORKDIR /var/task
-COPY tor.py requirements.txt ./
+COPY censys.py requirements.txt ./
 RUN pip --no-cache-dir install -r requirements.txt --upgrade
-CMD ["tor.handler"]
+CMD ["censys.handler"]
