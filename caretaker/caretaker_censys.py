@@ -11,8 +11,7 @@ from aws_cdk import (
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_logs_destinations as _destinations,
-    aws_ssm as _ssm
+    aws_logs_destinations as _destinations
 )
 
 from constructs import Construct
@@ -53,107 +52,3 @@ class CaretakerCensys(Stack):
             self, 'timeout',
             'arn:aws:lambda:'+region+':'+account+':function:shipit-timeout'
         )
-
-    ### IAM ###
-
-        role = _iam.Role(
-            self, 'role',
-            role_name = 'censys',
-            assumed_by = _iam.ServicePrincipal(
-                'lambda.amazonaws.com'
-            )
-        )
-
-        role.add_managed_policy(
-            _iam.ManagedPolicy.from_aws_managed_policy_name(
-                'service-role/AWSLambdaBasicExecutionRole'
-            )
-        )
-
-        role.add_to_policy(
-            _iam.PolicyStatement(
-                actions = [
-                    'dynamodb:DeleteItem',
-                    'dynamodb:PutItem',
-                    'dynamodb:Query'
-                ],
-                resources = [
-                    '*'
-                ]
-            )
-        )
-
-    ### PARAMETER STORE ###
-
-        apiparam = _ssm.StringParameter.from_string_parameter_attributes(
-            self, 'apiparam',
-            parameter_name = '/censys/api',
-            version = 1
-        ).string_value
-
-        keyparam = _ssm.StringParameter.from_string_parameter_attributes(
-            self, 'keyparam',
-            parameter_name = '/censys/key',
-            version = 1
-        ).string_value
-
-    ### LAMBDA CONTAINER ###
-
-        censys = _lambda.DockerImageFunction(
-            self, 'censys',
-            code = _lambda.DockerImageCode.from_image_asset('censys'),
-            timeout = Duration.seconds(900),
-            environment = dict(
-                AWS_ACCOUNT = account,
-                CENSYS_API_ID = apiparam,
-                CENSYS_API_SECRET = keyparam,
-                VERIFY_TABLE = 'verify'
-            ),
-            memory_size = 512,
-            role = role
-        )
-
-        logs = _logs.LogGroup(
-            self, 'logs',
-            log_group_name = '/aws/lambda/'+censys.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
-            removal_policy = RemovalPolicy.DESTROY
-        )
-
-        sub = _logs.SubscriptionFilter(
-            self, 'sub',
-            log_group = logs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
-        )
-
-        time = _logs.SubscriptionFilter(
-            self, 'time',
-            log_group = logs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
-        )
-
-    ### EVENTS ###
-
-        #vncevent = _events.Rule(
-        #    self, 'vncevent',
-        #    schedule = _events.Schedule.cron(
-        #        minute = '15',
-        #        hour = '0',
-        #        month = '*',
-        #        week_day = '*',
-        #        year = '*'
-        #    )
-        #)
-
-        #vncevent.add_target(
-        #    _targets.LambdaFunction(
-        #        censys,
-        #        event = _events.RuleTargetInput.from_object(
-        #            {
-        #                "service": "VNC"
-        #            }
-        #        )
-        #    )
-        #)
