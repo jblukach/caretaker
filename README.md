@@ -14,7 +14,9 @@ A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 1
 
 ### Misconfiguration
 
-Every day at 11 AM UTC, a.k.a. 6 AM CT, queries run against Censys for misconfigurations that expose insecure services to the Internet. Thank you to **Censys** for providing research access that makes this feature possible!
+Every day at 10:30 AM UTC, a.k.a. 5:30 AM CT, queries run against Censys for misconfigurations that expose insecure services to the Internet. 
+
+Thank you to **Censys** for providing research access that makes this possible!
 
 - https://search.censys.io
 

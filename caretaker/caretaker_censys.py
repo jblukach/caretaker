@@ -268,8 +268,8 @@ class CaretakerCensys(Stack):
         event = _events.Rule(
             self, 'event',
             schedule = _events.Schedule.cron(
-                minute = '0',
-                hour = '11',
+                minute = '30',
+                hour = '10',
                 month = '*',
                 week_day = '*',
                 year = '*'
