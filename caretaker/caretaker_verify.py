@@ -92,7 +92,7 @@ class CaretakerVerify(Stack):
             function_name = 'verify',
             runtime = _lambda.Runtime.PYTHON_3_11,
             code = _lambda.Code.from_asset('verify'),
-            timeout = Duration.seconds(3),
+            timeout = Duration.seconds(4),
             handler = 'verify.handler',
             environment = dict(
                 AWS_ACCOUNT = account,
