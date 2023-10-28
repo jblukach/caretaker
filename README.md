@@ -66,9 +66,11 @@ When the website returns **orange**, it will explain why.
 
 You may require additional assistance to resolve the issue outside of this project; at least the awareness to start asking questions will exist.
 
-No threat feed is complete without a  map to visualize the results using GeoLite2 data created by MaxMind.
+No threat feed is complete without a map to visualize the results using GeoLite2 data created by MaxMind within a general area for privacy.
 
-- https://www.maxmind.com
+- https://dev.maxmind.com/geoip/geolite2-free-geolocation-data
 - https://map.tundralabs.org
 
 ![Project Caretaker Map](MAP.PNG)
+
+This product includes GeoLite2 data created by MaxMind, available from https://www.maxmind.com.
