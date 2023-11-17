@@ -39,10 +39,10 @@ class CaretakerVerify(Stack):
             ]
         )
 
-    ### LAYER ###
+    ### LAMBDA LAYERS ###
 
-        layer = _lambda.LayerVersion.from_layer_version_arn(
-            self, 'layer',
+        getpublicip = _lambda.LayerVersion.from_layer_version_arn(
+            self, 'getpublicip',
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:9'
         )
 
@@ -101,7 +101,7 @@ class CaretakerVerify(Stack):
             memory_size = 128,
             role = role,
             layers = [
-                layer
+                getpublicip
             ]
         )
 
