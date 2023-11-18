@@ -34,10 +34,34 @@ class CaretakerProofPoint(Stack):
 
         cdk_nag.NagSuppressions.add_stack_suppressions(
             self, suppressions = [
-                {"id":"AwsSolutions-DDB3","reason":"The DynamoDB table does not have Point-in-time Recovery enabled."},
                 {"id":"AwsSolutions-IAM4","reason":"The IAM user, role, or group uses AWS managed policies."},
                 {"id":"AwsSolutions-IAM5","reason":"The IAM entity contains wildcard permissions and does not have a cdk-nag rule suppression with evidence for those permission."},
+                {"id":"AwsSolutions-DDB3","reason":"The DynamoDB table does not have Point-in-time Recovery enabled."},
+                {"id":"AwsSolutions-L1","reason":"The non-container Lambda function is not configured to use the latest runtime version."},
+                {"id":"AwsSolutions-VPC7","reason":"The VPC does not have an associated Flow Log."},
+                {"id":"AwsSolutions-EC23","reason":"The Security Group allows for 0.0.0.0/0 or ::/0 inbound access."},
+                {"id":"AwsSolutions-EC27","reason":"The Security Group does not have a description."},
+                {"id":"AwsSolutions-ECS4","reason":"The ECS Cluster has CloudWatch Container Insights disabled."},
+                {"id":"AwsSolutions-ECS2","reason":"The ECS Task Definition includes a container definition that directly specifies environment variables."},
+                {"id":"AwsSolutions-ECS7","reason":"One or more containers in the ECS Task Definition do not have container logging enabled."},
             ]
+        )
+
+    ### LAMBDA LAYERS ###
+
+        getpublicip = _lambda.LayerVersion.from_layer_version_arn(
+            self, 'getpublicip',
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:9'
+        )
+
+        netaddr = _lambda.LayerVersion.from_layer_version_arn(
+            self, 'netaddr',
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:netaddr:1'
+        )
+
+        requests = _lambda.LayerVersion.from_layer_version_arn(
+            self, 'requests',
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:1'
         )
 
     ### ERROR ###
@@ -80,12 +104,14 @@ class CaretakerProofPoint(Stack):
             )
         )
 
-    ### LAMBDA CONTAINER ###
+    ### LAMBDA ###
 
-        proofpoint = _lambda.DockerImageFunction(
+        proofpoint = _lambda.Function(
             self, 'proofpoint',
-            code = _lambda.DockerImageCode.from_image_asset('sources/proofpoint'),
+            runtime = _lambda.Runtime.PYTHON_3_11,
+            code = _lambda.Code.from_asset('sources/ip/proofpoint'),
             timeout = Duration.seconds(900),
+            handler = 'proofpoint.handler',
             environment = dict(
                 AWS_ACCOUNT = account,
                 DYNAMODB_TABLE = 'distillery',
@@ -93,7 +119,12 @@ class CaretakerProofPoint(Stack):
                 VERIFY_TABLE = 'verify'
             ),
             memory_size = 512,
-            role = role
+            role = role,
+            layers = [
+                getpublicip,
+                netaddr,
+                requests
+            ]
         )
 
         logs = _logs.LogGroup(
