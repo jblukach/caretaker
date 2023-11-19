@@ -170,7 +170,7 @@ class CaretakerCensys(Stack):
             event = _events.Rule(
                 self, 'censysevent'+search,
                 schedule = _events.Schedule.cron(
-                    minute = str(searches.index(search)),
+                    minute = str(searches.index(search)*2),
                     hour = '10',
                     month = '*',
                     week_day = '*',
