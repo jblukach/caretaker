@@ -1,16 +1,25 @@
 import boto3
 import datetime
 import json
-import time
+import os
 from censys.search import CensysHosts
 
 def dateconverter(o):
     if isinstance(o, datetime.datetime):
         return o.__str__()
 
-def search(service):
+def handler(event, context):
 
-    time.sleep(1)
+    ssm = boto3.client('ssm')
+
+    api = ssm.get_parameter(Name='/censys/api', WithDecryption=True)['Parameter']['Value']
+    key = ssm.get_parameter(Name='/censys/key', WithDecryption=True)['Parameter']['Value']
+
+    os.environ['CENSYS_API_ID'] = api
+    os.environ['CENSYS_API_SECRET'] = key
+    service = os.environ['CENSYS_SERVICE']
+
+    h = CensysHosts()
 
     query = h.search(
         '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530"}) and services.service_name=`'+service+'`',
@@ -43,34 +52,7 @@ def search(service):
                 }
             )
 
-h = CensysHosts()
-
-search('ELASTICSEARCH')
-search('FTP')
-search('IMAP')
-search('IPP')
-search('KUBERNETES')
-search('LDAP')
-search('MEMCACHED')
-search('MONGODB')
-search('MSSQL')
-search('MYSQL')
-search('NETBIOS')
-search('ORACLE')
-search('PC_ANYWHERE')
-search('POP3')
-search('POSTGRES')
-search('PPTP')
-search('PROMETHEUS')
-search('REDIS')
-search('RDP')
-search('SCCM')
-search('SIP')
-search('SLP')
-search('SMB')
-search('SNMP')
-search('SSDP')
-search('TELNET')
-search('TFTP')
-search('VNC')
-search('X11')
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Censys Hosts Service Search')
+    }

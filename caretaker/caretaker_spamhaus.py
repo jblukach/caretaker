@@ -36,14 +36,8 @@ class CaretakerSpamhaus(Stack):
             self, suppressions = [
                 {"id":"AwsSolutions-IAM4","reason":"The IAM user, role, or group uses AWS managed policies."},
                 {"id":"AwsSolutions-IAM5","reason":"The IAM entity contains wildcard permissions and does not have a cdk-nag rule suppression with evidence for those permission."},
-                {"id":"AwsSolutions-DDB3","reason":"The DynamoDB table does not have Point-in-time Recovery enabled."},
                 {"id":"AwsSolutions-L1","reason":"The non-container Lambda function is not configured to use the latest runtime version."},
-                {"id":"AwsSolutions-VPC7","reason":"The VPC does not have an associated Flow Log."},
-                {"id":"AwsSolutions-EC23","reason":"The Security Group allows for 0.0.0.0/0 or ::/0 inbound access."},
-                {"id":"AwsSolutions-EC27","reason":"The Security Group does not have a description."},
-                {"id":"AwsSolutions-ECS4","reason":"The ECS Cluster has CloudWatch Container Insights disabled."},
-                {"id":"AwsSolutions-ECS2","reason":"The ECS Task Definition includes a container definition that directly specifies environment variables."},
-                {"id":"AwsSolutions-ECS7","reason":"One or more containers in the ECS Task Definition do not have container logging enabled."},
+                {"id":"AwsSolutions-DDB3","reason":"The DynamoDB table does not have Point-in-time Recovery enabled."},
             ]
         )
 

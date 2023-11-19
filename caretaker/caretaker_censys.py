@@ -41,19 +41,18 @@ class CaretakerCensys(Stack):
                 {"id":"AwsSolutions-IAM5","reason":"The IAM entity contains wildcard permissions and does not have a cdk-nag rule suppression with evidence for those permission."},
                 {"id":"AwsSolutions-L1","reason":"The non-container Lambda function is not configured to use the latest runtime version."},
                 {"id":"AwsSolutions-DDB3","reason":"The DynamoDB table does not have Point-in-time Recovery enabled."},
-                {"id":"AwsSolutions-VPC7","reason":"The VPC does not have an associated Flow Log."},
-                {"id":"AwsSolutions-EC23","reason":"The Security Group allows for 0.0.0.0/0 or ::/0 inbound access."},
-                {"id":"AwsSolutions-EC27","reason":"The Security Group does not have a description."},
-                {"id":"AwsSolutions-ECS4","reason":"The ECS Cluster has CloudWatch Container Insights disabled."},
-                {"id":"AwsSolutions-ECS2","reason":"The ECS Task Definition includes a container definition that directly specifies environment variables."},
-                {"id":"AwsSolutions-ECS7","reason":"One or more containers in the ECS Task Definition do not have container logging enabled."},
             ]
         )
 
     ### LAYERS ###
 
-        layer = _lambda.LayerVersion.from_layer_version_arn(
-            self, 'layer',
+        censys = _lambda.LayerVersion.from_layer_version_arn(
+            self, 'censys',
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:censys:1'
+        )
+
+        getpublicip = _lambda.LayerVersion.from_layer_version_arn(
+            self, 'getpublicip',
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:9'
         )
 
@@ -69,119 +68,11 @@ class CaretakerCensys(Stack):
             'arn:aws:lambda:'+region+':'+account+':function:shipit-timeout'
         )
 
-    ### NETWORK ###
-
-        vpc = _ec2.Vpc(
-            self, 'vpc',
-            ip_addresses = _ec2.IpAddresses.cidr('192.168.242.0/24'),
-            max_azs = 1,
-            nat_gateways = 0,
-            enable_dns_hostnames = True,
-            enable_dns_support = True,
-            subnet_configuration = [
-                _ec2.SubnetConfiguration(
-                    subnet_type = _ec2.SubnetType.PUBLIC,
-                    name = 'Public',
-                    cidr_mask = 24
-                )
-            ],
-            gateway_endpoints = {
-                'DYNAMODB': _ec2.GatewayVpcEndpointOptions(
-                    service = _ec2.GatewayVpcEndpointAwsService.DYNAMODB
-                ),
-                'S3': _ec2.GatewayVpcEndpointOptions(
-                    service = _ec2.GatewayVpcEndpointAwsService.S3
-                )
-            }
-        )
-
-        subnet_ids = []
-
-        for subnet in vpc.public_subnets:
-            subnet_ids.append(subnet.subnet_id)
-
-        sg = _ec2.SecurityGroup(
-            self, 'sg',
-            vpc = vpc,
-            allow_all_outbound = True
-        )
-
-    ### TASK POLICY ###
-
-        task_policy = _iam.PolicyStatement(
-            effect = _iam.Effect.ALLOW, 
-            actions = [
-                'dynamodb:PutItem',
-                'ecr:GetAuthorizationToken',
-                'ecr:BatchCheckLayerAvailability',
-                'ecr:GetDownloadUrlForLayer',
-                'ecr:BatchGetImage',
-                'logs:CreateLogStream',
-                'logs:PutLogEvents'
-            ],
-            resources = [
-                '*'
-            ]
-        )
-
-    ### CLOUD WATCH ###
-
-        logs = _logs.LogGroup(
-            self, 'logs',
-            log_group_name = '/aws/fargate',
-            retention = _logs.RetentionDays.ONE_MONTH,
-            removal_policy = RemovalPolicy.DESTROY
-        )
-
-        logssub = _logs.SubscriptionFilter(
-            self, 'logssub',
-            log_group = logs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
-        )
-
-        logstime = _logs.SubscriptionFilter(
-            self, 'logstime',
-            log_group = logs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
-        )
-
-        logging = _ecs.AwsLogDriver(
-            stream_prefix = 'censys',
-            log_group = logs
-        )
-
-    ### FARGATE ECS ###
-
-        cluster = _ecs.Cluster(
-            self, 'cluster',
-            vpc = vpc
-        )
-
-        tasked = _ecs.TaskDefinition(
-            self, 'tasked',
-            cpu = '1024',
-            memory_mib = '2048',
-            compatibility = _ecs.Compatibility.FARGATE
-        )
-
-        tasked.add_to_task_role_policy(task_policy)
-
-        task = tasked.add_container(
-            'task',
-            image = _ecs.ContainerImage.from_asset('censys/task'),
-            logging = logging,
-            environment = {
-                'CENSYS_API_ID': '-',
-                'CENSYS_API_SECRET': '-'
-            }
-        )
-
-    ### IAM ROLE ###
+    ### IAM ###
 
         role = _iam.Role(
-            self, 'role', 
+            self, 'role',
+            role_name = 'censys',
             assumed_by = _iam.ServicePrincipal(
                 'lambda.amazonaws.com'
             )
@@ -193,23 +84,10 @@ class CaretakerCensys(Stack):
             )
         )
 
-        role.add_managed_policy(
-            _iam.ManagedPolicy.from_aws_managed_policy_name(
-                'service-role/AWSLambdaRole'
-            )
-        )
-
-        role.add_managed_policy(
-            _iam.ManagedPolicy.from_aws_managed_policy_name(
-                'service-role/AWSLambdaVPCAccessExecutionRole'
-            )
-        )     
-
         role.add_to_policy(
             _iam.PolicyStatement(
                 actions = [
-                    'ecs:RunTask',
-                    'iam:PassRole',
+                    'dynamodb:PutItem',
                     'ssm:GetParameter'
                 ],
                 resources = [
@@ -218,66 +96,90 @@ class CaretakerCensys(Stack):
             )
         )
 
-    ### RUN TASK ###
+    ### LAMBDA ###
 
-        run = _lambda.Function(
-            self, 'run',
-            handler = 'run.handler',
-            runtime = _lambda.Runtime.PYTHON_3_11,
-            code = _lambda.Code.from_asset('censys/run'),
-            architecture = _lambda.Architecture.ARM_64,
-            environment = dict(
-                AWS_ACCOUNT = account,
-                CLUSTER_NAME = cluster.cluster_name,
-                TASK_DEFINITION = tasked.task_definition_arn,
-                SUBNET_ID = subnet_ids[0],
-                CONTAINER_NAME = task.container_name,
-                SECURITY_GROUP = sg.security_group_id
-            ),
-            timeout = Duration.seconds(30),
-            memory_size = 128,
-            role = role,
-            layers = [
-                layer
-            ]
-        )
+        searches = []
+        searches.append('ELASTICSEARCH')
+        searches.append('FTP')
+        searches.append('IMAP')
+        searches.append('KUBERNETES')
+        searches.append('LDAP')
+        searches.append('MONGODB')
+        searches.append('MSSQL')
+        searches.append('MYSQL')
+        searches.append('NETBIOS')
+        searches.append('ORACLE')
+        searches.append('POP3')
+        searches.append('POSTGRES')
+        searches.append('PPTP')
+        searches.append('PROMETHEUS')
+        searches.append('RDP')
+        searches.append('SCCM')
+        searches.append('SMB')
+        searches.append('SNMP')
+        searches.append('SSDP')
+        searches.append('TELNET')
+        searches.append('TFTP')
+        searches.append('UPNP')
+        searches.append('VNC')
+        searches.append('X11')
 
-        runlogs = _logs.LogGroup(
-            self, 'runlogs',
-            log_group_name = '/aws/lambda/'+run.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
-            removal_policy = RemovalPolicy.DESTROY
-        )
+        for search in searches:
 
-        runsub = _logs.SubscriptionFilter(
-            self, 'runsub',
-            log_group = runlogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
-        )
-
-        runtime = _logs.SubscriptionFilter(
-            self, 'runtime',
-            log_group = runlogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
-        )
-
-    ### EVENT ###
-
-        event = _events.Rule(
-            self, 'event',
-            schedule = _events.Schedule.cron(
-                minute = '30',
-                hour = '10',
-                month = '*',
-                week_day = '*',
-                year = '*'
+            service = _lambda.Function(
+                self, 'censys'+search,
+                runtime = _lambda.Runtime.PYTHON_3_11,
+                code = _lambda.Code.from_asset('censys/hosts/service'),
+                timeout = Duration.seconds(900),
+                handler = 'service.handler',
+                environment = dict(
+                    AWS_ACCOUNT = account,
+                    CENSYS_API_ID = '-',
+                    CENSYS_API_SECRET = '-',
+                    CENSYS_SERVICE = search
+                ),
+                memory_size = 512,
+                role = role,
+                layers = [
+                    censys,
+                    getpublicip
+                ]
             )
-        )
 
-        event.add_target(
-            _targets.LambdaFunction(
-                run
+            logs = _logs.LogGroup(
+                self, 'censyslogs'+search,
+                log_group_name = '/aws/lambda/'+service.function_name,
+                retention = _logs.RetentionDays.ONE_MONTH,
+                removal_policy = RemovalPolicy.DESTROY
             )
-        )
+
+            sub = _logs.SubscriptionFilter(
+                self, 'censyssub'+search,
+                log_group = logs,
+                destination = _destinations.LambdaDestination(error),
+                filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+            )
+
+            time = _logs.SubscriptionFilter(
+                self, 'censystime'+search,
+                log_group = logs,
+                destination = _destinations.LambdaDestination(timeout),
+                filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+            )
+
+            event = _events.Rule(
+                self, 'censysevent'+search,
+                schedule = _events.Schedule.cron(
+                    minute = str(searches.index(search)),
+                    hour = '10',
+                    month = '*',
+                    week_day = '*',
+                    year = '*'
+                )
+            )
+
+            event.add_target(
+                _targets.LambdaFunction(
+                    service
+                )
+            )

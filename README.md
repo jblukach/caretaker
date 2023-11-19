@@ -8,17 +8,61 @@ Every Monday at 10 AM UTC, a.k.a. 5 AM CT, the Internet addresses for the Broadb
 - https://broadbandnd.com
 - https://ndit.nd.gov
 
+| Autonomous System Numbers (ASNs) |
+-----------------------------------
+| 11138 |
+| 14090 |
+| 14511 |
+| 14543 |
+| 18780 |
+| 19530 |
+| 26794 |
+| 27539 |
+| 29744 |
+| 31758 |
+| 32809 |
+| 33339 |
+| 36374 |
+| 63414 |
+
 It results in **418,048** IPv4 addresses and ten /32 subnets of IPv6 addresses to monitor for reputation.
 
 A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 18,446,744,073,709,551,616 addresses, making a vast number. IPv6 addresses get converted to integers to determine if they fall into any of the monitored ranges.
 
 ### Misconfiguration
 
-Every day at 10:30 AM UTC, a.k.a. 5:30 AM CT, queries run against Censys for misconfigurations that expose insecure services to the Internet. 
+Every day starting at 10:00 AM UTC, a.k.a. 5:00 AM CT, queries run against Censys for misconfigurations that expose insecure services to the Internet. 
 
 Thank you to **Censys** for providing research access that makes this possible!
 
 - https://search.censys.io
+
+| Services |
+------------
+| ELASTICSEARCH |
+| FTP |
+| IMAP |
+| KUBERNETES |
+| LDAP |
+| MONGODB |
+| MSSQL |
+| MYSQL |
+| NETBIOS |
+| ORACLE |
+| POP3 |
+| POSTGRES |
+| PPTP |
+| PROMETHEUS |
+| RDP |
+| SCCM |
+| SMB |
+| SNMP |
+| SSDP |
+| TELNET |
+| TFTP |
+| UPNP |
+| VNC |
+| X11 |
 
 ### Reputation
 
