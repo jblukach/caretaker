@@ -21,7 +21,7 @@ Every Monday at 10 AM UTC, a.k.a. 5 AM CT, the Internet addresses for the Broadb
 - 29744 - United Telephone Mutual Aid Corporation
 - 31758 - Griggs County Telephone Co.
 - 32809 - Dickey Rural Networks
-- 33339 - Nemont
+- 33339 - Nemont Telecommunications
 - 36374 - Stellar Association, LLC
 - 63414 - Dakota Central Telecommunications Cooperative
 
@@ -31,7 +31,7 @@ A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 1
 
 ### Misconfiguration
 
-Every day starting at 10:00 AM UTC, a.k.a. 5:00 AM CT, queries run against Censys for misconfigurations that expose insecure services to the Internet. 
+Every day starting at 10:00 AM UTC, a.k.a. 5:00 AM CT, queries run against **Censys** for misconfigurations that expose insecure services to the Internet. 
 
 Thank you to **Censys** for providing research access that makes this possible!
 
