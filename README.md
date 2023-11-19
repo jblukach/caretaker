@@ -8,22 +8,22 @@ Every Monday at 10 AM UTC, a.k.a. 5 AM CT, the Internet addresses for the Broadb
 - https://broadbandnd.com
 - https://ndit.nd.gov
 
-| Autonomous System Numbers (ASNs) |
------------------------------------
-| 11138 |
-| 14090 |
-| 14511 |
-| 14543 |
-| 18780 |
-| 19530 |
-| 26794 |
-| 27539 |
-| 29744 |
-| 31758 |
-| 32809 |
-| 33339 |
-| 36374 |
-| 63414 |
+##### Autonomous System Numbers (ASNs)
+
+- 11138 - BEK Communications Cooperative
+- 14090 - NORTH DAKOTA TELEPHONE COMPANY
+- 14511 - POLAR-COMMUNICATIONS
+- 14543 - SRT Communications, Inc.
+- 18780 - Reservation Telephone Coop.
+- 19530 - State of North Dakota, ITD
+- 26794 - Dakota Carrier Network
+- 27539 - West River Telecommunications Cooperative
+- 29744 - United Telephone Mutual Aid Corporation
+- 31758 - Griggs County Telephone Co.
+- 32809 - Dickey Rural Networks
+- 33339 - Nemont
+- 36374 - Stellar Association, LLC
+- 63414 - Dakota Central Telecommunications Cooperative
 
 It results in **418,048** IPv4 addresses and ten /32 subnets of IPv6 addresses to monitor for reputation.
 
@@ -37,32 +37,32 @@ Thank you to **Censys** for providing research access that makes this possible!
 
 - https://search.censys.io
 
-| Services |
-------------
-| ELASTICSEARCH |
-| FTP |
-| IMAP |
-| KUBERNETES |
-| LDAP |
-| MONGODB |
-| MSSQL |
-| MYSQL |
-| NETBIOS |
-| ORACLE |
-| POP3 |
-| POSTGRES |
-| PPTP |
-| PROMETHEUS |
-| RDP |
-| SCCM |
-| SMB |
-| SNMP |
-| SSDP |
-| TELNET |
-| TFTP |
-| UPNP |
-| VNC |
-| X11 |
+##### Monitored Services
+
+- ELASTICSEARCH
+- FTP
+- IMAP
+- KUBERNETES
+- LDAP
+- MONGODB
+- MSSQL
+- MYSQL
+- NETBIOS
+- ORACLE
+- POP3
+- POSTGRES
+- PPTP
+- PROMETHEUS
+- RDP
+- SCCM
+- SMB
+- SNMP
+- SSDP
+- TELNET
+- TFTP
+- UPNP
+- VNC
+- X11
 
 ### Reputation
 
