@@ -99,6 +99,8 @@ class Services2Stack(Stack):
     ### LAMBDA ###
 
         searches = []
+        searches.append('REDIS')
+        searches.append('ROCKETMQ')
         searches.append('RTSP')
         searches.append('S7')
         searches.append('SIP')

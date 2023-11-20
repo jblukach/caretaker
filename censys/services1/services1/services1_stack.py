@@ -121,8 +121,6 @@ class Services1Stack(Stack):
         searches.append('MQTT')
         searches.append('OPC_UA')
         searches.append('PC_ANYWHERE')
-        searches.append('REDIS')
-        searches.append('ROCKETMQ')
 
         for search in searches:
 
