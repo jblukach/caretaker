@@ -18,7 +18,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-class CaretakerCensys(Stack):
+class ServicesStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -72,7 +72,7 @@ class CaretakerCensys(Stack):
 
         role = _iam.Role(
             self, 'role',
-            role_name = 'censys',
+            role_name = 'service',
             assumed_by = _iam.ServicePrincipal(
                 'lambda.amazonaws.com'
             )
@@ -129,7 +129,7 @@ class CaretakerCensys(Stack):
             service = _lambda.Function(
                 self, 'censys'+search,
                 runtime = _lambda.Runtime.PYTHON_3_11,
-                code = _lambda.Code.from_asset('censys/hosts/service'),
+                code = _lambda.Code.from_asset('service'),
                 timeout = Duration.seconds(900),
                 handler = 'service.handler',
                 environment = dict(

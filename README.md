@@ -8,7 +8,7 @@ Every Monday at 10 AM UTC, a.k.a. 5 AM CT, the Internet addresses for the Broadb
 - https://broadbandnd.com
 - https://ndit.nd.gov
 
-##### Autonomous System Numbers (ASNs)
+### Autonomous System Numbers (ASN)
 
 - 11138 - BEK Communications Cooperative
 - 14090 - NORTH DAKOTA TELEPHONE COMPANY
@@ -37,32 +37,63 @@ Thank you to **Censys** for providing research access that makes this possible!
 
 - https://search.censys.io
 
-##### Monitored Services
+### Monitored Services
 
+- ACTIVEMQ
+- AMQP
+- BACNET
+- COAP
+- COBALT_STRIKE
+- CWMP
+- DARKGATE
+- DHCPDISCOVER
+- DNP3
 - ELASTICSEARCH
+- EPMD
+- ETHEREUM
+- FOX
 - FTP
 - IMAP
+- IPMI
+- IPP
+- KRPC
 - KUBERNETES
 - LDAP
+- MEMCACHED
+- MMS
+- MODBUS
+- MONERO_P2P
 - MONGODB
+- MQTT
 - MSSQL
 - MYSQL
 - NETBIOS
+- OPC_UA
 - ORACLE
+- PC_ANYWHERE
 - POP3
 - POSTGRES
 - PPTP
 - PROMETHEUS
+- REDIS
+- ROCKETMQ
 - RDP
+- RTSP
+- S7
 - SCCM
+- SIP
+- SKINNY
 - SMB
 - SNMP
 - SSDP
+- TEAM_VIEWER
 - TELNET
 - TFTP
+- TPLINK_KASA
 - UPNP
 - VNC
 - X11
+- ZEROMQ
 
 ### Reputation
 
