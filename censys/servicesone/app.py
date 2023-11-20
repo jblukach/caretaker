@@ -3,12 +3,12 @@ import os
 
 import aws_cdk as cdk
 
-from services1.services1_stack import Services1Stack
+from servicesone.servicesone_stack import ServicesoneStack
 
 app = cdk.App()
 
-Services1Stack(
-    app, 'Services1Stack',
+ServicesoneStack(
+    app, 'ServicesoneStack',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'

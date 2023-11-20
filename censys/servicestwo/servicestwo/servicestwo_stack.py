@@ -18,7 +18,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-class Services1Stack(Stack):
+class ServicestwoStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -72,7 +72,7 @@ class Services1Stack(Stack):
 
         role = _iam.Role(
             self, 'role',
-            role_name = 'service1',
+            role_name = 'service2',
             assumed_by = _iam.ServicePrincipal(
                 'lambda.amazonaws.com'
             )
@@ -99,28 +99,15 @@ class Services1Stack(Stack):
     ### LAMBDA ###
 
         searches = []
-        searches.append('ACTIVEMQ')
-        searches.append('AMQP')
-        searches.append('BACNET')
-        searches.append('COAP')
-        searches.append('COBALT_STRIKE')
-        searches.append('CWMP')
-        searches.append('DARKGATE')
-        searches.append('DHCPDISCOVER')
-        searches.append('DNP3')
-        searches.append('EPMD')
-        searches.append('ETHEREUM')
-        searches.append('FOX')
-        searches.append('IPMI')
-        searches.append('IPP')
-        searches.append('KRPC')
-        searches.append('MEMCACHED')
-        searches.append('MMS')
-        searches.append('MODBUS')
-        searches.append('MONERO_P2P')
-        searches.append('MQTT')
-        searches.append('OPC_UA')
-        searches.append('PC_ANYWHERE')
+        searches.append('REDIS')
+        searches.append('ROCKETMQ')
+        searches.append('RTSP')
+        searches.append('S7')
+        searches.append('SIP')
+        searches.append('SKINNY')
+        searches.append('TEAM_VIEWER')
+        searches.append('TPLINK_KASA')
+        searches.append('ZEROMQ')
 
         for search in searches:
 
@@ -169,7 +156,7 @@ class Services1Stack(Stack):
                 self, 'censysevent'+search,
                 schedule = _events.Schedule.cron(
                     minute = str(searches.index(search)*2),
-                    hour = '11',
+                    hour = '12',
                     month = '*',
                     week_day = '*',
                     year = '*'
