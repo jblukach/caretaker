@@ -7,11 +7,17 @@ from caretaker.caretaker_abusech import CaretakerAbuseCH
 from caretaker.caretaker_alienvault import CaretakerAlienVault
 from caretaker.caretaker_binarydefense import CaretakerBinaryDefense
 from caretaker.caretaker_blocklist import CaretakerBlockList
+from caretaker.caretaker_c2intelfeeds import CaretakerC2IntelFeeds
+from caretaker.caretaker_c2tracker import CaretakerC2Tracker
 from caretaker.caretaker_cinsscore import CaretakerCinsScore
+from caretaker.caretaker_cybercure import CaretakerCyberCure
 from caretaker.caretaker_digitalside import CaretakerDigitalSide
 from caretaker.caretaker_distillery import CaretakerDistillery
+from caretaker.caretaker_elliotech import CaretakerEllioTech
+from caretaker.caretaker_greensnow import CaretakerGreenSnow
 from caretaker.caretaker_ipsum import CaretakerIPSum
 from caretaker.caretaker_jamesbrine import CaretakerJamesBrine
+from caretaker.caretaker_miraisecurity import CaretakerMiraiSecurity
 from caretaker.caretaker_nubinetwork import CaretakerNubiNetwork
 from caretaker.caretaker_proofpoint import CaretakerProofPoint
 from caretaker.caretaker_rescure import CaretakerRescure
@@ -19,6 +25,7 @@ from caretaker.caretaker_rutgers import CaretakerRutgers
 from caretaker.caretaker_scorecard import CaretakerScoreCard
 from caretaker.caretaker_spamhaus import CaretakerSpamhaus
 from caretaker.caretaker_stack import CaretakerStack
+from caretaker.caretaker_talosintelligence import CaretakerTalosIntelligence
 from caretaker.caretaker_tor import CaretakerTor
 from caretaker.caretaker_verify import CaretakerVerify
 
@@ -68,8 +75,41 @@ CaretakerBlockList(
     )
 )
 
+CaretakerC2IntelFeeds(
+    app, 'CaretakerC2IntelFeeds',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerC2Tracker(
+    app, 'CaretakerC2Tracker',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
 CaretakerCinsScore(
     app, 'CaretakerCinsScore',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerCyberCure(
+    app, 'CaretakerCyberCure',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'
@@ -101,6 +141,28 @@ CaretakerDistillery(
     )
 )
 
+CaretakerEllioTech(
+    app, 'CaretakerEllioTech',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerGreenSnow(
+    app, 'CaretakerGreenSnow',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
 CaretakerIPSum(
     app, 'CaretakerIPSum',
     env = cdk.Environment(
@@ -114,6 +176,17 @@ CaretakerIPSum(
 
 CaretakerJamesBrine(
     app, 'CaretakerJamesBrine',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerMiraiSecurity(
+    app, 'CaretakerMiraiSecurity',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'
@@ -191,6 +264,17 @@ CaretakerSpamhaus(
 
 CaretakerStack(
     app, 'CaretakerStack',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerTalosIntelligence(
+    app, 'CaretakerTalosIntelligence',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'
