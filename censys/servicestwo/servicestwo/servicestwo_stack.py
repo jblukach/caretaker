@@ -99,8 +99,6 @@ class ServicestwoStack(Stack):
     ### LAMBDA ###
 
         searches = []
-        searches.append('REDIS')
-        searches.append('ROCKETMQ')
         searches.append('RTSP')
         searches.append('S7')
         searches.append('SIP')
@@ -138,19 +136,19 @@ class ServicestwoStack(Stack):
                 removal_policy = RemovalPolicy.DESTROY
             )
 
-            sub = _logs.SubscriptionFilter(
-                self, 'censyssub'+search,
-                log_group = logs,
-                destination = _destinations.LambdaDestination(error),
-                filter_pattern = _logs.FilterPattern.all_terms('ERROR')
-            )
+            #sub = _logs.SubscriptionFilter(
+            #    self, 'censyssub'+search,
+            #    log_group = logs,
+            #    destination = _destinations.LambdaDestination(error),
+            #    filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+            #)
 
-            time = _logs.SubscriptionFilter(
-                self, 'censystime'+search,
-                log_group = logs,
-                destination = _destinations.LambdaDestination(timeout),
-                filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
-            )
+            #time = _logs.SubscriptionFilter(
+            #    self, 'censystime'+search,
+            #    log_group = logs,
+            #    destination = _destinations.LambdaDestination(timeout),
+            #    filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+            #)
 
             event = _events.Rule(
                 self, 'censysevent'+search,
