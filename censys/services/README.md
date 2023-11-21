@@ -1,3 +1,3 @@
 # Censys
 
-https://search.censys.io/search/definitions?resource%253Dhosts
+https://search.censys.io/search/definitions

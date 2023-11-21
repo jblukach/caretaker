@@ -11,8 +11,8 @@ Every Monday at 10 AM UTC, a.k.a. 5 AM CT, the Internet addresses for the Broadb
 ### Autonomous System Numbers (ASN)
 
 - 11138 - BEK Communications Cooperative
-- 14090 - NORTH DAKOTA TELEPHONE COMPANY
-- 14511 - POLAR-COMMUNICATIONS
+- 14090 - North Dakota Telephone Company
+- 14511 - Polar Communications
 - 14543 - SRT Communications, Inc.
 - 18780 - Reservation Telephone Coop.
 - 19530 - State of North Dakota, ITD
@@ -56,6 +56,8 @@ Thank you to **Censys** for providing research access that makes this possible!
 | TELNET | TFTP | TPLINK_KASA | UPNP |
 | VNC | X11 | ZEROMQ | |
 
+- https://search.censys.io/search/definitions
+
 ### Reputation
 
 The following threat feeds pull once or twice an hour to determine if any addresses from North Dakota exist on the lists. 
@@ -65,16 +67,23 @@ If there are others that you would like added, please open an issue on the repos
 I appreciate all the work that goes into maintaining these lists - thank you!
 
 - https://cinsscore.com
+- https://ellio.tech
 - https://feodotracker.abuse.ch
-- https://sslbl.abuse.ch
+- https://github.com/drb-ra
+- https://github.com/montysecurity
 - https://github.com/stamparm
+- https://greensnow.co
 - https://jamesbrine.com.au
+- https://mirai.security.gives
 - https://osint.digitalside.it
 - https://otx.alienvault.com
 - https://report.cs.rutgers.edu
 - https://securityscorecard.com
+- https://sslbl.abuse.ch
+- https://talosintelligence.com
 - https://www.binarydefense.com
 - https://www.blocklist.de
+- https://www.cybercure.ai
 - https://www.dan.me.uk
 - https://www.nubi-network.com
 - https://www.proofpoint.com
