@@ -40,7 +40,7 @@ def handler(event, context):
     ndlist = list(set(ndlist))
     print('ND: '+str(len(ndlist)))
 
-    response = requests.get('https://feodotracker.abuse.ch/downloads/ipblocklist_aggressive.txt')
+    response = requests.get('https://sslbl.abuse.ch/blacklist/sslipblacklist_aggressive.txt')
     data = response.text
 
     now = datetime.datetime.now()
@@ -97,9 +97,9 @@ def handler(event, context):
                     feed.put_item(
                         Item = {
                             'pk': 'IP#',
-                            'sk': 'IP#'+str(line)+'#SOURCE#abuse.ch',
+                            'sk': 'IP#'+str(line)+'#SOURCE#sslbl.abuse.ch',
                             'ip': str(line),
-                            'source': 'abuse.ch',
+                            'source': 'sslbl.abuse.ch',
                             'last': seen,
                             'epoch': epoch
                         }
@@ -107,9 +107,9 @@ def handler(event, context):
                     verify.put_item(
                         Item = {
                             'pk': 'IP#',
-                            'sk': 'IP#'+str(line)+'#SOURCE#abuse.ch',
+                            'sk': 'IP#'+str(line)+'#SOURCE#sslbl.abuse.ch',
                             'ip': str(line),
-                            'source': 'abuse.ch',
+                            'source': 'sslbl.abuse.ch',
                             'last': seen,
                             'epoch': epoch
                         }
@@ -125,9 +125,9 @@ def handler(event, context):
         feed.put_item(
             Item = {
                 'pk': 'IP#',
-                'sk': 'IP#'+str(match)+'#SOURCE#abuse.ch',
+                'sk': 'IP#'+str(match)+'#SOURCE#sslbl.abuse.ch',
                 'ip': str(match),
-                'source': 'abuse.ch',
+                'source': 'sslbl.abuse.ch',
                 'last': seen,
                 'epoch': epoch
             }
@@ -135,9 +135,9 @@ def handler(event, context):
         verify.put_item(
             Item = {
                 'pk': 'IP#',
-                'sk': 'IP#'+str(match)+'#SOURCE#abuse.ch',
+                'sk': 'IP#'+str(match)+'#SOURCE#sslbl.abuse.ch',
                 'ip': str(match),
-                'source': 'abuse.ch',
+                'source': 'sslbl.abuse.ch',
                 'last': seen,
                 'epoch': epoch
             }

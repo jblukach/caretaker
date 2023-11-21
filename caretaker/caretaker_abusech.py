@@ -100,12 +100,12 @@ class CaretakerAbuseCH(Stack):
 
     ### LAMBDA ###
 
-        abusech = _lambda.Function(
-            self, 'abusech',
+        feodotracker = _lambda.Function(
+            self, 'feodotracker',
             runtime = _lambda.Runtime.PYTHON_3_11,
-            code = _lambda.Code.from_asset('sources/ip/abusech'),
+            code = _lambda.Code.from_asset('sources/ip/abusech/feodotracker'),
             timeout = Duration.seconds(900),
-            handler = 'abusech.handler',
+            handler = 'feodotracker.handler',
             environment = dict(
                 AWS_ACCOUNT = account,
                 DYNAMODB_TABLE = 'distillery',
@@ -121,29 +121,29 @@ class CaretakerAbuseCH(Stack):
             ]
         )
 
-        logs = _logs.LogGroup(
-            self, 'logs',
-            log_group_name = '/aws/lambda/'+abusech.function_name,
+        feodotrackerlogs = _logs.LogGroup(
+            self, 'feodotrackerlogs',
+            log_group_name = '/aws/lambda/'+feodotracker.function_name,
             retention = _logs.RetentionDays.ONE_MONTH,
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        sub = _logs.SubscriptionFilter(
-            self, 'sub',
-            log_group = logs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
-        )
+        #sub = _logs.SubscriptionFilter(
+        #    self, 'sub',
+        #    log_group = feodotrackerlogs,
+        #    destination = _destinations.LambdaDestination(error),
+        #    filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        #)
 
-        time = _logs.SubscriptionFilter(
-            self, 'time',
-            log_group = logs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
-        )
+        #time = _logs.SubscriptionFilter(
+        #    self, 'time',
+        #    log_group = feodotrackerlogs,
+        #    destination = _destinations.LambdaDestination(timeout),
+        #    filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        #)
 
-        event = _events.Rule(
-            self, 'event',
+        feodotrackerevent = _events.Rule(
+            self, 'feodotrackerevent',
             schedule = _events.Schedule.cron(
                 minute = '30',
                 hour = '*',
@@ -153,6 +153,65 @@ class CaretakerAbuseCH(Stack):
             )
         )
 
-        event.add_target(
-            _targets.LambdaFunction(abusech)
+        feodotrackerevent.add_target(
+            _targets.LambdaFunction(feodotracker)
+        )
+
+    ### LAMBDA ###
+
+        sslbl = _lambda.Function(
+            self, 'sslbl',
+            runtime = _lambda.Runtime.PYTHON_3_11,
+            code = _lambda.Code.from_asset('sources/ip/abusech/sslbl'),
+            timeout = Duration.seconds(900),
+            handler = 'sslbl.handler',
+            environment = dict(
+                AWS_ACCOUNT = account,
+                DYNAMODB_TABLE = 'distillery',
+                FEED_TABLE = 'feed',
+                VERIFY_TABLE = 'verify'
+            ),
+            memory_size = 512,
+            role = role,
+            layers = [
+                getpublicip,
+                netaddr,
+                requests
+            ]
+        )
+
+        sslbllogs = _logs.LogGroup(
+            self, 'sslbllogs',
+            log_group_name = '/aws/lambda/'+sslbl.function_name,
+            retention = _logs.RetentionDays.ONE_MONTH,
+            removal_policy = RemovalPolicy.DESTROY
+        )
+
+        #sslblsub = _logs.SubscriptionFilter(
+        #    self, 'sslblsub',
+        #    log_group = sslbllogs,
+        #    destination = _destinations.LambdaDestination(error),
+        #    filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        #)
+
+        #sslbltime = _logs.SubscriptionFilter(
+        #    self, 'sslbltime',
+        #    log_group = sslbllogs,
+        #    destination = _destinations.LambdaDestination(timeout),
+        #    filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        #)
+
+        sslblevent = _events.Rule(
+            self, 'sslblevent',
+            schedule = _events.Schedule.cron(
+                minute = '30',
+                hour = '*',
+                month = '*',
+                week_day = '*',
+                year = '*'
+            )
+        )
+
+        sslblevent.add_target(
+            _targets.LambdaFunction(sslbl)
         )
