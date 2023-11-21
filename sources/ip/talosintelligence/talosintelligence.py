@@ -62,27 +62,27 @@ def handler(event, context):
     matches = list(set(iplist).intersection(ndlist))
     print('Matches: '+str(len(matches)))
 
-    #for match in matches:
-    #    feed.put_item(
-    #        Item = {
-    #            'pk': 'IP#',
-    #            'sk': 'IP#'+str(match)+'#SOURCE#talosintelligence.com',
-    #            'ip': str(match),
-    #            'source': 'talosintelligence.com',
-    #            'last': seen,
-    #            'epoch': epoch
-    #        }
-    #    )
-    #    verify.put_item(
-    #        Item = {
-    #            'pk': 'IP#',
-    #            'sk': 'IP#'+str(match)+'#SOURCE#talosintelligence.com',
-    #            'ip': str(match),
-    #            'source': 'talosintelligence.com',
-    #            'last': seen,
-    #            'epoch': epoch
-    #        }
-    #    )
+    for match in matches:
+        feed.put_item(
+            Item = {
+                'pk': 'IP#',
+                'sk': 'IP#'+str(match)+'#SOURCE#talosintelligence.com',
+                'ip': str(match),
+                'source': 'talosintelligence.com',
+                'last': seen,
+                'epoch': epoch
+            }
+        )
+        verify.put_item(
+            Item = {
+                'pk': 'IP#',
+                'sk': 'IP#'+str(match)+'#SOURCE#talosintelligence.com',
+                'ip': str(match),
+                'source': 'talosintelligence.com',
+                'last': seen,
+                'epoch': epoch
+            }
+        )
 
     return {
         'statusCode': 200,

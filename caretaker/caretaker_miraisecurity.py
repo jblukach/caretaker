@@ -153,6 +153,6 @@ class CaretakerMiraiSecurity(Stack):
             )
         )
 
-        #event.add_target(
-        #    _targets.LambdaFunction(miraisecurity)
-        #)
+        event.add_target(
+            _targets.LambdaFunction(miraisecurity)
+        )

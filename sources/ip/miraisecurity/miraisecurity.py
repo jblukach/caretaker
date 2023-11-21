@@ -64,27 +64,27 @@ def handler(event, context):
     matches = list(set(iplist).intersection(ndlist))
     print('Matches: '+str(len(matches)))
 
-    #for match in matches:
-    #    feed.put_item(
-    #        Item = {
-    #            'pk': 'IP#',
-    #            'sk': 'IP#'+str(match)+'#SOURCE#mirai.security.gives',
-    #            'ip': str(match),
-    #            'source': 'mirai.security.gives',
-    #            'last': seen,
-    #            'epoch': epoch
-    #        }
-    #    )
-    #    verify.put_item(
-    #        Item = {
-    #            'pk': 'IP#',
-    #            'sk': 'IP#'+str(match)+'#SOURCE#mirai.security.gives',
-    #            'ip': str(match),
-    #            'source': 'mirai.security.gives',
-    #            'last': seen,
-    #            'epoch': epoch
-    #        }
-    #    )
+    for match in matches:
+        feed.put_item(
+            Item = {
+                'pk': 'IP#',
+                'sk': 'IP#'+str(match)+'#SOURCE#mirai.security.gives',
+                'ip': str(match),
+                'source': 'mirai.security.gives',
+                'last': seen,
+                'epoch': epoch
+            }
+        )
+        verify.put_item(
+            Item = {
+                'pk': 'IP#',
+                'sk': 'IP#'+str(match)+'#SOURCE#mirai.security.gives',
+                'ip': str(match),
+                'source': 'mirai.security.gives',
+                'last': seen,
+                'epoch': epoch
+            }
+        )
 
     return {
         'statusCode': 200,

@@ -50,16 +50,13 @@ def handler(event, context):
     seen = seen.replace('"','')
 
     for line in data.splitlines():
-        print(line)
-        if line.startswith('#'):
-            continue
-        else:
-            out = line.split(',')
-            if ipaddress.ip_network(out[0]).version == 4:
-                iplist.append(str(out[0]))
-                print(str(out[0]))
-            else:
-                continue
+        try:
+            ips = line.split(',')
+            for ip in ips:
+                if ipaddress.ip_network(ip).version == 4:
+                    iplist.append(str(ip))
+        except:
+            continue        
 
     iplist = list(set(iplist))
     print('BL: '+str(len(iplist)))
@@ -67,27 +64,27 @@ def handler(event, context):
     matches = list(set(iplist).intersection(ndlist))
     print('Matches: '+str(len(matches)))
 
-    #for match in matches:
-    #    feed.put_item(
-    #        Item = {
-    #            'pk': 'IP#',
-    #            'sk': 'IP#'+str(match)+'#SOURCE#cybercure.ai',
-    #            'ip': str(match),
-    #            'source': 'cybercure.ai',
-    #            'last': seen,
-    #            'epoch': epoch
-    #        }
-    #    )
-    #    verify.put_item(
-    #        Item = {
-    #            'pk': 'IP#',
-    #            'sk': 'IP#'+str(match)+'#SOURCE#cybercure.ai',
-    #            'ip': str(match),
-    #            'source': 'cybercure.ai',
-    #            'last': seen,
-    #            'epoch': epoch
-    #        }
-    #    )
+    for match in matches:
+        feed.put_item(
+            Item = {
+                'pk': 'IP#',
+                'sk': 'IP#'+str(match)+'#SOURCE#cybercure.ai',
+                'ip': str(match),
+                'source': 'cybercure.ai',
+                'last': seen,
+                'epoch': epoch
+            }
+        )
+        verify.put_item(
+            Item = {
+                'pk': 'IP#',
+                'sk': 'IP#'+str(match)+'#SOURCE#cybercure.ai',
+                'ip': str(match),
+                'source': 'cybercure.ai',
+                'last': seen,
+                'epoch': epoch
+            }
+        )
 
     return {
         'statusCode': 200,

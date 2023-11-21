@@ -153,6 +153,6 @@ class CaretakerC2IntelFeeds(Stack):
             )
         )
 
-        #event.add_target(
-        #    _targets.LambdaFunction(c2intelfeeds)
-        #)
+        event.add_target(
+            _targets.LambdaFunction(c2intelfeeds)
+        )

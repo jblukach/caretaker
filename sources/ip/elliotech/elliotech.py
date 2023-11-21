@@ -50,12 +50,72 @@ def handler(event, context):
     seen = seen.replace('"','')
 
     for line in data.splitlines():
+
         if line.startswith('#'):
             continue
         else:
-            if ipaddress.ip_network(line).version == 4:
-                iplist.append(str(line))
-            else:
+            try:
+                if ipaddress.ip_network(line).version == 4:
+                    iplist.append(line)
+                else:
+                    intip = int(ipaddress.IPv6Address(line))
+
+                    firstlist = []
+                    first = table.query(
+                        IndexName = 'firstip',
+                        KeyConditionExpression = Key('pk').eq('ASN#') & Key('firstip').lte(intip)
+                    )
+                    firstdata = first['Items']
+                    while 'LastEvaluatedKey' in first:
+                        first = table.query(
+                            IndexName = 'firstip',
+                            KeyConditionExpression = Key('pk').eq('ASN#') & Key('firstip').lte(intip),
+                            ExclusiveStartKey = first['LastEvaluatedKey']
+                        )
+                        firstdata.extend(first['Items'])
+                    for item in firstdata:
+                        firstlist.append(item['cidr'])
+
+                    lastlist = []
+                    last = table.query(
+                        IndexName = 'lastip',
+                        KeyConditionExpression = Key('pk').eq('ASN#') & Key('lastip').gte(intip)
+                    )
+                    lastdata = last['Items']
+                    while 'LastEvaluatedKey' in last:
+                        last = table.query(
+                            IndexName = 'lastip',
+                            KeyConditionExpression = Key('pk').eq('ASN#') & Key('lastip').gte(intip),
+                            ExclusiveStartKey = last['LastEvaluatedKey']
+                        )
+                        lastdata.extend(last['Items'])
+                    for item in lastdata:
+                        lastlist.append(item['cidr'])
+
+                    matches = set(firstlist) & set(lastlist)
+    
+                    if len(matches) > 0:
+                        feed.put_item(
+                            Item = {
+                                'pk': 'IP#',
+                                'sk': 'IP#'+str(line)+'#SOURCE#ellio.tech',
+                                'ip': str(line),
+                                'source': 'ellio.tech',
+                                'last': seen,
+                                'epoch': epoch
+                            }
+                        )
+                        verify.put_item(
+                            Item = {
+                                'pk': 'IP#',
+                                'sk': 'IP#'+str(line)+'#SOURCE#ellio.tech',
+                                'ip': str(line),
+                                'source': 'ellio.tech',
+                                'last': seen,
+                                'epoch': epoch
+                            }
+                        )
+            except:
                 continue
 
     iplist = list(set(iplist))
@@ -64,29 +124,29 @@ def handler(event, context):
     matches = list(set(iplist).intersection(ndlist))
     print('Matches: '+str(len(matches)))
 
-    #for match in matches:
-    #    feed.put_item(
-    #        Item = {
-    #            'pk': 'IP#',
-    #            'sk': 'IP#'+str(match)+'#SOURCE#ellio.tech',
-    #            'ip': str(match),
-    #            'source': 'ellio.tech',
-    #            'last': seen,
-    #            'epoch': epoch
-    #        }
-    #    )
-    #    verify.put_item(
-    #        Item = {
-    #            'pk': 'IP#',
-    #            'sk': 'IP#'+str(match)+'#SOURCE#ellio.tech',
-    #            'ip': str(match),
-    #            'source': 'ellio.tech',
-    #            'last': seen,
-    #            'epoch': epoch
-    #        }
-    #    )
+    for match in matches:
+        feed.put_item(
+            Item = {
+                'pk': 'IP#',
+                'sk': 'IP#'+str(match)+'#SOURCE#ellio.tech',
+                'ip': str(match),
+                'source': 'ellio.tech',
+                'last': seen,
+                'epoch': epoch
+            }
+        )
+        verify.put_item(
+            Item = {
+                'pk': 'IP#',
+                'sk': 'IP#'+str(match)+'#SOURCE#ellio.tech',
+                'ip': str(match),
+                'source': 'ellio.tech',
+                'last': seen,
+                'epoch': epoch
+            }
+        )
 
     return {
         'statusCode': 200,
-        'body': json.dumps('Check Ellio Tech Blocklist')
+        'body': json.dumps('Check Ellio Tech Reputation')
     }

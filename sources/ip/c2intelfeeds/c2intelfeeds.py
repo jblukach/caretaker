@@ -56,7 +56,6 @@ def handler(event, context):
             out = line.split(',')
             if ipaddress.ip_network(out[0]).version == 4:
                 iplist.append(str(out[0]))
-                print(str(out[0]))
             else:
                 continue
 
@@ -66,27 +65,27 @@ def handler(event, context):
     matches = list(set(iplist).intersection(ndlist))
     print('Matches: '+str(len(matches)))
 
-    #for match in matches:
-    #    feed.put_item(
-    #        Item = {
-    #            'pk': 'IP#',
-    #            'sk': 'IP#'+str(match)+'#SOURCE#github.com/drb-ra',
-    #            'ip': str(match),
-    #            'source': 'github.com/drb-ra',
-    #            'last': seen,
-    #            'epoch': epoch
-    #        }
-    #    )
-    #    verify.put_item(
-    #        Item = {
-    #            'pk': 'IP#',
-    #            'sk': 'IP#'+str(match)+'#SOURCE#github.com/drb-ra',
-    #            'ip': str(match),
-    #            'source': 'github.com/drb-ra',
-    #            'last': seen,
-    #            'epoch': epoch
-    #        }
-    #    )
+    for match in matches:
+        feed.put_item(
+            Item = {
+                'pk': 'IP#',
+                'sk': 'IP#'+str(match)+'#SOURCE#github.com/drb-ra',
+                'ip': str(match),
+                'source': 'github.com/drb-ra',
+                'last': seen,
+                'epoch': epoch
+            }
+        )
+        verify.put_item(
+            Item = {
+                'pk': 'IP#',
+                'sk': 'IP#'+str(match)+'#SOURCE#github.com/drb-ra',
+                'ip': str(match),
+                'source': 'github.com/drb-ra',
+                'last': seen,
+                'epoch': epoch
+            }
+        )
 
     return {
         'statusCode': 200,

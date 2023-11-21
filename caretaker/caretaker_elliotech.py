@@ -153,6 +153,6 @@ class CaretakerEllioTech(Stack):
             )
         )
 
-        #event.add_target(
-        #    _targets.LambdaFunction(elliotech)
-        #)
+        event.add_target(
+            _targets.LambdaFunction(elliotech)
+        )

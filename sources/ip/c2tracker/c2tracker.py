@@ -93,27 +93,27 @@ def handler(event, context):
 
                 matches = set(firstlist) & set(lastlist)
     
-                #if len(matches) > 0:
-                #    feed.put_item(
-                #        Item = {
-                #            'pk': 'IP#',
-                #            'sk': 'IP#'+str(line)+'#SOURCE#github.com/montysecurity',
-                #            'ip': str(line),
-                #            'source': 'github.com/montysecurity',
-                #            'last': seen,
-                #            'epoch': epoch
-                #        }
-                #    )
-                #    verify.put_item(
-                #        Item = {
-                #            'pk': 'IP#',
-                #            'sk': 'IP#'+str(line)+'#SOURCE#github.com/montysecurity',
-                #            'ip': str(line),
-                #            'source': 'github.com/montysecurity',
-                #            'last': seen,
-                #            'epoch': epoch
-                #        }
-                #    )
+                if len(matches) > 0:
+                    feed.put_item(
+                        Item = {
+                            'pk': 'IP#',
+                            'sk': 'IP#'+str(line)+'#SOURCE#github.com/montysecurity',
+                            'ip': str(line),
+                            'source': 'github.com/montysecurity',
+                            'last': seen,
+                            'epoch': epoch
+                        }
+                    )
+                    verify.put_item(
+                        Item = {
+                            'pk': 'IP#',
+                            'sk': 'IP#'+str(line)+'#SOURCE#github.com/montysecurity',
+                            'ip': str(line),
+                            'source': 'github.com/montysecurity',
+                            'last': seen,
+                            'epoch': epoch
+                        }
+                    )
 
     iplist = list(set(iplist))
     print('BL: '+str(len(iplist)))
@@ -121,27 +121,27 @@ def handler(event, context):
     matches = list(set(iplist).intersection(ndlist))
     print('Matches: '+str(len(matches)))
 
-    #for match in matches:
-    #    feed.put_item(
-    #        Item = {
-    #            'pk': 'IP#',
-    #            'sk': 'IP#'+str(match)+'#SOURCE#github.com/montysecurity',
-    #            'ip': str(match),
-    #            'source': 'github.com/montysecurity',
-    #            'last': seen,
-    #            'epoch': epoch
-    #        }
-    #    )
-    #    verify.put_item(
-    #        Item = {
-    #            'pk': 'IP#',
-    #            'sk': 'IP#'+str(match)+'#SOURCE#github.com/montysecurity',
-    #            'ip': str(match),
-    #            'source': 'github.com/montysecurity',
-    #            'last': seen,
-    #            'epoch': epoch
-    #        }
-    #    )
+    for match in matches:
+        feed.put_item(
+            Item = {
+                'pk': 'IP#',
+                'sk': 'IP#'+str(match)+'#SOURCE#github.com/montysecurity',
+                'ip': str(match),
+                'source': 'github.com/montysecurity',
+                'last': seen,
+                'epoch': epoch
+            }
+        )
+        verify.put_item(
+            Item = {
+                'pk': 'IP#',
+                'sk': 'IP#'+str(match)+'#SOURCE#github.com/montysecurity',
+                'ip': str(match),
+                'source': 'github.com/montysecurity',
+                'last': seen,
+                'epoch': epoch
+            }
+        )
 
     return {
         'statusCode': 200,

@@ -153,6 +153,6 @@ class CaretakerC2Tracker(Stack):
             )
         )
 
-        #event.add_target(
-        #    _targets.LambdaFunction(c2tracker)
-        #)
+        event.add_target(
+            _targets.LambdaFunction(c2tracker)
+        )

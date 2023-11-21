@@ -153,6 +153,6 @@ class CaretakerTalosIntelligence(Stack):
             )
         )
 
-        #event.add_target(
-        #    _targets.LambdaFunction(talosintelligence)
-        #)
+        event.add_target(
+            _targets.LambdaFunction(talosintelligence)
+        )

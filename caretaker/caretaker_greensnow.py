@@ -153,6 +153,6 @@ class CaretakerGreenSnow(Stack):
             )
         )
 
-        #event.add_target(
-        #    _targets.LambdaFunction(greensnow)
-        #)
+        event.add_target(
+            _targets.LambdaFunction(greensnow)
+        )
