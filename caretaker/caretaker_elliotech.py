@@ -128,19 +128,19 @@ class CaretakerEllioTech(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        #sub = _logs.SubscriptionFilter(
-        #    self, 'sub',
-        #    log_group = logs,
-        #    destination = _destinations.LambdaDestination(error),
-        #    filter_pattern = _logs.FilterPattern.all_terms('ERROR')
-        #)
+        sub = _logs.SubscriptionFilter(
+            self, 'sub',
+            log_group = logs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
 
-        #time = _logs.SubscriptionFilter(
-        #    self, 'time',
-        #    log_group = logs,
-        #    destination = _destinations.LambdaDestination(timeout),
-        #    filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
-        #)
+        time = _logs.SubscriptionFilter(
+            self, 'time',
+            log_group = logs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
 
         event = _events.Rule(
             self, 'event',

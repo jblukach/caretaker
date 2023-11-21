@@ -128,19 +128,19 @@ class CaretakerAbuseCH(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        #sub = _logs.SubscriptionFilter(
-        #    self, 'sub',
-        #    log_group = feodotrackerlogs,
-        #    destination = _destinations.LambdaDestination(error),
-        #    filter_pattern = _logs.FilterPattern.all_terms('ERROR')
-        #)
+        feodotrackersub = _logs.SubscriptionFilter(
+            self, 'feodotrackersub',
+            log_group = feodotrackerlogs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
 
-        #time = _logs.SubscriptionFilter(
-        #    self, 'time',
-        #    log_group = feodotrackerlogs,
-        #    destination = _destinations.LambdaDestination(timeout),
-        #    filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
-        #)
+        feodotrackertime = _logs.SubscriptionFilter(
+            self, 'feodotrackertime',
+            log_group = feodotrackerlogs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
 
         feodotrackerevent = _events.Rule(
             self, 'feodotrackerevent',
@@ -187,19 +187,19 @@ class CaretakerAbuseCH(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        #sslblsub = _logs.SubscriptionFilter(
-        #    self, 'sslblsub',
-        #    log_group = sslbllogs,
-        #    destination = _destinations.LambdaDestination(error),
-        #    filter_pattern = _logs.FilterPattern.all_terms('ERROR')
-        #)
+        sslblsub = _logs.SubscriptionFilter(
+            self, 'sslblsub',
+            log_group = sslbllogs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
 
-        #sslbltime = _logs.SubscriptionFilter(
-        #    self, 'sslbltime',
-        #    log_group = sslbllogs,
-        #    destination = _destinations.LambdaDestination(timeout),
-        #    filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
-        #)
+        sslbltime = _logs.SubscriptionFilter(
+            self, 'sslbltime',
+            log_group = sslbllogs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
 
         sslblevent = _events.Rule(
             self, 'sslblevent',
