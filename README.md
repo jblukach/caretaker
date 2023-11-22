@@ -35,10 +35,6 @@ It results in **1,424,896** IPv4 addresses and **33** IPv6 address allocations t
 
 A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 18,446,744,073,709,551,616 addresses, making a vast number. IPv6 addresses get converted to integers to determine if they fall into any of the monitored ranges.
 
-**+** Sparklight service area is Fargo,ND only.
-
-**+** CenturyLink Service area includes the following cities in North Dakota: Bismarck, Dickinson, Fargo, Grand Forks, Jamestown, and West Fargo.
-
 ### Misconfiguration
 
 Every day starting at 10:00 AM UTC, a.k.a. 5:00 AM CT, queries run against **Censys** for misconfigurations that expose insecure services to the Internet. 
@@ -46,6 +42,10 @@ Every day starting at 10:00 AM UTC, a.k.a. 5:00 AM CT, queries run against **Cen
 Thank you to **Censys** for providing research access that makes this possible!
 
 - https://search.censys.io
+
+**+** Sparklight service area is Fargo,ND only.
+
+**+** CenturyLink Service area includes the following cities in North Dakota: Bismarck, Dickinson, Fargo, Grand Forks, Jamestown, and West Fargo.
 
 ### Monitored Services
 
