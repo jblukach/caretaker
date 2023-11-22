@@ -22,7 +22,7 @@ def handler(event, context):
     h = CensysHosts()
 
     query = h.search(
-        '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530"}) and services.service_name=`'+service+'`',
+        '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530","400439","15267","21730"}) and services.service_name=`'+service+'`',
         per_page = 100,
         pages = 20,
         fields = [

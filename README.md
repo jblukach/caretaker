@@ -14,8 +14,10 @@ Every Monday at 10 AM UTC, a.k.a. 5 AM CT, the Internet addresses for the Broadb
 - 14090 - North Dakota Telephone Company
 - 14511 - Polar Communications
 - 14543 - SRT Communications, Inc.
+- 15267 - 702 Communications
 - 18780 - Reservation Telephone Coop.
 - 19530 - State of North Dakota, ITD
+- 21730 - Halstad Telephone Company
 - 26794 - Dakota Carrier Network
 - 27539 - West River Telecommunications Cooperative
 - 29744 - United Telephone Mutual Aid Corporation
@@ -24,8 +26,9 @@ Every Monday at 10 AM UTC, a.k.a. 5 AM CT, the Internet addresses for the Broadb
 - 33339 - Nemont Telecommunications
 - 36374 - Stellar Association, LLC
 - 63414 - Dakota Central Telecommunications Cooperative
+- 400439 - Consolidated Telecommunications
 
-It results in **418,048** IPv4 addresses and ten /32 subnets of IPv6 addresses to monitor for reputation.
+It results in **504,576** IPv4 addresses and **thirteen** /32 or /33 subnets of IPv6 addresses to monitor for reputation.
 
 A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 18,446,744,073,709,551,616 addresses, making a vast number. IPv6 addresses get converted to integers to determine if they fall into any of the monitored ranges.
 

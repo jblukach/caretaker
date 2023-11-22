@@ -41,6 +41,9 @@ def handler(event, context):
     asns.append('33339') # Nemont Telecommunications
     asns.append('36374') # Red River Communications
     asns.append('19530') # State of North Dakota
+    asns.append('400439') # Consolidated Telcom
+    asns.append('15267') # 702 Communications
+    asns.append('21730') # Halstad Telephone Company
 
     for asn in asns:
 
