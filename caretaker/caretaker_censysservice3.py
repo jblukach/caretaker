@@ -18,7 +18,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-class ServicestwoStack(Stack):
+class CaretakerCensysService3(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -60,19 +60,19 @@ class ServicestwoStack(Stack):
 
         error = _lambda.Function.from_function_arn(
             self, 'error',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-error'
+            'arn:aws:lambda:'+region+':'+account+':function:shipits-error'
         )
 
         timeout = _lambda.Function.from_function_arn(
             self, 'timeout',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-timeout'
+            'arn:aws:lambda:'+region+':'+account+':function:shipits-timeout'
         )
 
     ### IAM ###
 
         role = _iam.Role(
             self, 'role',
-            role_name = 'service2',
+            role_name = 'censysservice3',
             assumed_by = _iam.ServicePrincipal(
                 'lambda.amazonaws.com'
             )
@@ -112,7 +112,7 @@ class ServicestwoStack(Stack):
             service = _lambda.Function(
                 self, 'censys'+search,
                 runtime = _lambda.Runtime.PYTHON_3_11,
-                code = _lambda.Code.from_asset('service'),
+                code = _lambda.Code.from_asset('censys/service'),
                 timeout = Duration.seconds(900),
                 handler = 'service.handler',
                 environment = dict(

@@ -18,7 +18,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-class ServicesStack(Stack):
+class CaretakerCensysService1(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -60,19 +60,19 @@ class ServicesStack(Stack):
 
         error = _lambda.Function.from_function_arn(
             self, 'error',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-error'
+            'arn:aws:lambda:'+region+':'+account+':function:shipittoo-error'
         )
 
         timeout = _lambda.Function.from_function_arn(
             self, 'timeout',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-timeout'
+            'arn:aws:lambda:'+region+':'+account+':function:shipittoo-timeout'
         )
 
     ### IAM ###
 
         role = _iam.Role(
             self, 'role',
-            role_name = 'service',
+            role_name = 'censysservice1',
             assumed_by = _iam.ServicePrincipal(
                 'lambda.amazonaws.com'
             )
@@ -129,7 +129,7 @@ class ServicesStack(Stack):
             service = _lambda.Function(
                 self, 'censys'+search,
                 runtime = _lambda.Runtime.PYTHON_3_11,
-                code = _lambda.Code.from_asset('service'),
+                code = _lambda.Code.from_asset('censys/service'),
                 timeout = Duration.seconds(900),
                 handler = 'service.handler',
                 environment = dict(
@@ -153,19 +153,19 @@ class ServicesStack(Stack):
                 removal_policy = RemovalPolicy.DESTROY
             )
 
-            #sub = _logs.SubscriptionFilter(
-            #    self, 'censyssub'+search,
-            #    log_group = logs,
-            #    destination = _destinations.LambdaDestination(error),
-            #    filter_pattern = _logs.FilterPattern.all_terms('ERROR')
-            #)
+            sub = _logs.SubscriptionFilter(
+                self, 'censyssub'+search,
+                log_group = logs,
+                destination = _destinations.LambdaDestination(error),
+                filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+            )
 
-            #time = _logs.SubscriptionFilter(
-            #    self, 'censystime'+search,
-            #    log_group = logs,
-            #    destination = _destinations.LambdaDestination(timeout),
-            #    filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
-            #)
+            time = _logs.SubscriptionFilter(
+                self, 'censystime'+search,
+                log_group = logs,
+                destination = _destinations.LambdaDestination(timeout),
+                filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+            )
 
             event = _events.Rule(
                 self, 'censysevent'+search,

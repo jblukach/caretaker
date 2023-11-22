@@ -9,6 +9,9 @@ from caretaker.caretaker_binarydefense import CaretakerBinaryDefense
 from caretaker.caretaker_blocklist import CaretakerBlockList
 from caretaker.caretaker_c2intelfeeds import CaretakerC2IntelFeeds
 from caretaker.caretaker_c2tracker import CaretakerC2Tracker
+from caretaker.caretaker_censysservice1 import CaretakerCensysService1
+from caretaker.caretaker_censysservice2 import CaretakerCensysService2
+from caretaker.caretaker_censysservice3 import CaretakerCensysService3
 from caretaker.caretaker_cinsscore import CaretakerCinsScore
 from caretaker.caretaker_cybercure import CaretakerCyberCure
 from caretaker.caretaker_digitalside import CaretakerDigitalSide
@@ -88,6 +91,39 @@ CaretakerC2IntelFeeds(
 
 CaretakerC2Tracker(
     app, 'CaretakerC2Tracker',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerCensysService1(
+    app, 'CaretakerCensysService1',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerCensysService2(
+    app, 'CaretakerCensysService2',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerCensysService3(
+    app, 'CaretakerCensysService3',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'
