@@ -21,14 +21,27 @@ def handler(event, context):
 
     h = CensysHosts()
 
-    query = h.search(
-        '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530","400439","15267","21730"}) and services.service_name=`'+service+'`',
-        per_page = 100,
-        pages = 20,
-        fields = [
-            'ip'
-        ]
-    )
+    if service != 'CWMP' and service != 'SNMP':
+
+        query = h.search(
+            '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530","400439","15267","21730","12042","11232"}) and services.service_name=`'+service+'`',
+            per_page = 100,
+            pages = 20,
+            fields = [
+                'ip'
+            ]
+        )
+
+    else:
+
+        query = h.search(
+            '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530","400439","15267","21730","12042"}) and services.service_name=`'+service+'`',
+            per_page = 100,
+            pages = 20,
+            fields = [
+                'ip'
+            ]
+        )
 
     dynamodb = boto3.resource('dynamodb')
     verify = dynamodb.Table('verify')
@@ -38,6 +51,28 @@ def handler(event, context):
     epoch = int((now - orig).total_seconds() * 1000.0)
     seen = json.dumps(now, default=dateconverter)
     seen = seen.replace('"','')
+
+    for page in query:
+        for address in page:
+            verify.put_item(
+                Item = {
+                    'pk': 'IP#',
+                    'sk': 'IP#'+str(address['ip'])+'#SOURCE#'+service+'-censys.io',
+                    'ip': str(address['ip']),
+                    'source': service+'-censys.io',
+                    'last': seen,
+                    'epoch': epoch
+                }
+            )
+
+    query = h.search(
+        '(((location.province="North Dakota")) and autonomous_system.asn: {"209","11492"}) and services.service_name=`'+service+'`',
+        per_page = 100,
+        pages = 20,
+        fields = [
+            'ip'
+        ]
+    )
 
     for page in query:
         for address in page:

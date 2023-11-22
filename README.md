@@ -9,8 +9,11 @@ Every Monday at 10 AM UTC, a.k.a. 5 AM CT, the Internet addresses for the Broadb
 - https://ndit.nd.gov
 
 ### Autonomous System Numbers (ASN)
-
+- 209 - CenturyLink Communications, LLC **+**
 - 11138 - BEK Communications Cooperative
+- 11232 - Midcontinent Communications
+- 11492 - Sparklight a.k.a. Cable One, Inc. **+**
+- 12042 - Consolidated Communications, Inc.
 - 14090 - North Dakota Telephone Company
 - 14511 - Polar Communications
 - 14543 - SRT Communications, Inc.
@@ -28,9 +31,13 @@ Every Monday at 10 AM UTC, a.k.a. 5 AM CT, the Internet addresses for the Broadb
 - 63414 - Dakota Central Telecommunications Cooperative
 - 400439 - Consolidated Telecommunications
 
-It results in **504,576** IPv4 addresses and **thirteen** /32 or /33 subnets of IPv6 addresses to monitor for reputation.
+It results in **1,424,896** IPv4 addresses and **33** IPv6 address allocations to monitor for reputation.
 
 A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 18,446,744,073,709,551,616 addresses, making a vast number. IPv6 addresses get converted to integers to determine if they fall into any of the monitored ranges.
+
+**+** Sparklight service area is Fargo,ND only.
+
+**+** CenturyLink Service area includes the following cities in North Dakota: Bismarck, Dickinson, Fargo, Grand Forks, Jamestown, and West Fargo.
 
 ### Misconfiguration
 
@@ -45,7 +52,7 @@ Thank you to **Censys** for providing research access that makes this possible!
 |     |     |     |     |
 |:---:|:---:|:---:|:---:|
 | ACTIVEMQ | AMQP | BACNET |COAP |
-| COBALT_STRIKE | CWMP | DARKGATE | DHCPDISCOVER |
+| COBALT_STRIKE | CWMP **++** | DARKGATE | DHCPDISCOVER |
 | DNP3 | ELASTICSEARCH | EPMD | ETHEREUM |
 | FOX | FTP | IMAP | IPMI |
 | IPP | KRPC | KUBERNETES | LDAP |
@@ -55,11 +62,13 @@ Thank you to **Censys** for providing research access that makes this possible!
 | POP3 | POSTGRES | PPTP | PROMETHEUS |
 | REDIS | ROCKETMQ | RDP | RTSP |
 | S7 | SCCM | SIP | SKINNY |
-| SMB | SNMP | SSDP |TEAM_VIEWER |
+| SMB | SNMP **++** | SSDP |TEAM_VIEWER |
 | TELNET | TFTP | TPLINK_KASA | UPNP |
 | VNC | X11 | ZEROMQ | |
 
 - https://search.censys.io/search/definitions
+
+**++** CWMP and SNMP prevalence required exclusion from Midcontinent results.
 
 ### Reputation
 
