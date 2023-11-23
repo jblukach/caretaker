@@ -31,7 +31,7 @@ Every Monday at 10 AM UTC, a.k.a. 5 AM CT, the Internet addresses for the Broadb
 - 63414 - Dakota Central Telecommunications Cooperative
 - 400439 - Consolidated Telecommunications
 
-It results in **1,424,896** IPv4 addresses and **33** IPv6 address allocations to monitor for reputation.
+It results in **1,424,896** IPv4 addresses and **33** IPv6 cidr allocations to monitor for reputation.
 
 A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 18,446,744,073,709,551,616 addresses, making a vast number. IPv6 addresses get converted to integers to determine if they fall into any of the monitored ranges.
 
