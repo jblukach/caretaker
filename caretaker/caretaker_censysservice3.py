@@ -121,7 +121,7 @@ class CaretakerCensysService3(Stack):
                     CENSYS_API_SECRET = '-',
                     CENSYS_SERVICE = search
                 ),
-                memory_size = 512,
+                memory_size = 1024,
                 role = role,
                 layers = [
                     censys,

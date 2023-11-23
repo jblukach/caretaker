@@ -112,7 +112,7 @@ class CaretakerC2IntelFeeds(Stack):
                 FEED_TABLE = 'feed',
                 VERIFY_TABLE = 'verify'
             ),
-            memory_size = 512,
+            memory_size = 1024,
             role = role,
             layers = [
                 getpublicip,

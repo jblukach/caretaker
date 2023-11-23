@@ -44,6 +44,11 @@ class CaretakerDistillery(Stack):
 
     ### LAMBDA LAYERS ###
 
+        censys = _lambda.LayerVersion.from_layer_version_arn(
+            self, 'censys',
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:censys:1'
+        )
+
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:9'
@@ -134,7 +139,8 @@ class CaretakerDistillery(Stack):
                 actions = [
                     'dynamodb:DeleteItem',
                     'dynamodb:PutItem',
-                    'dynamodb:Query'
+                    'dynamodb:Query',
+                    'ssm:GetParameter'
                 ],
                 resources = [
                     '*'
@@ -196,4 +202,60 @@ class CaretakerDistillery(Stack):
 
         event.add_target(
             _targets.LambdaFunction(distillery)
+        )
+
+    ### LAMBDA ###
+
+        cidr = _lambda.Function(
+            self, 'cidr',
+            runtime = _lambda.Runtime.PYTHON_3_11,
+            code = _lambda.Code.from_asset('censys/cidr'),
+            timeout = Duration.seconds(900),
+            handler = 'cidr.handler',
+            environment = dict(
+                AWS_ACCOUNT = account,
+                DYNAMODB_TABLE = table.table_name
+            ),
+            memory_size = 512,
+            role = role,
+            layers = [
+                censys,
+                getpublicip
+            ]
+        )
+
+        cidrlogs = _logs.LogGroup(
+            self, 'cidrlogs',
+            log_group_name = '/aws/lambda/'+cidr.function_name,
+            retention = _logs.RetentionDays.ONE_MONTH,
+            removal_policy = RemovalPolicy.DESTROY
+        )
+
+        cidrsub = _logs.SubscriptionFilter(
+            self, 'cidrsub',
+            log_group = cidrlogs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
+
+        cidrtime = _logs.SubscriptionFilter(
+            self, 'cidrtime',
+            log_group = cidrlogs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
+    
+        cidrevent = _events.Rule(
+            self, 'cidrevent',
+            schedule = _events.Schedule.cron(
+                minute = '10',
+                hour = '10',
+                month = '*',
+                week_day = 'MON',
+                year = '*'
+            )
+        )
+
+        cidrevent.add_target(
+            _targets.LambdaFunction(cidr)
         )
