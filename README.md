@@ -47,9 +47,9 @@ Thank you to **Censys** for providing research access that makes this possible!
 
 - https://search.censys.io
 
-**+** Sparklight service area is Fargo,ND only.
-
 **+** CenturyLink service area includes the following cities in North Dakota: Bismarck, Dickinson, Fargo, Grand Forks, Jamestown, and West Fargo.
+
+**+** Sparklight service area is Fargo,ND only.
 
 ### Monitored Services
 
