@@ -8,6 +8,8 @@ Every Monday at 10 AM UTC, a.k.a. 5 AM CT, the Internet addresses for the Broadb
 - https://broadbandnd.com
 - https://ndit.nd.gov
 
+I added additional Internet Service Providers (ISPs) to guarantee coverage of the state. :earth_americas:
+
 ### Autonomous System Numbers (ASN)
 - 209 - CenturyLink Communications, LLC **+**
 - 11138 - BEK Communications Cooperative
@@ -47,7 +49,7 @@ Thank you to **Censys** for providing research access that makes this possible!
 
 **+** Sparklight service area is Fargo,ND only.
 
-**+** CenturyLink Service area includes the following cities in North Dakota: Bismarck, Dickinson, Fargo, Grand Forks, Jamestown, and West Fargo.
+**+** CenturyLink service area includes the following cities in North Dakota: Bismarck, Dickinson, Fargo, Grand Forks, Jamestown, and West Fargo.
 
 ### Monitored Services
 
