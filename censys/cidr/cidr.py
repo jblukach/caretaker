@@ -25,7 +25,7 @@ def handler(event, context):
     query = h.search(
         '(((location.province="North Dakota")) and autonomous_system.asn: {"11492"}) and services.service_name=`CWMP`',
         per_page = 100,
-        pages = 20,
+        pages = 50,
         fields = [
             'autonomous_system.bgp_prefix'
         ]
@@ -67,7 +67,7 @@ def handler(event, context):
     query = h.search(
         '(((location.province="North Dakota")) and autonomous_system.asn: {"209"}) and services.service_name=`UNKNOWN`',
         per_page = 100,
-        pages = 20,
+        pages = 50,
         fields = [
             'autonomous_system.bgp_prefix'
         ]

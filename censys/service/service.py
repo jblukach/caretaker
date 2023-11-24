@@ -26,7 +26,7 @@ def handler(event, context):
         query = h.search(
             '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530","400439","15267","21730","12042","11232"}) and services.service_name=`'+service+'`',
             per_page = 100,
-            pages = 20,
+            pages = 50,
             fields = [
                 'ip'
             ]
@@ -37,7 +37,7 @@ def handler(event, context):
         query = h.search(
             '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530","400439","15267","21730","12042"}) and services.service_name=`'+service+'`',
             per_page = 100,
-            pages = 20,
+            pages = 50,
             fields = [
                 'ip'
             ]
@@ -68,7 +68,7 @@ def handler(event, context):
     query = h.search(
         '(((location.province="North Dakota")) and autonomous_system.asn: {"209","11492"}) and services.service_name=`'+service+'`',
         per_page = 100,
-        pages = 20,
+        pages = 50,
         fields = [
             'ip'
         ]
