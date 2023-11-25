@@ -40,7 +40,8 @@ def handler(event, context):
     ndlist = list(set(ndlist))
     print('ND: '+str(len(ndlist)))
 
-    response = requests.get('https://blocklist.greensnow.co/greensnow.txt')
+    headers = {'User-Agent': 'Project Caretaker Client/1.0'}
+    response = requests.get('https://blocklist.greensnow.co/greensnow.txt', headers=headers)
     data = response.text
 
     now = datetime.datetime.now()

@@ -2,6 +2,8 @@ import boto3
 import json
 import os
 import requests
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 
 def handler(event, context):
 
@@ -17,7 +19,23 @@ def handler(event, context):
         except:
             pass
 
-        response = requests.get('https://geo.tundralabs.net/'+ip)
+        retry_strategy = Retry(
+            total = 3,
+            status_forcelist = [429, 500, 502, 503, 504],
+            backoff_factor = 1
+        )
+
+        adapter = HTTPAdapter(
+            max_retries = retry_strategy
+        )
+
+        http = requests.Session()
+        http.mount("https://", adapter)
+
+        response = http.get(
+            'https://geo.tundralabs.net/'+ip
+        )
+
         data = response.text
         data = json.loads(data)
 

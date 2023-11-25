@@ -92,13 +92,14 @@ class CaretakerVerify(Stack):
             function_name = 'verify',
             runtime = _lambda.Runtime.PYTHON_3_11,
             code = _lambda.Code.from_asset('verify'),
-            timeout = Duration.seconds(4),
+            timeout = Duration.seconds(7),
             handler = 'verify.handler',
             environment = dict(
                 AWS_ACCOUNT = account,
                 VERIFY_TABLE = 'verify'
             ),
             memory_size = 128,
+            retry_attempts = 0,
             role = role,
             layers = [
                 getpublicip
