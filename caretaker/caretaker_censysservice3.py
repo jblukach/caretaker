@@ -106,6 +106,7 @@ class CaretakerCensysService3(Stack):
         searches.append('TEAM_VIEWER')
         searches.append('TPLINK_KASA')
         searches.append('ZEROMQ')
+        searches.append('PCOM')
 
         for search in searches:
 

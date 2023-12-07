@@ -63,12 +63,12 @@ Thank you to **Censys** for providing research access that makes this possible!
 | MEMCACHED | MMS | MODBUS | MONERO_P2P |
 | MONGODB | MQTT | MSSQL | MYSQL |
 | NETBIOS | OPC_UA | ORACLE | PC_ANYWHERE |
-| POP3 | POSTGRES | PPTP | PROMETHEUS |
-| REDIS | ROCKETMQ | RDP | RTSP |
-| S7 | SCCM | SIP | SKINNY |
-| SMB | SNMP **++** | SSDP |TEAM_VIEWER |
-| TELNET | TFTP | TPLINK_KASA | UPNP |
-| VNC | X11 | ZEROMQ | |
+| PCOM | POP3 | POSTGRES | PPTP |
+| PROMETHEUS | REDIS | ROCKETMQ | RDP |
+| RTSP | S7 | SCCM | SIP |
+| SKINNY | SMB | SNMP **++** | SSDP |
+| TEAM_VIEWER | TELNET | TFTP | TPLINK_KASA |
+| UPNP | VNC | X11 | ZEROMQ |
 
 - https://search.censys.io/search/definitions
 
@@ -120,11 +120,11 @@ We don't want to tip the hand like playing cards, losing the advantage!
 
 If the website returns **gray**, it means there is no data currently available, but that does not mean there still could not be a problem. 
 
-![Project Caretaker Unknown Alert](UNKNOWN.PNG)
+![Project Caretaker Unknown Alert](images/unknown.png)
 
 When the website returns **orange**, it will explain why.
 
-![Project Caretaker Suspect Alert](SUSPECT.PNG)
+![Project Caretaker Suspect Alert](images/suspect.png)
 
 You may require additional assistance to resolve the issue outside of this project; at least the awareness to start asking questions will exist.
 
@@ -132,7 +132,7 @@ No threat feed is complete without a map to visualize the results using GeoLite2
 
 - https://map.tundralabs.org
 
-![Project Caretaker Map](MAP.PNG)
+![Project Caretaker Map](images/map.png)
 
 This product includes GeoLite2 data created by MaxMind, available from https://www.maxmind.com.
 
