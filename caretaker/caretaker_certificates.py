@@ -5,6 +5,7 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
+    aws_dynamodb as _dynamodb,
     aws_events as _events,
     aws_events_targets as _targets,
     aws_iam as _iam,
@@ -58,6 +59,11 @@ class CaretakerCertificates(Stack):
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:9'
         )
 
+        requests = _lambda.LayerVersion.from_layer_version_arn(
+            self, 'requests',
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:1'
+        )
+
     ### ERROR ###
 
         error = _lambda.Function.from_function_arn(
@@ -83,6 +89,24 @@ class CaretakerCertificates(Stack):
             versioned = False
         )
 
+    ### DATABASE ###
+
+        tlddb = _dynamodb.Table(
+            self, 'tlddb',
+            table_name = 'tld',
+            partition_key = {
+                'name': 'pk',
+                'type': _dynamodb.AttributeType.STRING
+            },
+            sort_key = {
+                'name': 'sk',
+                'type': _dynamodb.AttributeType.STRING
+            },
+            billing_mode = _dynamodb.BillingMode.PAY_PER_REQUEST,
+            removal_policy = RemovalPolicy.DESTROY,
+            point_in_time_recovery = True
+        )
+
     ### IAM ###
 
         role = _iam.Role(
@@ -102,6 +126,10 @@ class CaretakerCertificates(Stack):
         role.add_to_policy(
             _iam.PolicyStatement(
                 actions = [
+                    'dynamodb:DeleteItem',
+                    'dynamodb:PutItem',
+                    'dynamodb:Query',
+                    's3:GetObject',
                     's3:PutObject',
                     'ssm:GetParameter'
                 ],
@@ -111,7 +139,7 @@ class CaretakerCertificates(Stack):
             )
         )
 
-    ### LAMBDA ###
+    ### CERTIFICATE ###
 
         certificate = _lambda.Function(
             self, 'certificate',
@@ -165,4 +193,60 @@ class CaretakerCertificates(Stack):
 
         event.add_target(
             _targets.LambdaFunction(certificate)
+        )
+
+    ### TLD ###
+
+        tld = _lambda.Function(
+            self, 'tld',
+            runtime = _lambda.Runtime.PYTHON_3_11,
+            code = _lambda.Code.from_asset('sources/tld/iana'),
+            timeout = Duration.seconds(900),
+            handler = 'iana.handler',
+            environment = dict(
+                AWS_ACCOUNT = account,
+                TLD_TABLE = tlddb.table_name
+            ),
+            memory_size = 256,
+            role = role,
+            layers = [
+                getpublicip,
+                requests
+            ]
+        )
+
+        tldlogs = _logs.LogGroup(
+            self, 'tldlogs',
+            log_group_name = '/aws/lambda/'+tld.function_name,
+            retention = _logs.RetentionDays.ONE_MONTH,
+            removal_policy = RemovalPolicy.DESTROY
+        )
+
+        tldsub = _logs.SubscriptionFilter(
+            self, 'tldsub',
+            log_group = tldlogs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
+
+        tldtime = _logs.SubscriptionFilter(
+            self, 'tldtime',
+            log_group = tldlogs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
+
+        tldevent = _events.Rule(
+            self, 'tldevent',
+            schedule = _events.Schedule.cron(
+                minute = '0',
+                hour = '10',
+                month = '*',
+                week_day = 'MON',
+                year = '*'
+            )
+        )
+
+        tldevent.add_target(
+            _targets.LambdaFunction(tld)
         )
