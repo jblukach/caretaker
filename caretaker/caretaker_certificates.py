@@ -11,8 +11,7 @@ from aws_cdk import (
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_logs_destinations as _destinations,
-    aws_s3 as _s3
+    aws_logs_destinations as _destinations
 )
 
 from constructs import Construct
@@ -39,10 +38,6 @@ class CaretakerCertificates(Stack):
                 {"id":"AwsSolutions-IAM4","reason":"The IAM user, role, or group uses AWS managed policies."},
                 {"id":"AwsSolutions-IAM5","reason":"The IAM entity contains wildcard permissions and does not have a cdk-nag rule suppression with evidence for those permission."},
                 {"id":"AwsSolutions-L1","reason":"The non-container Lambda function is not configured to use the latest runtime version."},
-                {"id":"AwsSolutions-S1","reason":"The S3 Bucket has server access logs disabled."},
-                {"id":"AwsSolutions-S2","reason":"The S3 Bucket does not have public access restricted and blocked."},
-                {"id":"AwsSolutions-S5","reason":"The S3 static website bucket either has an open world bucket policy or does not use a CloudFront Origin Access Identity (OAI) in the bucket policy for limited getObject and/or putObject permissions."},
-                {"id":"AwsSolutions-S10","reason":"The S3 Bucket or bucket policy does not require requests to use SSL."},
                 {"id":"AwsSolutions-DDB3","reason":"The DynamoDB table does not have Point-in-time Recovery enabled."},
             ]
         )
@@ -74,19 +69,6 @@ class CaretakerCertificates(Stack):
         timeout = _lambda.Function.from_function_arn(
             self, 'timeout',
             'arn:aws:lambda:'+region+':'+account+':function:shipit-timeout'
-        )
-
-    ### BUCKET ###
-
-        bucket = _s3.Bucket(
-            self, 'bucket',
-            bucket_name = 'certificates.tundralabs.org',
-            encryption = _s3.BucketEncryption.S3_MANAGED,
-            block_public_access = _s3.BlockPublicAccess.BLOCK_ALL,
-            removal_policy = RemovalPolicy.DESTROY,
-            auto_delete_objects = True,
-            enforce_ssl = True,
-            versioned = False
         )
 
     ### DATABASE ###
@@ -149,7 +131,7 @@ class CaretakerCertificates(Stack):
             handler = 'certificate.handler',
             environment = dict(
                 AWS_ACCOUNT = account,
-                S3_BUCKET = bucket.bucket_name
+                S3_BUCKET = 'certificates.tundralabs.org'
             ),
             memory_size = 2048,
             role = role,
