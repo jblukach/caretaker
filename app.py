@@ -12,6 +12,7 @@ from caretaker.caretaker_c2tracker import CaretakerC2Tracker
 from caretaker.caretaker_censysservice1 import CaretakerCensysService1
 from caretaker.caretaker_censysservice2 import CaretakerCensysService2
 from caretaker.caretaker_censysservice3 import CaretakerCensysService3
+from caretaker.caretaker_certificates import CaretakerCertificates
 from caretaker.caretaker_cinsscore import CaretakerCinsScore
 from caretaker.caretaker_cybercure import CaretakerCyberCure
 from caretaker.caretaker_digitalside import CaretakerDigitalSide
@@ -124,6 +125,17 @@ CaretakerCensysService2(
 
 CaretakerCensysService3(
     app, 'CaretakerCensysService3',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerCertificates(
+    app, 'CaretakerCertificates',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'

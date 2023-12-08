@@ -39,11 +39,23 @@ CenturyLink tripled the volume! :scream:
 
 A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 18,446,744,073,709,551,616 addresses, making a vast number. IPv6 addresses get converted to integers to determine if they fall into any of the monitored ranges.
 
+### Brand Monitoring
+
+Every Monday at 10 AM UTC, a.k.a. 5 AM CT, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect domain names for brand monitoring.
+
+Thank you to **Censys** for providing research access that makes this possible!
+
+- https://search.censys.io
+
+Certificate Transparency (CT) is a security standard for monitoring and auditing the issuance of digital certificates. Chrome, Firefox, Safari, etc., web browsers require certificates to be listed to be trusted when surfing the Internet.
+
+- https://certificate.transparency.dev
+
 ### Misconfiguration
 
 Every day starting at 10:00 AM UTC, a.k.a. 5:00 AM CT, queries run against **Censys** for misconfigurations that expose insecure services to the Internet. 
 
-Thank you to **Censys** for providing research access that makes this possible!
+Thanks again to **Censys** for providing research access that makes this possible!
 
 - https://search.censys.io
 
