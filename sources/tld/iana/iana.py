@@ -15,7 +15,7 @@ def handler(event, context):
         if line.startswith('#'):
             continue
         else:
-            tlds.append('.'+line.lower())
+            tlds.append(line.lower())
     
     print('TLDs: '+str(len(tlds)))
 

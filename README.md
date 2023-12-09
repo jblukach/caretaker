@@ -51,6 +51,10 @@ Certificate Transparency (CT) is a security standard for monitoring and auditing
 
 - https://certificate.transparency.dev
 
+Every Monday at 10:15 AM UTC, a.k.a. 5:15 AM CT, the domain names from the certificates are normalized to guarantee valid top-level domains with wild cards removed.
+
+- https://www.iana.org
+
 ### Misconfiguration
 
 Every day starting at 10:00 AM UTC, a.k.a. 5:00 AM CT, queries run against **Censys** for misconfigurations that expose insecure services to the Internet. 

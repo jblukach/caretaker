@@ -177,6 +177,62 @@ class CaretakerCertificates(Stack):
             _targets.LambdaFunction(certificate)
         )
 
+    ### DOMAIN ###
+
+        domain = _lambda.Function(
+            self, 'domain',
+            runtime = _lambda.Runtime.PYTHON_3_11,
+            code = _lambda.Code.from_asset('censys/domain'),
+            timeout = Duration.seconds(900),
+            handler = 'domain.handler',
+            environment = dict(
+                AWS_ACCOUNT = account,
+                S3_BUCKET = 'certificates.tundralabs.org',
+                TLD_TABLE = tlddb.table_name
+            ),
+            memory_size = 512,
+            role = role,
+            layers = [
+                getpublicip
+            ]
+        )
+
+        domainlogs = _logs.LogGroup(
+            self, 'domainlogs',
+            log_group_name = '/aws/lambda/'+domain.function_name,
+            retention = _logs.RetentionDays.ONE_MONTH,
+            removal_policy = RemovalPolicy.DESTROY
+        )
+
+        domainsub = _logs.SubscriptionFilter(
+            self, 'domainsub',
+            log_group = domainlogs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
+
+        domaintime = _logs.SubscriptionFilter(
+            self, 'domaintime',
+            log_group = domainlogs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
+
+        domainevent = _events.Rule(
+            self, 'domainevent',
+            schedule = _events.Schedule.cron(
+                minute = '15',
+                hour = '10',
+                month = '*',
+                week_day = 'MON',
+                year = '*'
+            )
+        )
+
+        domainevent.add_target(
+            _targets.LambdaFunction(domain)
+        )
+
     ### TLD ###
 
         tld = _lambda.Function(
