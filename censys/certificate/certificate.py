@@ -25,7 +25,14 @@ def handler(event, context):
         pages = 50,
         fields = [
             'names',
-            'fingerprint_sha1'
+            'labels',
+            'modified_at',
+            'fingerprint_sha1',
+            'fingerprint_sha256',
+            'parsed.issuer.organization',
+            'parsed.serial_number',
+            'parsed.validity_period.not_before',
+            'parsed.validity_period.not_after'
         ]
     )
 
@@ -41,7 +48,14 @@ def handler(event, context):
         pages = 300,
         fields = [
             'names',
-            'fingerprint_sha1'
+            'labels',
+            'modified_at',
+            'fingerprint_sha1',
+            'fingerprint_sha256',
+            'parsed.issuer.organization',
+            'parsed.serial_number',
+            'parsed.validity_period.not_before',
+            'parsed.validity_period.not_after'
         ]
     )
 
