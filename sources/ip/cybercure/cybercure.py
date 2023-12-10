@@ -40,7 +40,8 @@ def handler(event, context):
     ndlist = list(set(ndlist))
     print('ND: '+str(len(ndlist)))
 
-    response = requests.get('https://api.cybercure.ai/feed/get_ips?type=csv')
+    headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
+    response = requests.get('https://api.cybercure.ai/feed/get_ips?type=csv', headers=headers)
     data = response.text
 
     now = datetime.datetime.now()

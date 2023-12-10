@@ -98,6 +98,7 @@ If there are others that you would like added, please open an issue on the repos
 
 I appreciate all the work that goes into maintaining these lists - thank you!
 
+- https://cert.pl
 - https://cinsscore.com
 - https://ellio.tech
 - https://feodotracker.abuse.ch
@@ -107,12 +108,17 @@ I appreciate all the work that goes into maintaining these lists - thank you!
 - https://greensnow.co
 - https://jamesbrine.com.au
 - https://mirai.security.gives
+- https://openphish.com
 - https://osint.digitalside.it
 - https://otx.alienvault.com
+- https://phishing.army
+- https://phishtank.com
 - https://report.cs.rutgers.edu
 - https://securityscorecard.com
 - https://sslbl.abuse.ch
 - https://talosintelligence.com
+- https://urlabuse.com
+- https://zonefiles.io
 - https://www.binarydefense.com
 - https://www.blocklist.de
 - https://www.cybercure.ai

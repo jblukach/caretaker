@@ -51,7 +51,8 @@ def handler(event, context):
 
         time.sleep(1)
 
-        r = requests.get('https://api.bgpview.io/asn/'+asn+'/prefixes')
+        headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
+        r = requests.get('https://api.bgpview.io/asn/'+asn+'/prefixes', headers=headers)
         print('AS'+asn+' Status Code: '+str(r.status_code))
         output = r.json()
 

@@ -14,7 +14,7 @@ def handler(event, context):
     feed = dynamodb.Table(os.environ['FEED_TABLE'])
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
-    response = requests.get('https://api.cybercure.ai/feed/get_url?type=csv', headers=headers)
+    response = requests.get('https://zonefiles.io/f/compromised/domains/live/compromised_domains_live.txt', headers=headers)
     data = response.text
 
     now = datetime.datetime.now()
@@ -26,14 +26,10 @@ def handler(event, context):
     domains = []
 
     for line in data.splitlines():
-        try:
-            urls = line.split(',')
-            for url in urls:
-                out = url.split('/')
-                domains.append(out[2])
-                print(out[2])
-        except:
-            continue   
+        if line.startswith('#'):
+            continue
+        else:
+            domains.append(line)
 
     domains = list(set(domains))
     print('Domains: '+str(len(domains)))
@@ -57,9 +53,9 @@ def handler(event, context):
         feed.put_item(
             Item = {
                 'pk': 'DNS#',
-                'sk': 'DNS#'+str(match)+'#SOURCE#cybercure.ai',
+                'sk': 'DNS#'+str(match)+'#SOURCE#zonefiles.io',
                 'dns': str(match),
-                'source': 'cybercure.ai',
+                'source': 'zonefiles.io',
                 'last': seen,
                 'epoch': epoch
             }
@@ -67,5 +63,5 @@ def handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps('Check Cyber Cure Blocklist')
+        'body': json.dumps('Check Zone Files Blocklist')
     }

@@ -13,7 +13,8 @@ def handler(event, context):
     dynamodb = boto3.resource('dynamodb')
     feed = dynamodb.Table(os.environ['FEED_TABLE'])
 
-    response = requests.get('https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt')
+    headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
+    response = requests.get('https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt', headers=headers)
     data = response.text
 
     now = datetime.datetime.now()

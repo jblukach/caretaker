@@ -40,7 +40,7 @@ def handler(event, context):
     ndlist = list(set(ndlist))
     print('ND: '+str(len(ndlist)))
 
-    headers = {'User-Agent': 'Project Caretaker Client/1.0'}
+    headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
     response = requests.get('http://www.talosintelligence.com/documents/ip-blacklist', headers=headers)
     data = response.text
 

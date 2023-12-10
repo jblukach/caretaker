@@ -41,7 +41,7 @@ def handler(event, context):
     print('ND: '+str(len(ndlist)))
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
-    response = requests.get('https://reputation.alienvault.com/reputation.data', headers=headers)
+    response = requests.get('https://zonefiles.io/f/compromised/ip/live/compromised_ip_live.txt', headers=headers)
     data = response.text
 
     now = datetime.datetime.now()
@@ -52,10 +52,9 @@ def handler(event, context):
 
     for line in data.splitlines():
 
-        value = line.split('#')
-        line = value[0]
-
-        if ipaddress.ip_network(line).version == 4:
+        if line.startswith('#'):
+            continue
+        elif ipaddress.ip_network(line).version == 4:
             iplist.append(line)
         else:
             intip = int(ipaddress.IPv6Address(line))
@@ -98,9 +97,9 @@ def handler(event, context):
                 feed.put_item(
                     Item = {
                         'pk': 'IP#',
-                        'sk': 'IP#'+str(line)+'#SOURCE#alienvault.com',
+                        'sk': 'IP#'+str(line)+'#SOURCE#zonefiles.io',
                         'ip': str(line),
-                        'source': 'alienvault.com',
+                        'source': 'zonefiles.io',
                         'last': seen,
                         'epoch': epoch
                     }
@@ -108,9 +107,9 @@ def handler(event, context):
                 verify.put_item(
                     Item = {
                         'pk': 'IP#',
-                        'sk': 'IP#'+str(line)+'#SOURCE#alienvault.com',
+                        'sk': 'IP#'+str(line)+'#SOURCE#zonefiles.io',
                         'ip': str(line),
-                        'source': 'alienvault.com',
+                        'source': 'zonefiles.io',
                         'last': seen,
                         'epoch': epoch
                     }
@@ -126,9 +125,9 @@ def handler(event, context):
         feed.put_item(
             Item = {
                 'pk': 'IP#',
-                'sk': 'IP#'+str(match)+'#SOURCE#alienvault.com',
+                'sk': 'IP#'+str(match)+'#SOURCE#zonefiles.io',
                 'ip': str(match),
-                'source': 'alienvault.com',
+                'source': 'zonefiles.io',
                 'last': seen,
                 'epoch': epoch
             }
@@ -136,9 +135,9 @@ def handler(event, context):
         verify.put_item(
             Item = {
                 'pk': 'IP#',
-                'sk': 'IP#'+str(match)+'#SOURCE#alienvault.com',
+                'sk': 'IP#'+str(match)+'#SOURCE#zonefiles.io',
                 'ip': str(match),
-                'source': 'alienvault.com',
+                'source': 'zonefiles.io',
                 'last': seen,
                 'epoch': epoch
             }
@@ -146,5 +145,5 @@ def handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps('Check Alien Vault Reputation')
+        'body': json.dumps('Check Zone Files Reputation')
     }

@@ -41,10 +41,12 @@ def handler(event, context):
     ndlist = list(set(ndlist))
     print('ND: '+str(len(ndlist)))
 
-    response = requests.get('https://lists.blocklist.de/lists/all.txt.md5')
+    headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
+    response = requests.get('https://lists.blocklist.de/lists/all.txt.md5', headers=headers)
     md5 = response.text
 
-    response = requests.get('https://lists.blocklist.de/lists/all.txt')
+    headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
+    response = requests.get('https://lists.blocklist.de/lists/all.txt', headers=headers)
     data = response.text
 
     now = datetime.datetime.now()

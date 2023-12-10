@@ -32,9 +32,8 @@ def handler(event, context):
         http = requests.Session()
         http.mount("https://", adapter)
 
-        response = http.get(
-            'https://geo.tundralabs.net/'+ip
-        )
+        headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
+        response = http.get('https://geo.tundralabs.net/'+ip, headers=headers)
 
         data = response.text
         data = json.loads(data)

@@ -13,7 +13,8 @@ def handler(event, context):
     dynamodb = boto3.resource('dynamodb')
     feed = dynamodb.Table(os.environ['FEED_TABLE'])
 
-    response = requests.get('https://raw.githubusercontent.com/drb-ra/C2IntelFeeds/master/feeds/domainC2s.csv')
+    headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
+    response = requests.get('https://raw.githubusercontent.com/drb-ra/C2IntelFeeds/master/feeds/domainC2s.csv', headers=headers)
     data = response.text
 
     now = datetime.datetime.now()

@@ -13,6 +13,7 @@ from caretaker.caretaker_censysservice1 import CaretakerCensysService1
 from caretaker.caretaker_censysservice2 import CaretakerCensysService2
 from caretaker.caretaker_censysservice3 import CaretakerCensysService3
 from caretaker.caretaker_certificates import CaretakerCertificates
+from caretaker.caretaker_certpl import CaretakerCertPl
 from caretaker.caretaker_cinsscore import CaretakerCinsScore
 from caretaker.caretaker_cybercure import CaretakerCyberCure
 from caretaker.caretaker_digitalside import CaretakerDigitalSide
@@ -23,6 +24,9 @@ from caretaker.caretaker_ipsum import CaretakerIPSum
 from caretaker.caretaker_jamesbrine import CaretakerJamesBrine
 from caretaker.caretaker_miraisecurity import CaretakerMiraiSecurity
 from caretaker.caretaker_nubinetwork import CaretakerNubiNetwork
+from caretaker.caretaker_openphish import CaretakerOpenPhish
+from caretaker.caretaker_phishingarmy import CaretakerPhishingArmy
+from caretaker.caretaker_phishtank import CaretakerPhishTank
 from caretaker.caretaker_proofpoint import CaretakerProofPoint
 from caretaker.caretaker_rescure import CaretakerRescure
 from caretaker.caretaker_rutgers import CaretakerRutgers
@@ -31,7 +35,9 @@ from caretaker.caretaker_spamhaus import CaretakerSpamhaus
 from caretaker.caretaker_stack import CaretakerStack
 from caretaker.caretaker_talosintelligence import CaretakerTalosIntelligence
 from caretaker.caretaker_tor import CaretakerTor
+from caretaker.caretaker_urlabuse import CaretakerUrlAbuse
 from caretaker.caretaker_verify import CaretakerVerify
+from caretaker.caretaker_zonefiles import CaretakerZoneFiles
 
 app = cdk.App()
 
@@ -136,6 +142,17 @@ CaretakerCensysService3(
 
 CaretakerCertificates(
     app, 'CaretakerCertificates',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerCertPl(
+    app, 'CaretakerCertPl',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'
@@ -255,6 +272,39 @@ CaretakerNubiNetwork(
     )
 )
 
+CaretakerOpenPhish(
+    app, 'CaretakerOpenPhish',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerPhishingArmy(
+    app, 'CaretakerPhishingArmy',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerPhishTank(
+    app, 'CaretakerPhishTank',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
 CaretakerProofPoint(
     app, 'CaretakerProofPoint',
     env = cdk.Environment(
@@ -343,8 +393,30 @@ CaretakerTor(
     )
 )
 
+CaretakerUrlAbuse(
+    app, 'CaretakerUrlAbuse',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
 CaretakerVerify(
     app, 'CaretakerVerify',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerZoneFiles(
+    app, 'CaretakerZoneFiles',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'
