@@ -90,7 +90,8 @@ class CaretakerRescure(Stack):
             _iam.PolicyStatement(
                 actions = [
                     'dynamodb:PutItem',
-                    'dynamodb:Query'
+                    'dynamodb:Query',
+                    's3:GetObject'
                 ],
                 resources = [
                     '*'
@@ -156,3 +157,60 @@ class CaretakerRescure(Stack):
         event.add_target(
             _targets.LambdaFunction(rescure)
         )
+
+    ### LAMBDA ###
+
+        rescuredomain = _lambda.Function(
+            self, 'rescuredomain',
+            runtime = _lambda.Runtime.PYTHON_3_11,
+            code = _lambda.Code.from_asset('sources/dns/rescure'),
+            timeout = Duration.seconds(900),
+            handler = 'rescure.handler',
+            environment = dict(
+                AWS_ACCOUNT = account,
+                FEED_TABLE = 'feed',
+                S3_BUCKET = 'certificates.tundralabs.org'
+            ),
+            memory_size = 512,
+            role = role,
+            layers = [
+                getpublicip,
+                requests
+            ]
+        )
+
+        rescuredomainlogs = _logs.LogGroup(
+            self, 'rescuredomainlogs',
+            log_group_name = '/aws/lambda/'+rescuredomain.function_name,
+            retention = _logs.RetentionDays.ONE_MONTH,
+            removal_policy = RemovalPolicy.DESTROY
+        )
+
+        rescuredomainsub = _logs.SubscriptionFilter(
+            self, 'rescuredomainsub',
+            log_group = rescuredomainlogs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
+
+        rescuredomaintime = _logs.SubscriptionFilter(
+            self, 'rescuredomaintime',
+            log_group = rescuredomainlogs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
+
+        rescuredomainevent = _events.Rule(
+            self, 'rescuredomainevent',
+            schedule = _events.Schedule.cron(
+                minute = '30',
+                hour = '*',
+                month = '*',
+                week_day = '*',
+                year = '*'
+            )
+        )
+
+        #rescuredomainevent.add_target(
+        #    _targets.LambdaFunction(rescuredomain)
+        #)

@@ -90,7 +90,8 @@ class CaretakerDigitalSide(Stack):
             _iam.PolicyStatement(
                 actions = [
                     'dynamodb:PutItem',
-                    'dynamodb:Query'
+                    'dynamodb:Query',
+                    's3:GetObject'
                 ],
                 resources = [
                     '*'
@@ -156,3 +157,60 @@ class CaretakerDigitalSide(Stack):
         event.add_target(
             _targets.LambdaFunction(digitalside)
         )
+
+    ### LAMBDA ###
+
+        digitalsidedomain = _lambda.Function(
+            self, 'digitalsidedomain',
+            runtime = _lambda.Runtime.PYTHON_3_11,
+            code = _lambda.Code.from_asset('sources/dns/digitalside'),
+            timeout = Duration.seconds(900),
+            handler = 'digitalside.handler',
+            environment = dict(
+                AWS_ACCOUNT = account,
+                FEED_TABLE = 'feed',
+                S3_BUCKET = 'certificates.tundralabs.org'
+            ),
+            memory_size = 512,
+            role = role,
+            layers = [
+                getpublicip,
+                requests
+            ]
+        )
+
+        digitalsidedomainlogs = _logs.LogGroup(
+            self, 'digitalsidedomainlogs',
+            log_group_name = '/aws/lambda/'+digitalsidedomain.function_name,
+            retention = _logs.RetentionDays.ONE_MONTH,
+            removal_policy = RemovalPolicy.DESTROY
+        )
+
+        digitalsidedomainsub = _logs.SubscriptionFilter(
+            self, 'digitalsidedomainsub',
+            log_group = digitalsidedomainlogs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
+
+        digitalsidedomaintime = _logs.SubscriptionFilter(
+            self, 'digitalsidedomaintime',
+            log_group = digitalsidedomainlogs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
+
+        digitalsidedomainevent = _events.Rule(
+            self, 'digitalsidedomainevent',
+            schedule = _events.Schedule.cron(
+                minute = '30',
+                hour = '*',
+                month = '*',
+                week_day = '*',
+                year = '*'
+            )
+        )
+
+        #digitalsidedomainevent.add_target(
+        #    _targets.LambdaFunction(digitalsidedomain)
+        #)
