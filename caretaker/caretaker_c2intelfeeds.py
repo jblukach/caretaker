@@ -90,7 +90,8 @@ class CaretakerC2IntelFeeds(Stack):
             _iam.PolicyStatement(
                 actions = [
                     'dynamodb:PutItem',
-                    'dynamodb:Query'
+                    'dynamodb:Query',
+                    's3:GetObject'
                 ],
                 resources = [
                     '*'
@@ -155,4 +156,61 @@ class CaretakerC2IntelFeeds(Stack):
 
         event.add_target(
             _targets.LambdaFunction(c2intelfeeds)
+        )
+
+    ### LAMBDA ###
+
+        c2inteldomains = _lambda.Function(
+            self, 'c2inteldomains',
+            runtime = _lambda.Runtime.PYTHON_3_11,
+            code = _lambda.Code.from_asset('sources/dns/c2intelfeeds'),
+            timeout = Duration.seconds(900),
+            handler = 'c2intelfeeds.handler',
+            environment = dict(
+                AWS_ACCOUNT = account,
+                FEED_TABLE = 'feed',
+                S3_BUCKET = 'certificates.tundralabs.org'
+            ),
+            memory_size = 512,
+            role = role,
+            layers = [
+                getpublicip,
+                requests
+            ]
+        )
+
+        c2inteldomainslogs = _logs.LogGroup(
+            self, 'c2inteldomainslogs',
+            log_group_name = '/aws/lambda/'+c2inteldomains.function_name,
+            retention = _logs.RetentionDays.ONE_MONTH,
+            removal_policy = RemovalPolicy.DESTROY
+        )
+
+        c2inteldomainssub = _logs.SubscriptionFilter(
+            self, 'c2inteldomainssub',
+            log_group = c2inteldomainslogs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
+
+        c2inteldomainstime = _logs.SubscriptionFilter(
+            self, 'c2inteldomainstime',
+            log_group = c2inteldomainslogs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
+
+        c2inteldomainsevent = _events.Rule(
+            self, 'c2inteldomainsevent',
+            schedule = _events.Schedule.cron(
+                minute = '30',
+                hour = '*',
+                month = '*',
+                week_day = '*',
+                year = '*'
+            )
+        )
+
+        c2inteldomainsevent.add_target(
+            _targets.LambdaFunction(c2inteldomains)
         )

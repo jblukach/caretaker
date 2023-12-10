@@ -90,7 +90,8 @@ class CaretakerIPSum(Stack):
             _iam.PolicyStatement(
                 actions = [
                     'dynamodb:PutItem',
-                    'dynamodb:Query'
+                    'dynamodb:Query',
+                    's3:GetObject'
                 ],
                 resources = [
                     '*'
@@ -155,4 +156,61 @@ class CaretakerIPSum(Stack):
 
         event.add_target(
             _targets.LambdaFunction(ipsum)
+        )
+
+    ### LAMBDA ###
+
+        blackbook = _lambda.Function(
+            self, 'blackbook',
+            runtime = _lambda.Runtime.PYTHON_3_11,
+            code = _lambda.Code.from_asset('sources/dns/blackbook'),
+            timeout = Duration.seconds(900),
+            handler = 'blackbook.handler',
+            environment = dict(
+                AWS_ACCOUNT = account,
+                FEED_TABLE = 'feed',
+                S3_BUCKET = 'certificates.tundralabs.org'
+            ),
+            memory_size = 512,
+            role = role,
+            layers = [
+                getpublicip,
+                requests
+            ]
+        )
+
+        blackbooklogs = _logs.LogGroup(
+            self, 'blackbooklogs',
+            log_group_name = '/aws/lambda/'+blackbook.function_name,
+            retention = _logs.RetentionDays.ONE_MONTH,
+            removal_policy = RemovalPolicy.DESTROY
+        )
+
+        blackbooksub = _logs.SubscriptionFilter(
+            self, 'blackbooksub',
+            log_group = blackbooklogs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
+
+        blackbooktime = _logs.SubscriptionFilter(
+            self, 'blackbooktime',
+            log_group = blackbooklogs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
+
+        blackbookevent = _events.Rule(
+            self, 'blackbookevent',
+            schedule = _events.Schedule.cron(
+                minute = '30',
+                hour = '*',
+                month = '*',
+                week_day = '*',
+                year = '*'
+            )
+        )
+
+        blackbookevent.add_target(
+            _targets.LambdaFunction(blackbook)
         )

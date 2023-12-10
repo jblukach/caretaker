@@ -90,7 +90,8 @@ class CaretakerAbuseCH(Stack):
             _iam.PolicyStatement(
                 actions = [
                     'dynamodb:PutItem',
-                    'dynamodb:Query'
+                    'dynamodb:Query',
+                    's3:GetObject'
                 ],
                 resources = [
                     '*'
@@ -214,4 +215,118 @@ class CaretakerAbuseCH(Stack):
 
         sslblevent.add_target(
             _targets.LambdaFunction(sslbl)
+        )
+
+    ### LAMBDA ###
+
+        threatfox = _lambda.Function(
+            self, 'threatfox',
+            runtime = _lambda.Runtime.PYTHON_3_11,
+            code = _lambda.Code.from_asset('sources/dns/abusech/threatfox'),
+            timeout = Duration.seconds(900),
+            handler = 'threatfox.handler',
+            environment = dict(
+                AWS_ACCOUNT = account,
+                FEED_TABLE = 'feed',
+                S3_BUCKET = 'certificates.tundralabs.org'
+            ),
+            memory_size = 512,
+            role = role,
+            layers = [
+                getpublicip,
+                requests
+            ]
+        )
+
+        threatfoxlogs = _logs.LogGroup(
+            self, 'threatfoxlogs',
+            log_group_name = '/aws/lambda/'+threatfox.function_name,
+            retention = _logs.RetentionDays.ONE_MONTH,
+            removal_policy = RemovalPolicy.DESTROY
+        )
+
+        threatfoxsub = _logs.SubscriptionFilter(
+            self, 'threatfoxsub',
+            log_group = threatfoxlogs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
+
+        threatfoxtime = _logs.SubscriptionFilter(
+            self, 'threatfoxtime',
+            log_group = threatfoxlogs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
+
+        threatfoxevent = _events.Rule(
+            self, 'threatfoxevent',
+            schedule = _events.Schedule.cron(
+                minute = '30',
+                hour = '*',
+                month = '*',
+                week_day = '*',
+                year = '*'
+            )
+        )
+
+        threatfoxevent.add_target(
+            _targets.LambdaFunction(threatfox)
+        )
+
+    ### LAMBDA ###
+
+        urlhaus = _lambda.Function(
+            self, 'urlhaus',
+            runtime = _lambda.Runtime.PYTHON_3_11,
+            code = _lambda.Code.from_asset('sources/dns/abusech/urlhaus'),
+            timeout = Duration.seconds(900),
+            handler = 'urlhaus.handler',
+            environment = dict(
+                AWS_ACCOUNT = account,
+                FEED_TABLE = 'feed',
+                S3_BUCKET = 'certificates.tundralabs.org'
+            ),
+            memory_size = 512,
+            role = role,
+            layers = [
+                getpublicip,
+                requests
+            ]
+        )
+
+        urlhauslogs = _logs.LogGroup(
+            self, 'urlhauslogs',
+            log_group_name = '/aws/lambda/'+urlhaus.function_name,
+            retention = _logs.RetentionDays.ONE_MONTH,
+            removal_policy = RemovalPolicy.DESTROY
+        )
+
+        urlhaussub = _logs.SubscriptionFilter(
+            self, 'urlhaussub',
+            log_group = urlhauslogs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
+
+        urlhaustime = _logs.SubscriptionFilter(
+            self, 'urlhaustime',
+            log_group = urlhauslogs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
+
+        urlhausevent = _events.Rule(
+            self, 'urlhausevent',
+            schedule = _events.Schedule.cron(
+                minute = '30',
+                hour = '*',
+                month = '*',
+                week_day = '*',
+                year = '*'
+            )
+        )
+
+        urlhausevent.add_target(
+            _targets.LambdaFunction(urlhaus)
         )
