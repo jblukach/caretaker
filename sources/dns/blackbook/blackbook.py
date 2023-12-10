@@ -53,7 +53,7 @@ def handler(event, context):
             Item = {
                 'pk': 'DNS#',
                 'sk': 'DNS#'+str(match)+'#SOURCE#github.com/stamparm',
-                'ip': str(match),
+                'dns': str(match),
                 'source': 'github.com/stamparm',
                 'last': seen,
                 'epoch': epoch

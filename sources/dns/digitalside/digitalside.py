@@ -53,7 +53,7 @@ def handler(event, context):
             Item = {
                 'pk': 'DNS#',
                 'sk': 'DNS#'+str(match)+'#SOURCE#osint.digitalside.it',
-                'ip': str(match),
+                'dns': str(match),
                 'source': 'osint.digitalside.it',
                 'last': seen,
                 'epoch': epoch

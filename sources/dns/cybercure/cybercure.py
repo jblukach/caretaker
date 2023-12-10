@@ -57,7 +57,7 @@ def handler(event, context):
             Item = {
                 'pk': 'DNS#',
                 'sk': 'DNS#'+str(match)+'#SOURCE#cybercure.ai',
-                'ip': str(match),
+                'dns': str(match),
                 'source': 'cybercure.ai',
                 'last': seen,
                 'epoch': epoch

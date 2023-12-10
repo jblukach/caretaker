@@ -54,7 +54,7 @@ def handler(event, context):
             Item = {
                 'pk': 'DNS#',
                 'sk': 'DNS#'+str(match)+'#SOURCE#github.com/drb-ra',
-                'ip': str(match),
+                'dns': str(match),
                 'source': 'github.com/drb-ra',
                 'last': seen,
                 'epoch': epoch

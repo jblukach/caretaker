@@ -54,7 +54,7 @@ def handler(event, context):
             Item = {
                 'pk': 'DNS#',
                 'sk': 'DNS#'+str(match)+'#SOURCE#threatfox.abuse.ch',
-                'ip': str(match),
+                'dns': str(match),
                 'source': 'threatfox.abuse.ch',
                 'last': seen,
                 'epoch': epoch
