@@ -211,6 +211,6 @@ class CaretakerDigitalSide(Stack):
             )
         )
 
-        #digitalsidedomainevent.add_target(
-        #    _targets.LambdaFunction(digitalsidedomain)
-        #)
+        digitalsidedomainevent.add_target(
+            _targets.LambdaFunction(digitalsidedomain)
+        )

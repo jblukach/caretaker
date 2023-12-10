@@ -211,6 +211,6 @@ class CaretakerRescure(Stack):
             )
         )
 
-        #rescuredomainevent.add_target(
-        #    _targets.LambdaFunction(rescuredomain)
-        #)
+        rescuredomainevent.add_target(
+            _targets.LambdaFunction(rescuredomain)
+        )

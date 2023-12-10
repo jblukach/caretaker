@@ -211,6 +211,6 @@ class CaretakerCyberCure(Stack):
             )
         )
 
-        #cybercuredomainevent.add_target(
-        #    _targets.LambdaFunction(cybercuredomain)
-        #)
+        cybercuredomainevent.add_target(
+            _targets.LambdaFunction(cybercuredomain)
+        )
