@@ -147,6 +147,6 @@ class CaretakerUrlAbuse(Stack):
             )
         )
 
-        #urlabuseevent.add_target(
-        #    _targets.LambdaFunction(urlabuse)
-        #)
+        urlabuseevent.add_target(
+            _targets.LambdaFunction(urlabuse)
+        )

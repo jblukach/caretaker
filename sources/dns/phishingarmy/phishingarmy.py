@@ -14,7 +14,7 @@ def handler(event, context):
     feed = dynamodb.Table(os.environ['FEED_TABLE'])
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
-    response = requests.get('https://rescure.me/rescure_domain_blacklist.txt', headers=headers)
+    response = requests.get('https://phishing.army/download/phishing_army_blocklist_extended.txt', headers=headers)
     data = response.text
 
     now = datetime.datetime.now()
@@ -53,9 +53,9 @@ def handler(event, context):
         feed.put_item(
             Item = {
                 'pk': 'DNS#',
-                'sk': 'DNS#'+str(match)+'#SOURCE#rescure.me',
+                'sk': 'DNS#'+str(match)+'#SOURCE#phishing.army',
                 'dns': str(match),
-                'source': 'rescure.me',
+                'source': 'phishing.army',
                 'last': seen,
                 'epoch': epoch
             }
@@ -63,5 +63,5 @@ def handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps('Check Rescure Blocklist')
+        'body': json.dumps('Check Phishing Army Blocklist')
     }

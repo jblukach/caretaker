@@ -147,6 +147,6 @@ class CaretakerOpenPhish(Stack):
             )
         )
 
-        #openphishevent.add_target(
-        #    _targets.LambdaFunction(openphish)
-        #)
+        openphishevent.add_target(
+            _targets.LambdaFunction(openphish)
+        )

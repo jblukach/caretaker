@@ -147,6 +147,6 @@ class CaretakerPhishTank(Stack):
             )
         )
 
-        #phishtankevent.add_target(
-        #    _targets.LambdaFunction(phishtank)
-        #)
+        phishtankevent.add_target(
+            _targets.LambdaFunction(phishtank)
+        )

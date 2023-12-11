@@ -14,7 +14,7 @@ def handler(event, context):
     feed = dynamodb.Table(os.environ['FEED_TABLE'])
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
-    response = requests.get('https://rescure.me/rescure_domain_blacklist.txt', headers=headers)
+    response = requests.get('https://urlabuse.com/public/data/data.txt', headers=headers)
     data = response.text
 
     now = datetime.datetime.now()
@@ -29,6 +29,8 @@ def handler(event, context):
         if line.startswith('#'):
             continue
         else:
+            line = json.loads(line)
+            line = line['url'].split('/')[2]
             domains.append(line)
 
     domains = list(set(domains))
@@ -53,9 +55,9 @@ def handler(event, context):
         feed.put_item(
             Item = {
                 'pk': 'DNS#',
-                'sk': 'DNS#'+str(match)+'#SOURCE#rescure.me',
+                'sk': 'DNS#'+str(match)+'#SOURCE#urlabuse.com',
                 'dns': str(match),
-                'source': 'rescure.me',
+                'source': 'urlabuse.com',
                 'last': seen,
                 'epoch': epoch
             }
@@ -63,5 +65,5 @@ def handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps('Check Rescure Blocklist')
+        'body': json.dumps('Check URL Abuse Blocklist')
     }

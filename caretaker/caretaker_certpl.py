@@ -147,6 +147,6 @@ class CaretakerCertPl(Stack):
             )
         )
 
-        #certplevent.add_target(
-        #    _targets.LambdaFunction(certpl)
-        #)
+        certplevent.add_target(
+            _targets.LambdaFunction(certpl)
+        )

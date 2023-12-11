@@ -147,6 +147,6 @@ class CaretakerPhishingArmy(Stack):
             )
         )
 
-        #phishingarmyevent.add_target(
-        #    _targets.LambdaFunction(phishingarmy)
-        #)
+        phishingarmyevent.add_target(
+            _targets.LambdaFunction(phishingarmy)
+        )
