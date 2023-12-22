@@ -113,7 +113,7 @@ class CaretakerIPSum(Stack):
                 FEED_TABLE = 'feed',
                 VERIFY_TABLE = 'verify'
             ),
-            memory_size = 1024,
+            memory_size = 2048,
             role = role,
             layers = [
                 getpublicip,
