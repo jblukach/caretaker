@@ -43,7 +43,7 @@ class CaretakerVerify(Stack):
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:9'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:10'
         )
 
     ### ERROR ###
@@ -90,7 +90,7 @@ class CaretakerVerify(Stack):
         verify = _lambda.Function(
             self, 'verify',
             function_name = 'verify',
-            runtime = _lambda.Runtime.PYTHON_3_11,
+            runtime = _lambda.Runtime.PYTHON_3_12,
             code = _lambda.Code.from_asset('verify'),
             timeout = Duration.seconds(7),
             handler = 'verify.handler',

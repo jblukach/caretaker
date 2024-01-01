@@ -45,12 +45,12 @@ class CaretakerOpenPhish(Stack):
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:9'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:10'
         )
 
         requests = _lambda.LayerVersion.from_layer_version_arn(
             self, 'requests',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:1'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:2'
         )
 
     ### ERROR ###
@@ -98,7 +98,7 @@ class CaretakerOpenPhish(Stack):
 
         openphish = _lambda.Function(
             self, 'openphish',
-            runtime = _lambda.Runtime.PYTHON_3_11,
+            runtime = _lambda.Runtime.PYTHON_3_12,
             code = _lambda.Code.from_asset('sources/dns/openphish'),
             timeout = Duration.seconds(900),
             handler = 'openphish.handler',

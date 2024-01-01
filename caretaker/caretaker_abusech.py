@@ -45,17 +45,17 @@ class CaretakerAbuseCH(Stack):
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:9'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:10'
         )
 
         netaddr = _lambda.LayerVersion.from_layer_version_arn(
             self, 'netaddr',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:netaddr:1'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:netaddr:2'
         )
 
         requests = _lambda.LayerVersion.from_layer_version_arn(
             self, 'requests',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:1'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:2'
         )
 
     ### ERROR ###
@@ -221,7 +221,7 @@ class CaretakerAbuseCH(Stack):
 
         threatfox = _lambda.Function(
             self, 'threatfox',
-            runtime = _lambda.Runtime.PYTHON_3_11,
+            runtime = _lambda.Runtime.PYTHON_3_12,
             code = _lambda.Code.from_asset('sources/dns/abusech/threatfox'),
             timeout = Duration.seconds(900),
             handler = 'threatfox.handler',
@@ -278,7 +278,7 @@ class CaretakerAbuseCH(Stack):
 
         urlhaus = _lambda.Function(
             self, 'urlhaus',
-            runtime = _lambda.Runtime.PYTHON_3_11,
+            runtime = _lambda.Runtime.PYTHON_3_12,
             code = _lambda.Code.from_asset('sources/dns/abusech/urlhaus'),
             timeout = Duration.seconds(900),
             handler = 'urlhaus.handler',

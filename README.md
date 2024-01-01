@@ -33,15 +33,15 @@ I added additional Internet Service Providers (ISPs) to guarantee coverage of th
 - 63414 - Dakota Central Telecommunications Cooperative
 - 400439 - Consolidated Telecommunications
 
-It results in **6,295,040** IPv4 addresses and **33** IPv6 cidr allocations to monitor for reputation. 
+It results in **8,978,432** IPv4 addresses and **32** IPv6 cidr allocations to monitor for reputation. 
 
-CenturyLink tripled the volume! :scream:
+CenturyLink quadrupled the volume! :scream:
 
 A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 18,446,744,073,709,551,616 addresses, making a vast number. IPv6 addresses get converted to integers to determine if they fall into any of the monitored ranges.
 
 ### Brand Monitoring
 
-Every Monday at 10 AM UTC, a.k.a. 5 AM CT, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect domain names for brand monitoring.
+Every Monday at 10 AM UTC, a.k.a. 5 AM CT, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect **11,972** domain names for brand monitoring.
 
 Thank you to **Censys** for providing research access that makes this possible!
 
