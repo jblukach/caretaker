@@ -46,6 +46,7 @@ def handler(event, context):
     asns.append('21730') # Halstad Telephone Company
     asns.append('12042') # Consolidated Communications
     asns.append('11232') # Midcontinent Communications
+    asns.append('55105') # Northwest Communications Cooperative
 
     for asn in asns:
 

@@ -30,6 +30,7 @@ I added additional Internet Service Providers (ISPs) to guarantee coverage of th
 - 32809 - Dickey Rural Networks
 - 33339 - Nemont Telecommunications
 - 36374 - Stellar Association, LLC
+- 55105 - Northwest Communications Cooperative
 - 63414 - Dakota Central Telecommunications Cooperative
 - 400439 - Consolidated Telecommunications
 
