@@ -37,6 +37,7 @@ from caretaker.caretaker_talosintelligence import CaretakerTalosIntelligence
 from caretaker.caretaker_tor import CaretakerTor
 from caretaker.caretaker_urlabuse import CaretakerUrlAbuse
 from caretaker.caretaker_verify import CaretakerVerify
+from caretaker.caretaker_virtualfabric import CaretakerVirtualFabric
 from caretaker.caretaker_zonefiles import CaretakerZoneFiles
 
 app = cdk.App()
@@ -406,6 +407,17 @@ CaretakerUrlAbuse(
 
 CaretakerVerify(
     app, 'CaretakerVerify',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerVirtualFabric(
+    app, 'CaretakerVirtualFabric',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'

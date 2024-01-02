@@ -119,6 +119,7 @@ I appreciate all the work that goes into maintaining these lists - thank you!
 - https://sslbl.abuse.ch
 - https://talosintelligence.com
 - https://urlabuse.com
+- https://virtualfabric.com
 - https://zonefiles.io
 - https://www.binarydefense.com
 - https://www.blocklist.de
