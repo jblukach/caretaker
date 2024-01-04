@@ -50,7 +50,7 @@ class CaretakerAbuseCH(Stack):
 
         netaddr = _lambda.LayerVersion.from_layer_version_arn(
             self, 'netaddr',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:netaddr:2'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:netaddr:3'
         )
 
         requests = _lambda.LayerVersion.from_layer_version_arn(
@@ -103,7 +103,7 @@ class CaretakerAbuseCH(Stack):
 
         feodotracker = _lambda.Function(
             self, 'feodotracker',
-            runtime = _lambda.Runtime.PYTHON_3_11,
+            runtime = _lambda.Runtime.PYTHON_3_12,
             code = _lambda.Code.from_asset('sources/ip/abusech/feodotracker'),
             timeout = Duration.seconds(900),
             handler = 'feodotracker.handler',
@@ -162,7 +162,7 @@ class CaretakerAbuseCH(Stack):
 
         sslbl = _lambda.Function(
             self, 'sslbl',
-            runtime = _lambda.Runtime.PYTHON_3_11,
+            runtime = _lambda.Runtime.PYTHON_3_12,
             code = _lambda.Code.from_asset('sources/ip/abusech/sslbl'),
             timeout = Duration.seconds(900),
             handler = 'sslbl.handler',

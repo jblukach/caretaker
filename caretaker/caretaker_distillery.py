@@ -46,7 +46,7 @@ class CaretakerDistillery(Stack):
 
         censys = _lambda.LayerVersion.from_layer_version_arn(
             self, 'censys',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:censys:2'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:censys:3'
         )
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
@@ -208,7 +208,7 @@ class CaretakerDistillery(Stack):
 
         cidr = _lambda.Function(
             self, 'cidr',
-            runtime = _lambda.Runtime.PYTHON_3_11,
+            runtime = _lambda.Runtime.PYTHON_3_12,
             code = _lambda.Code.from_asset('censys/cidr'),
             timeout = Duration.seconds(900),
             handler = 'cidr.handler',
