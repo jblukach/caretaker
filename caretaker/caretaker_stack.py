@@ -151,6 +151,7 @@ class CaretakerStack(Stack):
         maxmind = _lambda.Function(
             self, 'maxmind',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('maxmind'),
             timeout = Duration.seconds(900),
             handler = 'maxmind.handler',

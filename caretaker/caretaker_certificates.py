@@ -126,6 +126,7 @@ class CaretakerCertificates(Stack):
         certificate = _lambda.Function(
             self, 'certificate',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('censys/certificate'),
             timeout = Duration.seconds(900),
             handler = 'certificate.handler',
@@ -182,6 +183,7 @@ class CaretakerCertificates(Stack):
         domain = _lambda.Function(
             self, 'domain',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('censys/domain'),
             timeout = Duration.seconds(900),
             handler = 'domain.handler',
@@ -238,6 +240,7 @@ class CaretakerCertificates(Stack):
         tld = _lambda.Function(
             self, 'tld',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/tld/iana'),
             timeout = Duration.seconds(900),
             handler = 'iana.handler',

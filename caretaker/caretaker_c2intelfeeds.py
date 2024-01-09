@@ -104,6 +104,7 @@ class CaretakerC2IntelFeeds(Stack):
         c2intelfeeds = _lambda.Function(
             self, 'c2intelfeeds',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/c2intelfeeds'),
             timeout = Duration.seconds(900),
             handler = 'c2intelfeeds.handler',
@@ -163,6 +164,7 @@ class CaretakerC2IntelFeeds(Stack):
         c2inteldomains = _lambda.Function(
             self, 'c2inteldomains',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/dns/c2intelfeeds'),
             timeout = Duration.seconds(900),
             handler = 'c2intelfeeds.handler',

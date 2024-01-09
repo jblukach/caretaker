@@ -103,6 +103,7 @@ class CaretakerNubiNetwork(Stack):
         nubinetwork = _lambda.Function(
             self, 'nubinetwork',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/nubinetwork'),
             timeout = Duration.seconds(900),
             handler = 'nubinetwork.handler',

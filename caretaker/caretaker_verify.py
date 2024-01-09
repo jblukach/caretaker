@@ -91,6 +91,7 @@ class CaretakerVerify(Stack):
             self, 'verify',
             function_name = 'verify',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('verify'),
             timeout = Duration.seconds(7),
             handler = 'verify.handler',

@@ -104,6 +104,7 @@ class CaretakerCyberCure(Stack):
         cybercure = _lambda.Function(
             self, 'cybercure',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/cybercure'),
             timeout = Duration.seconds(900),
             handler = 'cybercure.handler',
@@ -163,6 +164,7 @@ class CaretakerCyberCure(Stack):
         cybercuredomain = _lambda.Function(
             self, 'cybercuredomain',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/dns/cybercure'),
             timeout = Duration.seconds(900),
             handler = 'cybercure.handler',

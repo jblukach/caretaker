@@ -99,6 +99,7 @@ class CaretakerCertPl(Stack):
         certpl = _lambda.Function(
             self, 'certpl',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/dns/certpl'),
             timeout = Duration.seconds(900),
             handler = 'certpl.handler',

@@ -103,6 +103,7 @@ class CaretakerSpamhaus(Stack):
         spamhaus = _lambda.Function(
             self, 'spamhaus',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/spamhaus'),
             timeout = Duration.seconds(900),
             handler = 'spamhaus.handler',

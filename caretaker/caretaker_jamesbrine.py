@@ -103,6 +103,7 @@ class CaretakerJamesBrine(Stack):
         jamesbrine = _lambda.Function(
             self, 'jamesbrine',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/jamesbrine'),
             timeout = Duration.seconds(900),
             handler = 'jamesbrine.handler',

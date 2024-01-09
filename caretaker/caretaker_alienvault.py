@@ -103,6 +103,7 @@ class CaretakerAlienVault(Stack):
         alienvault = _lambda.Function(
             self, 'alienvault',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/alienvault'),
             timeout = Duration.seconds(900),
             handler = 'alienvault.handler',

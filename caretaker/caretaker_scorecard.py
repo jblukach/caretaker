@@ -103,6 +103,7 @@ class CaretakerScoreCard(Stack):
         scorecard = _lambda.Function(
             self, 'scorecard',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/scorecard'),
             timeout = Duration.seconds(900),
             handler = 'scorecard.handler',

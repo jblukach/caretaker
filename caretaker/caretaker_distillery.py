@@ -153,6 +153,7 @@ class CaretakerDistillery(Stack):
         distillery = _lambda.Function(
             self, 'distillery',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('distillery'),
             timeout = Duration.seconds(900),
             handler = 'distillery.handler',
@@ -209,6 +210,7 @@ class CaretakerDistillery(Stack):
         cidr = _lambda.Function(
             self, 'cidr',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('censys/cidr'),
             timeout = Duration.seconds(900),
             handler = 'cidr.handler',

@@ -104,6 +104,7 @@ class CaretakerDigitalSide(Stack):
         digitalside = _lambda.Function(
             self, 'digitalside',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/digitalside'),
             timeout = Duration.seconds(900),
             handler = 'digitalside.handler',
@@ -163,6 +164,7 @@ class CaretakerDigitalSide(Stack):
         digitalsidedomain = _lambda.Function(
             self, 'digitalsidedomain',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/dns/digitalside'),
             timeout = Duration.seconds(900),
             handler = 'digitalside.handler',

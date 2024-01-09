@@ -104,6 +104,7 @@ class CaretakerAbuseCH(Stack):
         feodotracker = _lambda.Function(
             self, 'feodotracker',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/abusech/feodotracker'),
             timeout = Duration.seconds(900),
             handler = 'feodotracker.handler',
@@ -163,6 +164,7 @@ class CaretakerAbuseCH(Stack):
         sslbl = _lambda.Function(
             self, 'sslbl',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/abusech/sslbl'),
             timeout = Duration.seconds(900),
             handler = 'sslbl.handler',
@@ -222,6 +224,7 @@ class CaretakerAbuseCH(Stack):
         threatfox = _lambda.Function(
             self, 'threatfox',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/dns/abusech/threatfox'),
             timeout = Duration.seconds(900),
             handler = 'threatfox.handler',
@@ -279,6 +282,7 @@ class CaretakerAbuseCH(Stack):
         urlhaus = _lambda.Function(
             self, 'urlhaus',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/dns/abusech/urlhaus'),
             timeout = Duration.seconds(900),
             handler = 'urlhaus.handler',

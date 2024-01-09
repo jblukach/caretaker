@@ -103,6 +103,7 @@ class CaretakerRutgers(Stack):
         rutgers = _lambda.Function(
             self, 'rutgers',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/rutgers'),
             timeout = Duration.seconds(900),
             handler = 'rutgers.handler',

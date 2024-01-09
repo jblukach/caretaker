@@ -103,6 +103,7 @@ class CaretakerTor(Stack):
         tor = _lambda.Function(
             self, 'tor',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/tor'),
             timeout = Duration.seconds(900),
             handler = 'tor.handler',

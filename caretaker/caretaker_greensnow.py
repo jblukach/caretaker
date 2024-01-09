@@ -103,6 +103,7 @@ class CaretakerGreenSnow(Stack):
         greensnow = _lambda.Function(
             self, 'greensnow',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/greensnow'),
             timeout = Duration.seconds(900),
             handler = 'greensnow.handler',

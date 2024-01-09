@@ -103,6 +103,7 @@ class CaretakerProofPoint(Stack):
         proofpoint = _lambda.Function(
             self, 'proofpoint',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/proofpoint'),
             timeout = Duration.seconds(900),
             handler = 'proofpoint.handler',

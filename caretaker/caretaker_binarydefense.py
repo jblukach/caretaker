@@ -103,6 +103,7 @@ class CaretakerBinaryDefense(Stack):
         binarydefense = _lambda.Function(
             self, 'binarydefense',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/binarydefense'),
             timeout = Duration.seconds(900),
             handler = 'binarydefense.handler',

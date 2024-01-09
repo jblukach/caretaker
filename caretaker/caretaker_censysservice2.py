@@ -129,6 +129,7 @@ class CaretakerCensysService2(Stack):
             service = _lambda.Function(
                 self, 'censys'+search,
                 runtime = _lambda.Runtime.PYTHON_3_12,
+                architecture = _lambda.Architecture.ARM_64,
                 code = _lambda.Code.from_asset('censys/service'),
                 timeout = Duration.seconds(900),
                 handler = 'service.handler',

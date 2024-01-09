@@ -103,6 +103,7 @@ class CaretakerMiraiSecurity(Stack):
         miraisecurity = _lambda.Function(
             self, 'miraisecurity',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/miraisecurity'),
             timeout = Duration.seconds(900),
             handler = 'miraisecurity.handler',

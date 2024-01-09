@@ -103,6 +103,7 @@ class CaretakerBlockList(Stack):
         blocklist = _lambda.Function(
             self, 'blocklist',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/blocklist'),
             timeout = Duration.seconds(900),
             handler = 'blocklist.handler',

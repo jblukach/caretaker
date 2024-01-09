@@ -103,6 +103,7 @@ class CaretakerC2Tracker(Stack):
         c2tracker = _lambda.Function(
             self, 'c2tracker',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/c2tracker'),
             timeout = Duration.seconds(900),
             handler = 'c2tracker.handler',

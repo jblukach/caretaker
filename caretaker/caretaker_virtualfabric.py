@@ -104,6 +104,7 @@ class CaretakerVirtualFabric(Stack):
         virtualfabric = _lambda.Function(
             self, 'virtualfabric',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/virtualfabric'),
             timeout = Duration.seconds(900),
             handler = 'virtualfabric.handler',
@@ -163,6 +164,7 @@ class CaretakerVirtualFabric(Stack):
         virtualfabricdomain = _lambda.Function(
             self, 'virtualfabricdomain',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/dns/virtualfabric'),
             timeout = Duration.seconds(900),
             handler = 'virtualfabric.handler',

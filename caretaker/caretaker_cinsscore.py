@@ -103,6 +103,7 @@ class CaretakerCinsScore(Stack):
         cinsscore = _lambda.Function(
             self, 'cinsscore',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/cinsscore'),
             timeout = Duration.seconds(900),
             handler = 'cinsscore.handler',

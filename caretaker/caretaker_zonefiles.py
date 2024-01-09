@@ -104,6 +104,7 @@ class CaretakerZoneFiles(Stack):
         zonefiles = _lambda.Function(
             self, 'zonefiles',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/zonefiles'),
             timeout = Duration.seconds(900),
             handler = 'zonefiles.handler',
@@ -163,6 +164,7 @@ class CaretakerZoneFiles(Stack):
         zonefilesdomain = _lambda.Function(
             self, 'zonefilesdomain',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/dns/zonefiles'),
             timeout = Duration.seconds(900),
             handler = 'zonefiles.handler',

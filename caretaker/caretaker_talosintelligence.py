@@ -103,6 +103,7 @@ class CaretakerTalosIntelligence(Stack):
         talosintelligence = _lambda.Function(
             self, 'talosintelligence',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/talosintelligence'),
             timeout = Duration.seconds(900),
             handler = 'talosintelligence.handler',

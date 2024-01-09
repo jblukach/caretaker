@@ -103,6 +103,7 @@ class CaretakerEllioTech(Stack):
         elliotech = _lambda.Function(
             self, 'elliotech',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/elliotech'),
             timeout = Duration.seconds(900),
             handler = 'elliotech.handler',

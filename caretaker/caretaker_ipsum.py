@@ -104,6 +104,7 @@ class CaretakerIPSum(Stack):
         ipsum = _lambda.Function(
             self, 'ipsum',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/ipsum'),
             timeout = Duration.seconds(900),
             handler = 'ipsum.handler',
@@ -163,6 +164,7 @@ class CaretakerIPSum(Stack):
         blackbook = _lambda.Function(
             self, 'blackbook',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/dns/blackbook'),
             timeout = Duration.seconds(900),
             handler = 'blackbook.handler',

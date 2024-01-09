@@ -99,6 +99,7 @@ class CaretakerUrlAbuse(Stack):
         urlabuse = _lambda.Function(
             self, 'urlabuse',
             runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/dns/urlabuse'),
             timeout = Duration.seconds(900),
             handler = 'urlabuse.handler',
