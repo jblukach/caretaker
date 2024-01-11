@@ -109,6 +109,7 @@ class CaretakerPhishingArmy(Stack):
                 S3_BUCKET = 'certificates.tundralabs.org'
             ),
             memory_size = 512,
+            retry_attempts = 0,
             role = role,
             layers = [
                 getpublicip,

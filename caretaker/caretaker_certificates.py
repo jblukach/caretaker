@@ -135,6 +135,7 @@ class CaretakerCertificates(Stack):
                 S3_BUCKET = 'certificates.tundralabs.org'
             ),
             memory_size = 2048,
+            retry_attempts = 0,
             role = role,
             layers = [
                 censys,
@@ -193,6 +194,7 @@ class CaretakerCertificates(Stack):
                 TLD_TABLE = tlddb.table_name
             ),
             memory_size = 512,
+            retry_attempts = 0,
             role = role,
             layers = [
                 getpublicip
@@ -249,6 +251,7 @@ class CaretakerCertificates(Stack):
                 TLD_TABLE = tlddb.table_name
             ),
             memory_size = 256,
+            retry_attempts = 0,
             role = role,
             layers = [
                 getpublicip,

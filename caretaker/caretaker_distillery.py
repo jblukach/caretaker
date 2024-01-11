@@ -162,6 +162,7 @@ class CaretakerDistillery(Stack):
                 DYNAMODB_TABLE = table.table_name
             ),
             memory_size = 512,
+            retry_attempts = 0,
             role = role,
             layers = [
                 getpublicip,
@@ -219,6 +220,7 @@ class CaretakerDistillery(Stack):
                 DYNAMODB_TABLE = table.table_name
             ),
             memory_size = 512,
+            retry_attempts = 0,
             role = role,
             layers = [
                 censys,

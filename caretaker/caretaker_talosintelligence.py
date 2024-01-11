@@ -114,6 +114,7 @@ class CaretakerTalosIntelligence(Stack):
                 VERIFY_TABLE = 'verify'
             ),
             memory_size = 2048,
+            retry_attempts = 0,
             role = role,
             layers = [
                 getpublicip,

@@ -115,6 +115,7 @@ class CaretakerVirtualFabric(Stack):
                 VERIFY_TABLE = 'verify'
             ),
             memory_size = 2048,
+            retry_attempts = 0,
             role = role,
             layers = [
                 getpublicip,
@@ -174,6 +175,7 @@ class CaretakerVirtualFabric(Stack):
                 S3_BUCKET = 'certificates.tundralabs.org'
             ),
             memory_size = 512,
+            retry_attempts = 0,
             role = role,
             layers = [
                 getpublicip,
