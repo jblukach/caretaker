@@ -54,6 +54,11 @@ class CaretakerDistillery(Stack):
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:10'
         )
 
+        netaddr = _lambda.LayerVersion.from_layer_version_arn(
+            self, 'netaddr',
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:netaddr:3'
+        )
+
         requests = _lambda.LayerVersion.from_layer_version_arn(
             self, 'requests',
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:2'
@@ -63,12 +68,12 @@ class CaretakerDistillery(Stack):
 
         error = _lambda.Function.from_function_arn(
             self, 'error',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-error'
+            'arn:aws:lambda:'+region+':'+account+':function:shipittoo-error'
         )
 
         timeout = _lambda.Function.from_function_arn(
             self, 'timeout',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-timeout'
+            'arn:aws:lambda:'+region+':'+account+':function:shipittoo-timeout'
         )
 
     ### DYNAMODB ###
@@ -140,6 +145,7 @@ class CaretakerDistillery(Stack):
                     'dynamodb:DeleteItem',
                     'dynamodb:PutItem',
                     'dynamodb:Query',
+                    's3:PutObject',
                     'ssm:GetParameter'
                 ],
                 resources = [
@@ -154,9 +160,9 @@ class CaretakerDistillery(Stack):
             self, 'distillery',
             runtime = _lambda.Runtime.PYTHON_3_12,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('distillery'),
+            code = _lambda.Code.from_asset('distillery/cidr'),
             timeout = Duration.seconds(900),
-            handler = 'distillery.handler',
+            handler = 'cidr.handler',
             environment = dict(
                 AWS_ACCOUNT = account,
                 DYNAMODB_TABLE = table.table_name
@@ -262,4 +268,121 @@ class CaretakerDistillery(Stack):
 
         cidrevent.add_target(
             _targets.LambdaFunction(cidr)
+        )
+
+    ### LAMBDA ###
+
+        address = _lambda.Function(
+            self, 'address',
+            runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
+            code = _lambda.Code.from_asset('distillery/address'),
+            timeout = Duration.seconds(900),
+            handler = 'address.handler',
+            environment = dict(
+                AWS_ACCOUNT = account,
+                DYNAMODB_TABLE = table.table_name,
+                S3_BUCKET = 'addresses.tundralabs.org'
+            ),
+            memory_size = 2048,
+            retry_attempts = 0,
+            role = role,
+            layers = [
+                getpublicip,
+                netaddr
+            ]
+        )
+
+        addresslogs = _logs.LogGroup(
+            self, 'addresslogs',
+            log_group_name = '/aws/lambda/'+address.function_name,
+            retention = _logs.RetentionDays.ONE_MONTH,
+            removal_policy = RemovalPolicy.DESTROY
+        )
+
+        addresssub = _logs.SubscriptionFilter(
+            self, 'addresssub',
+            log_group = addresslogs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
+
+        addresstime = _logs.SubscriptionFilter(
+            self, 'addresstime',
+            log_group = addresslogs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
+    
+        addressevent = _events.Rule(
+            self, 'addressevent',
+            schedule = _events.Schedule.cron(
+                minute = '15',
+                hour = '10',
+                month = '*',
+                week_day = 'MON',
+                year = '*'
+            )
+        )
+
+        addressevent.add_target(
+            _targets.LambdaFunction(address)
+        )
+
+    ### LAMBDA ###
+
+        ipv6 = _lambda.Function(
+            self, 'ipv6',
+            runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
+            code = _lambda.Code.from_asset('distillery/ipv6'),
+            timeout = Duration.seconds(900),
+            handler = 'ipv6.handler',
+            environment = dict(
+                AWS_ACCOUNT = account,
+                DYNAMODB_TABLE = table.table_name,
+                S3_BUCKET = 'addresses.tundralabs.org'
+            ),
+            memory_size = 512,
+            retry_attempts = 0,
+            role = role,
+            layers = [
+                getpublicip
+            ]
+        )
+
+        ipv6logs = _logs.LogGroup(
+            self, 'ipv6logs',
+            log_group_name = '/aws/lambda/'+ipv6.function_name,
+            retention = _logs.RetentionDays.ONE_MONTH,
+            removal_policy = RemovalPolicy.DESTROY
+        )
+
+        ipv6sub = _logs.SubscriptionFilter(
+            self, 'ipv6sub',
+            log_group = ipv6logs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
+
+        ipv6time = _logs.SubscriptionFilter(
+            self, 'ipv6time',
+            log_group = ipv6logs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
+    
+        ipv6event = _events.Rule(
+            self, 'ipv6event',
+            schedule = _events.Schedule.cron(
+                minute = '15',
+                hour = '10',
+                month = '*',
+                week_day = 'MON',
+                year = '*'
+            )
+        )
+
+        ipv6event.add_target(
+            _targets.LambdaFunction(ipv6)
         )
