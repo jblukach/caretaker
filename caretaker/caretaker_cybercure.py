@@ -10,7 +10,8 @@ from aws_cdk import (
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_logs_destinations as _destinations
+    aws_logs_destinations as _destinations,
+    aws_ssm as _ssm
 )
 
 from constructs import Construct
@@ -124,6 +125,14 @@ class CaretakerCyberCure(Stack):
             ]
         )
 
+        parameter = _ssm.StringParameter(
+            self, 'parameter',
+            description = 'Project Caretaker',
+            parameter_name = '/caretaker/ip/cybercure',
+            string_value = cybercure.function_name,
+            tier = _ssm.ParameterTier.STANDARD
+        )
+
         logs = _logs.LogGroup(
             self, 'logs',
             log_group_name = '/aws/lambda/'+cybercure.function_name,
@@ -181,6 +190,14 @@ class CaretakerCyberCure(Stack):
                 getpublicip,
                 requests
             ]
+        )
+
+        parameter = _ssm.StringParameter(
+            self, 'parameter2',
+            description = 'Project Caretaker',
+            parameter_name = '/caretaker/dns/cybercure',
+            string_value = cybercuredomain.function_name,
+            tier = _ssm.ParameterTier.STANDARD
         )
 
         cybercuredomainlogs = _logs.LogGroup(

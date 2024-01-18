@@ -10,7 +10,8 @@ from aws_cdk import (
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_logs_destinations as _destinations
+    aws_logs_destinations as _destinations,
+    aws_ssm as _ssm
 )
 
 from constructs import Construct
@@ -115,6 +116,14 @@ class CaretakerPhishingArmy(Stack):
                 getpublicip,
                 requests
             ]
+        )
+
+        parameter = _ssm.StringParameter(
+            self, 'parameter',
+            description = 'Project Caretaker',
+            parameter_name = '/caretaker/dns/phishingarmy',
+            string_value = phishingarmy.function_name,
+            tier = _ssm.ParameterTier.STANDARD
         )
 
         phishingarmylogs = _logs.LogGroup(

@@ -10,7 +10,8 @@ from aws_cdk import (
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_logs_destinations as _destinations
+    aws_logs_destinations as _destinations,
+    aws_ssm as _ssm
 )
 
 from constructs import Construct
@@ -124,6 +125,14 @@ class CaretakerAbuseCH(Stack):
             ]
         )
 
+        parameter = _ssm.StringParameter(
+            self, 'parameter',
+            description = 'Project Caretaker',
+            parameter_name = '/caretaker/ip/feodotracker',
+            string_value = feodotracker.function_name,
+            tier = _ssm.ParameterTier.STANDARD
+        )
+
         feodotrackerlogs = _logs.LogGroup(
             self, 'feodotrackerlogs',
             log_group_name = '/aws/lambda/'+feodotracker.function_name,
@@ -185,6 +194,14 @@ class CaretakerAbuseCH(Stack):
             ]
         )
 
+        parameter = _ssm.StringParameter(
+            self, 'parameter2',
+            description = 'Project Caretaker',
+            parameter_name = '/caretaker/ip/sslbl',
+            string_value = sslbl.function_name,
+            tier = _ssm.ParameterTier.STANDARD
+        )
+
         sslbllogs = _logs.LogGroup(
             self, 'sslbllogs',
             log_group_name = '/aws/lambda/'+sslbl.function_name,
@@ -244,6 +261,14 @@ class CaretakerAbuseCH(Stack):
             ]
         )
 
+        parameter = _ssm.StringParameter(
+            self, 'parameter3',
+            description = 'Project Caretaker',
+            parameter_name = '/caretaker/dns/threatfox',
+            string_value = threatfox.function_name,
+            tier = _ssm.ParameterTier.STANDARD
+        )
+
         threatfoxlogs = _logs.LogGroup(
             self, 'threatfoxlogs',
             log_group_name = '/aws/lambda/'+threatfox.function_name,
@@ -301,6 +326,14 @@ class CaretakerAbuseCH(Stack):
                 getpublicip,
                 requests
             ]
+        )
+
+        parameter = _ssm.StringParameter(
+            self, 'parameter4',
+            description = 'Project Caretaker',
+            parameter_name = '/caretaker/dns/urlhaus',
+            string_value = urlhaus.function_name,
+            tier = _ssm.ParameterTier.STANDARD
         )
 
         urlhauslogs = _logs.LogGroup(

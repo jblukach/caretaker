@@ -10,7 +10,8 @@ from aws_cdk import (
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_logs_destinations as _destinations
+    aws_logs_destinations as _destinations,
+    aws_ssm as _ssm
 )
 
 from constructs import Construct
@@ -124,6 +125,14 @@ class CaretakerIPSum(Stack):
             ]
         )
 
+        parameter = _ssm.StringParameter(
+            self, 'parameter',
+            description = 'Project Caretaker',
+            parameter_name = '/caretaker/ip/ipsum',
+            string_value = ipsum.function_name,
+            tier = _ssm.ParameterTier.STANDARD
+        )
+
         logs = _logs.LogGroup(
             self, 'logs',
             log_group_name = '/aws/lambda/'+ipsum.function_name,
@@ -181,6 +190,14 @@ class CaretakerIPSum(Stack):
                 getpublicip,
                 requests
             ]
+        )
+
+        parameter = _ssm.StringParameter(
+            self, 'parameter2',
+            description = 'Project Caretaker',
+            parameter_name = '/caretaker/dns/blackbook',
+            string_value = blackbook.function_name,
+            tier = _ssm.ParameterTier.STANDARD
         )
 
         blackbooklogs = _logs.LogGroup(
