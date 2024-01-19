@@ -1,5 +1,4 @@
 import boto3
-import datetime
 import ipaddress
 import json
 import os

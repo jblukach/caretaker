@@ -1,0 +1,81 @@
+import boto3
+import json
+import os
+from censys.search import CensysHosts
+
+def handler(event, context):
+
+    ssm = boto3.client('ssm')
+
+    api = ssm.get_parameter(Name='/censys/api', WithDecryption=True)['Parameter']['Value']
+    key = ssm.get_parameter(Name='/censys/key', WithDecryption=True)['Parameter']['Value']
+
+    os.environ['CENSYS_API_ID'] = api
+    os.environ['CENSYS_API_SECRET'] = key
+
+    h = CensysHosts()
+
+    dns = []
+    ips = []
+
+### SMTP SERVICE ###
+
+    query = h.search(
+        '(location.province="North Dakota") and services.service_name=`SMTP`',
+        per_page = 100,
+        pages = 50,
+        fields = [
+            'dns.names',
+            'ip'
+        ]
+    )
+
+    for page in query:
+        for address in page:
+            ips.append(address['ip'])
+            for name in address['dns']['names']:
+                dns.append(name)
+
+### EMAIL LABEL ###
+
+    query = h.search(
+        '(location.province="North Dakota") and labels=`email`',
+        per_page = 100,
+        pages = 50,
+        fields = [
+            'dns.names',
+            'ip'
+        ]
+    )
+
+    for page in query:
+        for address in page:
+            ips.append(address['ip'])
+            for name in address['dns']['names']:
+                dns.append(name)
+
+### WRITE FILES ###
+
+    dns = list(set(dns))
+    ips = list(set(ips))
+    
+    print('DNS: '+str(len(dns)))
+    print('IPs: '+str(len(ips)))
+
+    with open('/tmp/dns.txt', 'w') as f:
+        for item in dns:
+            f.write("%s\n" % item)
+    
+    with open('/tmp/ips.txt', 'w') as f:
+        for item in ips:
+            f.write("%s\n" % item)
+    
+    s3 = boto3.client('s3')
+
+    s3.upload_file('/tmp/dns.txt', os.environ['S3_BUCKET'], 'dns.txt')
+    s3.upload_file('/tmp/ips.txt', os.environ['S3_BUCKET'], 'ips.txt')
+
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Censys Hosts Email Search')
+    }

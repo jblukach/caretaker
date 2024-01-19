@@ -294,3 +294,61 @@ class CaretakerCertificates(Stack):
         tldevent.add_target(
             _targets.LambdaFunction(tld)
         )
+
+    ### MAIL ###
+
+        mail = _lambda.Function(
+            self, 'mail',
+            runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
+            code = _lambda.Code.from_asset('censys/mail'),
+            timeout = Duration.seconds(900),
+            handler = 'mail.handler',
+            environment = dict(
+                AWS_ACCOUNT = account,
+                S3_BUCKET = 'emails.tundralabs.org'
+            ),
+            memory_size = 512,
+            retry_attempts = 0,
+            role = role,
+            layers = [
+                censys,
+                getpublicip
+            ]
+        )
+
+        maillogs = _logs.LogGroup(
+            self, 'maillogs',
+            log_group_name = '/aws/lambda/'+mail.function_name,
+            retention = _logs.RetentionDays.ONE_MONTH,
+            removal_policy = RemovalPolicy.DESTROY
+        )
+
+        mailsub = _logs.SubscriptionFilter(
+            self, 'mailsub',
+            log_group = maillogs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
+
+        mailtime = _logs.SubscriptionFilter(
+            self, 'mailtime',
+            log_group = maillogs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
+
+        mailevent = _events.Rule(
+            self, 'mailevent',
+            schedule = _events.Schedule.cron(
+                minute = '0',
+                hour = '10',
+                month = '*',
+                week_day = '*',
+                year = '*'
+            )
+        )
+
+        mailevent.add_target(
+            _targets.LambdaFunction(mail)
+        )
