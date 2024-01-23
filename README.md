@@ -73,19 +73,20 @@ Thanks again to **Censys** for providing research access that makes this possibl
 |     |     |     |     |
 |:---:|:---:|:---:|:---:|
 | ACTIVEMQ | AMQP | BACNET |COAP |
-| COBALT_STRIKE | CWMP **++** | DARKGATE | DHCPDISCOVER |
-| DNP3 | ELASTICSEARCH | EPMD | ETHEREUM |
-| FOX | FTP | IMAP | IPMI |
-| IPP | KRPC | KUBERNETES | LDAP |
-| MEMCACHED | MMS | MODBUS | MONERO_P2P |
-| MONGODB | MQTT | MSSQL | MYSQL |
-| NETBIOS | OPC_UA | ORACLE | PC_ANYWHERE |
-| PCOM | POP3 | POSTGRES | PPTP |
-| PROMETHEUS | REDIS | ROCKETMQ | RDP |
-| RTSP | S7 | SCCM | SIP |
-| SKINNY | SMB | SNMP **++** | SSDP |
-| TEAM_VIEWER | TELNET | TFTP | TPLINK_KASA |
-| UPNP | VNC | X11 | ZEROMQ |
+| COBALT_STRIKE | CWMP **++** | DARKGATE | DCERPC |
+| DHCPDISCOVER | DNP3 | ELASTICSEARCH | EPMD |
+| ETHEREUM | FOX | FTP | IMAP |
+| IPMI | IPP | KRPC | KUBERNETES |
+| LDAP | MEMCACHED | MMS | MODBUS |
+| MONERO_P2P | MONGODB | MQTT | MSSQL |
+| MYSQL | NETBIOS | OPC_UA | ORACLE |
+| PC_ANYWHERE | PCOM | POP3 | POSTGRES |
+| PPTP | PROMETHEUS | REDIS | ROCKETMQ |
+| RDP | RTSP | S7 | SCCM |
+| SIP | SKINNY | SMB | SNMP **++** |
+| SSDP | TEAM_VIEWER | TELNET | TFTP |
+| TPLINK_KASA | UPNP | VNC | X11 |
+| ZEROMQ |
 
 - https://search.censys.io/search/definitions
 
