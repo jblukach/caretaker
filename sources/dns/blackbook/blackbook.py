@@ -34,12 +34,9 @@ def handler(event, context):
     domains = list(set(domains))
     print('Domains: '+str(len(domains)))
 
-    s3 = boto3.client('s3')
-    s3.download_file(os.environ['S3_BUCKET'], 'domains.txt', '/tmp/domains.txt')
-
     nddns = []
 
-    with open('/tmp/domains.txt', 'r') as f:
+    with open('domains.txt', 'r') as f:
         for item in f.readlines():
             nddns.append(item)
     
@@ -63,5 +60,5 @@ def handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps('Check C2 Intel Domain Feeds')
+        'body': json.dumps('Check Domain Feed')
     }

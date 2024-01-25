@@ -1,11 +1,10 @@
 import boto3
 import datetime
 import ipaddress
-import netaddr
 import json
 import os
 import requests
-from boto3.dynamodb.conditions import Key
+import sqlite3
 
 def dateconverter(o):
     if isinstance(o, datetime.datetime):
@@ -14,28 +13,15 @@ def dateconverter(o):
 def handler(event, context):
 
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
     feed = dynamodb.Table(os.environ['FEED_TABLE'])
     verify = dynamodb.Table(os.environ['VERIFY_TABLE'])
 
     iplist = []
     ndlist = []
 
-    response = table.query(
-        KeyConditionExpression=Key('pk').eq('ASN#') & Key('sk').begins_with('ASN#IPv4#')
-    )
-    responsedata = response['Items']
-    while 'LastEvaluatedKey' in response:
-        response = table.query(
-            KeyConditionExpression=Key('pk').eq('ASN#') & Key('sk').begins_with('ASN#IPv4#'),
-            ExclusiveStartKey=response['LastEvaluatedKey']
-        )
-        responsedata.update(response['Items'])
-
-    for item in responsedata:   
-        network = netaddr.IPNetwork(item['cidr'])
-        for addr in network:
-            ndlist.append(str(addr))
+    with open('addresses.txt', 'r') as f:
+        for item in f.readlines():
+            ndlist.append(item)
 
     ndlist = list(set(ndlist))
     print('ND: '+str(len(ndlist)))
@@ -60,41 +46,13 @@ def handler(event, context):
         else:
             intip = int(ipaddress.IPv6Address(line))
 
-            firstlist = []
-            first = table.query(
-                IndexName = 'firstip',
-                KeyConditionExpression = Key('pk').eq('ASN#') & Key('firstip').lte(intip)
-            )
-            firstdata = first['Items']
-            while 'LastEvaluatedKey' in first:
-                first = table.query(
-                    IndexName = 'firstip',
-                    KeyConditionExpression = Key('pk').eq('ASN#') & Key('firstip').lte(intip),
-                    ExclusiveStartKey = first['LastEvaluatedKey']
-                )
-                firstdata.extend(first['Items'])
-            for item in firstdata:
-                firstlist.append(item['cidr'])
+            conn = sqlite3.connect('distillery.sqlite3')
+            c = conn.cursor()
+            c.execute("SELECT cidr FROM distillery WHERE firstip <= ? AND lastip >= ?", (intip, intip))
+            results = c.fetchall()
+            conn.close()
 
-            lastlist = []
-            last = table.query(
-                IndexName = 'lastip',
-                KeyConditionExpression = Key('pk').eq('ASN#') & Key('lastip').gte(intip)
-            )
-            lastdata = last['Items']
-            while 'LastEvaluatedKey' in last:
-                last = table.query(
-                    IndexName = 'lastip',
-                    KeyConditionExpression = Key('pk').eq('ASN#') & Key('lastip').gte(intip),
-                    ExclusiveStartKey = last['LastEvaluatedKey']
-                )
-                lastdata.extend(last['Items'])
-            for item in lastdata:
-                lastlist.append(item['cidr'])
-
-            matches = set(firstlist) & set(lastlist)
-    
-            if len(matches) > 0:
+            if len(results) > 0:
                 feed.put_item(
                     Item = {
                         'pk': 'IP#',
