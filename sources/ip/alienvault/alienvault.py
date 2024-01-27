@@ -19,7 +19,11 @@ def handler(event, context):
     iplist = []
     ndlist = []
 
-    with open('addresses.txt', 'r') as f:
+    s3 = boto3.client('s3')
+    s3.download_file(os.environ['S3_BUCKET'], 'distillery.sqlite3', '/tmp/distillery.sqlite3')
+    s3.download_file(os.environ['S3_BUCKET'], 'addresses.txt', '/tmp/addresses.txt')
+
+    with open('/tmp/addresses.txt', 'r') as f:
         for item in f.readlines():
             ndlist.append(item)
 
@@ -46,9 +50,9 @@ def handler(event, context):
         else:
             intip = int(ipaddress.IPv6Address(line))
 
-            conn = sqlite3.connect('distillery.sqlite3')
+            conn = sqlite3.connect('/tmp/distillery.sqlite3')
             c = conn.cursor()
-            c.execute("SELECT cidr FROM distillery WHERE firstip <= ? AND lastip >= ?", (intip, intip))
+            c.execute("SELECT cidr FROM distillery WHERE firstip <= ? AND lastip >= ?", (str(intip), str(intip)))
             results = c.fetchall()
             conn.close()
 

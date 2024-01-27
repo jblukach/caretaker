@@ -1,11 +1,9 @@
 import boto3
 import datetime
 import ipaddress
-import netaddr
 import json
 import os
 import requests
-from boto3.dynamodb.conditions import Key
 
 def dateconverter(o):
     if isinstance(o, datetime.datetime):
@@ -14,28 +12,18 @@ def dateconverter(o):
 def handler(event, context):
 
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
     feed = dynamodb.Table(os.environ['FEED_TABLE'])
     verify = dynamodb.Table(os.environ['VERIFY_TABLE'])
 
     iplist = []
     ndlist = []
 
-    response = table.query(
-        KeyConditionExpression=Key('pk').eq('ASN#') & Key('sk').begins_with('ASN#IPv4#')
-    )
-    responsedata = response['Items']
-    while 'LastEvaluatedKey' in response:
-        response = table.query(
-            KeyConditionExpression=Key('pk').eq('ASN#') & Key('sk').begins_with('ASN#IPv4#'),
-            ExclusiveStartKey=response['LastEvaluatedKey']
-        )
-        responsedata.update(response['Items'])
+    s3 = boto3.client('s3')
+    s3.download_file(os.environ['S3_BUCKET'], 'addresses.txt', '/tmp/addresses.txt')
 
-    for item in responsedata:   
-        network = netaddr.IPNetwork(item['cidr'])
-        for addr in network:
-            ndlist.append(str(addr))
+    with open('/tmp/addresses.txt', 'r') as f:
+        for item in f.readlines():
+            ndlist.append(item)
 
     ndlist = list(set(ndlist))
     print('ND: '+str(len(ndlist)))

@@ -49,11 +49,6 @@ class CaretakerRescure(Stack):
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:10'
         )
 
-        netaddr = _lambda.LayerVersion.from_layer_version_arn(
-            self, 'netaddr',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:netaddr:3'
-        )
-
         requests = _lambda.LayerVersion.from_layer_version_arn(
             self, 'requests',
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:2'
@@ -91,7 +86,6 @@ class CaretakerRescure(Stack):
             _iam.PolicyStatement(
                 actions = [
                     'dynamodb:PutItem',
-                    'dynamodb:Query',
                     's3:GetObject'
                 ],
                 resources = [
@@ -111,16 +105,15 @@ class CaretakerRescure(Stack):
             handler = 'rescure.handler',
             environment = dict(
                 AWS_ACCOUNT = account,
-                DYNAMODB_TABLE = 'distillery',
                 FEED_TABLE = 'feed',
-                VERIFY_TABLE = 'verify'
+                VERIFY_TABLE = 'verify',
+                S3_BUCKET = 'addresses.tundralabs.org'
             ),
             memory_size = 2048,
             retry_attempts = 0,
             role = role,
             layers = [
                 getpublicip,
-                netaddr,
                 requests
             ]
         )

@@ -86,7 +86,6 @@ class CaretakerPhishingArmy(Stack):
             _iam.PolicyStatement(
                 actions = [
                     'dynamodb:PutItem',
-                    'dynamodb:Query',
                     's3:GetObject'
                 ],
                 resources = [
