@@ -91,6 +91,7 @@ class CaretakerSpamhaus(Stack):
             _iam.PolicyStatement(
                 actions = [
                     'dynamodb:PutItem',
+                    'dynamodb:Query',
                     's3:GetObject'
                 ],
                 resources = [
@@ -110,6 +111,7 @@ class CaretakerSpamhaus(Stack):
             handler = 'spamhaus.handler',
             environment = dict(
                 AWS_ACCOUNT = account,
+                DYNAMODB_TABLE = 'distillery',
                 FEED_TABLE = 'feed',
                 VERIFY_TABLE = 'verify',
                 S3_BUCKET = 'addresses.tundralabs.org'

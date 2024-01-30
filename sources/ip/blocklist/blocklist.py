@@ -26,7 +26,7 @@ def handler(event, context):
 
     with open('/tmp/addresses.txt', 'r') as f:
         for item in f.readlines():
-            ndlist.append(item)
+            ndlist.append(str(item[:-1]))
 
     ndlist = list(set(ndlist))
     print('ND: '+str(len(ndlist)))

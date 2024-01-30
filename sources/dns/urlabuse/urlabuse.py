@@ -43,7 +43,7 @@ def handler(event, context):
 
     with open('/tmp/domains.txt', 'r') as f:
         for item in f.readlines():
-            nddns.append(item)
+            nddns.append(item[:-1])
     
     nddns = list(set(nddns))
     print('ND DNS: '+str(len(nddns)))

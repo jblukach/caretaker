@@ -23,7 +23,7 @@ def handler(event, context):
 
     with open('/tmp/addresses.txt', 'r') as f:
         for item in f.readlines():
-            ndlist.append(item)
+            ndlist.append(str(item[:-1]))
 
     ndlist = list(set(ndlist))
     print('ND: '+str(len(ndlist)))
@@ -51,7 +51,7 @@ def handler(event, context):
     iplist = list(set(iplist))
     print('BL: '+str(len(iplist)))
 
-    matches = list(set(iplist).intersection(ndlist))
+    matches = matches = list(set(iplist).intersection(ndlist))
     print('Matches: '+str(len(matches)))
 
     for match in matches:
