@@ -5,7 +5,7 @@ import json
 import netaddr
 import os
 import requests
-from boto3.dynamodb.conditions import Key
+import sqlite3
 
 def dateconverter(o):
     if isinstance(o, datetime.datetime):
@@ -14,7 +14,6 @@ def dateconverter(o):
 def handler(event, context):
 
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
     feed = dynamodb.Table(os.environ['FEED_TABLE'])
     verify = dynamodb.Table(os.environ['VERIFY_TABLE'])
 
@@ -22,7 +21,7 @@ def handler(event, context):
     ndlist = []
 
     s3 = boto3.client('s3')
-    s3.download_file(os.environ['S3_BUCKET'], 'distillery.sqlite3', '/tmp/distillery.sqlite3')
+    s3.download_file(os.environ['S3_BUCKET'], 'addresses.sqlite3', '/tmp/addresses.sqlite3')
     s3.download_file(os.environ['S3_BUCKET'], 'addresses.txt', '/tmp/addresses.txt')
 
     with open('/tmp/addresses.txt', 'r') as f:
@@ -50,41 +49,13 @@ def handler(event, context):
             parsed = line[0].split('/')
             intip = int(ipaddress.IPv4Address(parsed[0]))
 
-            firstlist = []
-            first = table.query(
-                IndexName = 'firstip',
-                KeyConditionExpression = Key('pk').eq('ASN#') & Key('firstip').lte(intip)
-            )
-            firstdata = first['Items']
-            while 'LastEvaluatedKey' in first:
-                first = table.query(
-                    IndexName = 'firstip',
-                    KeyConditionExpression = Key('pk').eq('ASN#') & Key('firstip').lte(intip),
-                    ExclusiveStartKey = first['LastEvaluatedKey']
-                )
-                firstdata.extend(first['Items'])
-            for item in firstdata:
-                firstlist.append(item['cidr'])
-
-            lastlist = []
-            last = table.query(
-                IndexName = 'lastip',
-                KeyConditionExpression = Key('pk').eq('ASN#') & Key('lastip').gte(intip)
-            )
-            lastdata = last['Items']
-            while 'LastEvaluatedKey' in last:
-                last = table.query(
-                    IndexName = 'lastip',
-                    KeyConditionExpression = Key('pk').eq('ASN#') & Key('lastip').gte(intip),
-                    ExclusiveStartKey = last['LastEvaluatedKey']
-                )
-                lastdata.extend(last['Items'])
-            for item in lastdata:
-                lastlist.append(item['cidr'])
-
-            matches = set(firstlist) & set(lastlist)
+            conn = sqlite3.connect('/tmp/addresses.sqlite3')
+            c = conn.cursor()
+            c.execute("SELECT cidr FROM addresses WHERE firstip <= ? AND lastip >= ?", (str(intip), str(intip)))
+            results = c.fetchall()
+            conn.close()
     
-            if len(matches) > 0:
+            if len(results) > 0:
                 network = netaddr.IPNetwork(line[0])
                 for addr in network:
                     iplist.append(str(addr))

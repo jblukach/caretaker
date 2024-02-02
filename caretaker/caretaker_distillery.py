@@ -46,7 +46,7 @@ class CaretakerDistillery(Stack):
 
         censys = _lambda.LayerVersion.from_layer_version_arn(
             self, 'censys',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:censys:3'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:censys:4'
         )
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
@@ -327,6 +327,64 @@ class CaretakerDistillery(Stack):
 
         addressevent.add_target(
             _targets.LambdaFunction(address)
+        )
+
+    ### LAMBDA ###
+
+        ipv4 = _lambda.Function(
+            self, 'ipv4',
+            runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
+            code = _lambda.Code.from_asset('distillery/ipv4'),
+            timeout = Duration.seconds(900),
+            handler = 'ipv4.handler',
+            environment = dict(
+                AWS_ACCOUNT = account,
+                DYNAMODB_TABLE = table.table_name,
+                S3_BUCKET = 'addresses.tundralabs.org'
+            ),
+            memory_size = 512,
+            retry_attempts = 0,
+            role = role,
+            layers = [
+                getpublicip
+            ]
+        )
+
+        ipv4logs = _logs.LogGroup(
+            self, 'ipv4logs',
+            log_group_name = '/aws/lambda/'+ipv4.function_name,
+            retention = _logs.RetentionDays.ONE_MONTH,
+            removal_policy = RemovalPolicy.DESTROY
+        )
+
+        ipv4sub = _logs.SubscriptionFilter(
+            self, 'ipv4sub',
+            log_group = ipv4logs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
+
+        ipv4time = _logs.SubscriptionFilter(
+            self, 'ipv4time',
+            log_group = ipv4logs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
+    
+        ipv4event = _events.Rule(
+            self, 'ipv4event',
+            schedule = _events.Schedule.cron(
+                minute = '15',
+                hour = '10',
+                month = '*',
+                week_day = 'MON',
+                year = '*'
+            )
+        )
+
+        ipv4event.add_target(
+            _targets.LambdaFunction(ipv4)
         )
 
     ### LAMBDA ###
