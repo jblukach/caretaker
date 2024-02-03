@@ -22,9 +22,9 @@ def handler(event, context):
 ### CableOne ###
 
     query = h.search(
-        '(((location.province="North Dakota")) and autonomous_system.asn: {"11492"}) and services.service_name=`CWMP`',
+        '(((location.province="North Dakota")) and autonomous_system.asn: {"11492"}) and services.service_name=`HTTP`',
         per_page = 100,
-        pages = 50,
+        pages = 150,
         fields = [
             'autonomous_system.bgp_prefix'
         ]
@@ -64,9 +64,9 @@ def handler(event, context):
 ### CenturyLink ###
 
     query = h.search(
-        '(((location.province="North Dakota")) and autonomous_system.asn: {"209"}) and services.service_name=`UNKNOWN`',
+        '(((location.province="North Dakota")) and autonomous_system.asn: {"209"}) and services.service_name=`HTTP`',
         per_page = 100,
-        pages = 50,
+        pages = 150,
         fields = [
             'autonomous_system.bgp_prefix'
         ]

@@ -34,7 +34,7 @@ I added additional Internet Service Providers (ISPs) to guarantee coverage of th
 - 63414 - Dakota Central Telecommunications Cooperative
 - 400439 - Consolidated Telecommunications
 
-It results in **8,978,432** IPv4 addresses and **32** IPv6 cidr allocations to monitor for reputation. 
+It results in **7,287,552** IPv4 addresses and **32** IPv6 cidr allocations to monitor for reputation. 
 
 CenturyLink quadrupled the volume! :scream:
 
@@ -42,7 +42,7 @@ A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 1
 
 ### Brand Monitoring
 
-Every Monday at 10 AM UTC, a.k.a. 5 AM CT, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect **11,972** domain names for brand monitoring.
+Every Monday at 10 AM UTC, a.k.a. 5 AM CT, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect **29,346** domain names for brand monitoring.
 
 Thank you to **Censys** for providing research access that makes this possible!
 
@@ -150,9 +150,17 @@ If the website returns **gray**, it means there is no data currently available, 
 
 ![Project Caretaker Unknown Alert](images/unknown.png)
 
-When the website returns **orange**, it will explain why.
+When the website returns **orange**, it will list sources and last-seen timestamps.
 
 ![Project Caretaker Suspect Alert](images/suspect.png)
+
+When the website returns **yellow**, monitoring is not occurring.
+
+![Project Caretaker Suspect Alert](images/monitor.png)
+
+When the website returns **red**, please try again or check back later.
+
+![Project Caretaker Error Alert](images/error.png)
 
 You may require additional assistance to resolve the issue outside of this project; at least the awareness to start asking questions will exist.
 
@@ -165,3 +173,7 @@ No threat feed is complete without a map to visualize the results using GeoLite2
 This product includes GeoLite2 data created by MaxMind, available from https://www.maxmind.com.
 
 - https://dev.maxmind.com/geoip/geolite2-free-geolocation-data
+
+### Statistics
+
+TBD

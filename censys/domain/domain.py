@@ -49,9 +49,19 @@ def handler(event, context):
 
     with open('/tmp/domains.txt', 'w') as f:
         for item in domains:
-            f.write("%s\n" % item)
+            f.write("%s\n" % str(item))
+    f.close()
 
-    s3.upload_file('/tmp/domains.txt', os.environ['S3_BUCKET'], 'domains.txt')
+    s3 = boto3.resource('s3')
+
+    s3.meta.client.upload_file(
+        '/tmp/domains.txt',
+        os.environ['S3_BUCKET'],
+        'domains.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
 
     return {
         'statusCode': 200,

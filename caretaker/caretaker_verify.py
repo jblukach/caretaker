@@ -77,7 +77,8 @@ class CaretakerVerify(Stack):
         role.add_to_policy(
             _iam.PolicyStatement(
                 actions = [
-                    'dynamodb:Query'
+                    'dynamodb:Query',
+                    's3:GetObject'
                 ],
                 resources = [
                     '*'
@@ -97,6 +98,7 @@ class CaretakerVerify(Stack):
             handler = 'verify.handler',
             environment = dict(
                 AWS_ACCOUNT = account,
+                S3_BUCKET = 'addresses.tundralabs.org',
                 VERIFY_TABLE = 'verify'
             ),
             memory_size = 128,

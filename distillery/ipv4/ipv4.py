@@ -1,5 +1,4 @@
 import boto3
-import ipaddress
 import json
 import os
 import sqlite3
@@ -29,14 +28,11 @@ def handler(event, context):
         )
         responsedata.update(response['Items'])
 
+    print('Downloaded ' + str(len(responsedata)) + ' IPv4 cidrs')
+
     for item in responsedata:
 
-        netrange = ipaddress.IPv4Network(item['cidr'])
-        first, last = netrange[0], netrange[-1]
-        firstip = int(ipaddress.IPv4Address(first))
-        lastip = int(ipaddress.IPv4Address(last))
-
-        db.execute('INSERT INTO addresses (cidr, firstip, lastip) VALUES (?, ?, ?)', (item['cidr'], str(firstip), str(lastip)))
+        db.execute('INSERT INTO addresses (cidr, firstip, lastip) VALUES (?, ?, ?)', (item['cidr'], str(item['firstip']), str(item['lastip'])))
 
     db.commit()
     db.close()

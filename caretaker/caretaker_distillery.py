@@ -444,3 +444,61 @@ class CaretakerDistillery(Stack):
         ipv6event.add_target(
             _targets.LambdaFunction(ipv6)
         )
+
+    ### LAMBDA ###
+
+        ipv46 = _lambda.Function(
+            self, 'ipv46',
+            runtime = _lambda.Runtime.PYTHON_3_12,
+            architecture = _lambda.Architecture.ARM_64,
+            code = _lambda.Code.from_asset('distillery/ipv46'),
+            timeout = Duration.seconds(900),
+            handler = 'ipv46.handler',
+            environment = dict(
+                AWS_ACCOUNT = account,
+                DYNAMODB_TABLE = table.table_name,
+                S3_BUCKET = 'addresses.tundralabs.org'
+            ),
+            memory_size = 512,
+            retry_attempts = 0,
+            role = role,
+            layers = [
+                getpublicip
+            ]
+        )
+
+        ipv46logs = _logs.LogGroup(
+            self, 'ipv46logs',
+            log_group_name = '/aws/lambda/'+ipv46.function_name,
+            retention = _logs.RetentionDays.ONE_MONTH,
+            removal_policy = RemovalPolicy.DESTROY
+        )
+
+        ipv46sub = _logs.SubscriptionFilter(
+            self, 'ipv46sub',
+            log_group = ipv46logs,
+            destination = _destinations.LambdaDestination(error),
+            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        )
+
+        ipv46time = _logs.SubscriptionFilter(
+            self, 'ipv46time',
+            log_group = ipv46logs,
+            destination = _destinations.LambdaDestination(timeout),
+            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        )
+    
+        ipv46event = _events.Rule(
+            self, 'ipv46event',
+            schedule = _events.Schedule.cron(
+                minute = '15',
+                hour = '10',
+                month = '*',
+                week_day = 'MON',
+                year = '*'
+            )
+        )
+
+        ipv46event.add_target(
+            _targets.LambdaFunction(ipv46)
+        )

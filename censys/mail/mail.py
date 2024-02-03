@@ -65,15 +65,32 @@ def handler(event, context):
     with open('/tmp/dns.txt', 'w') as f:
         for item in dns:
             f.write("%s\n" % item)
-    
+    f.close()
+
     with open('/tmp/ips.txt', 'w') as f:
         for item in ips:
             f.write("%s\n" % item)
-    
-    s3 = boto3.client('s3')
+    f.close()
 
-    s3.upload_file('/tmp/dns.txt', os.environ['S3_BUCKET'], 'dns.txt')
-    s3.upload_file('/tmp/ips.txt', os.environ['S3_BUCKET'], 'ips.txt')
+    s3 = boto3.resource('s3')
+
+    s3.meta.client.upload_file(
+        '/tmp/dns.txt',
+        os.environ['S3_BUCKET'],
+        'dns.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
+
+    s3.meta.client.upload_file(
+        '/tmp/ips.txt',
+        os.environ['S3_BUCKET'],
+        'ips.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
 
     return {
         'statusCode': 200,

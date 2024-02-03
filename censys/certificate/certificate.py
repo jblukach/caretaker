@@ -22,7 +22,7 @@ def handler(event, context):
     query = c.search(
         'parsed.subject.province="ND"',
         per_page = 100,
-        pages = 50,
+        pages = 100,
         fields = [
             'names',
             'labels',
@@ -36,16 +36,21 @@ def handler(event, context):
         ]
     )
 
+    ndcount = 0
+
     for page in query:
         for certificate in page:
             certificates.append(certificate)
+            ndcount += 1
+
+    print('ND: ' + str(ndcount))
 
 ### North Dakota ###
 
     query = c.search(
         'parsed.subject.province="North Dakota"',
         per_page = 100,
-        pages = 300,
+        pages = 400,
         fields = [
             'names',
             'labels',
@@ -59,14 +64,20 @@ def handler(event, context):
         ]
     )
 
+    northdakotacount = 0
+
     for page in query:
         for certificate in page:
             certificates.append(certificate)
+            northdakotacount += 1
+    
+    print('North Dakota: ' + str(northdakotacount))
 
 ### Output ###
 
     with open('/tmp/certificates.json', 'w') as outfile:
         json.dump(certificates, outfile)
+    outfile.close()
 
     s3 = boto3.resource('s3')
 
