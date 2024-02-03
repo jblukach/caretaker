@@ -150,7 +150,7 @@ If the website returns **gray**, it means there is no data currently available, 
 
 ![Project Caretaker Unknown Alert](images/unknown.png)
 
-When the website returns **orange**, it will list sources and last-seen timestamps.
+When the website returns **orange**, it will list sources and last-seen timestamps of potential reputation concerns.
 
 ![Project Caretaker Suspect Alert](images/suspect.png)
 
