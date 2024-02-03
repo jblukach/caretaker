@@ -9,17 +9,17 @@ def handler(event, context):
     if event['rawPath'] == '/error':
 
         bg = 'Red'
-        msg = 'Error Example'
+        msg = '<h3>Error Example</h3>'
 
     elif event['rawPath'] == '/monitor':
 
         bg = 'Yellow'
-        msg = 'Not Monitored Example'
+        msg = '<h3>Not Monitored Example</h3>'
 
     elif event['rawPath'] == '/unknown':
 
         bg = 'LightGray'
-        msg = 'Unknown Example'
+        msg = '<h3>Unknown Example</h3>'
 
     else:
 
@@ -77,17 +77,17 @@ def handler(event, context):
                 else:
 
                     bg = 'LightGray'
-                    msg = 'Unknown'
+                    msg = '<h3>Unknown</h3>'
 
             else:
 
                 bg = 'Yellow'
-                msg = 'Not Monitored'
+                msg = '<h3>Not Monitored</h3>'
 
         except:
 
             bg = 'Red'
-            msg = 'Error'
+            msg = '<h3>Error</h3>'
 
     html = '''<html><head><title>Project Caretaker</title></head><body bgcolor="'''+bg+'''">'''+msg+'''</body></html>'''
 
