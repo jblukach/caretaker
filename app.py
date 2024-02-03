@@ -26,6 +26,8 @@ from caretaker.caretaker_miraisecurity import CaretakerMiraiSecurity
 from caretaker.caretaker_nubinetwork import CaretakerNubiNetwork
 from caretaker.caretaker_openphish import CaretakerOpenPhish
 from caretaker.caretaker_phishingarmy import CaretakerPhishingArmy
+from caretaker.caretaker_phishingdatabase import CaretakerPhishingDatabase
+from caretaker.caretaker_phishstats import CaretakerPhishStats
 from caretaker.caretaker_phishtank import CaretakerPhishTank
 from caretaker.caretaker_proofpoint import CaretakerProofPoint
 from caretaker.caretaker_rescure import CaretakerRescure
@@ -35,6 +37,7 @@ from caretaker.caretaker_spamhaus import CaretakerSpamhaus
 from caretaker.caretaker_stack import CaretakerStack
 from caretaker.caretaker_talosintelligence import CaretakerTalosIntelligence
 from caretaker.caretaker_tor import CaretakerTor
+from caretaker.caretaker_ultimatehosts import CaretakerUltimateHosts
 from caretaker.caretaker_urlabuse import CaretakerUrlAbuse
 from caretaker.caretaker_verify import CaretakerVerify
 from caretaker.caretaker_virtualfabric import CaretakerVirtualFabric
@@ -295,6 +298,28 @@ CaretakerPhishingArmy(
     )
 )
 
+CaretakerPhishingDatabase(
+    app, 'CaretakerPhishingDatabase',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerPhishStats(
+    app, 'CaretakerPhishStats',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
 CaretakerPhishTank(
     app, 'CaretakerPhishTank',
     env = cdk.Environment(
@@ -385,6 +410,17 @@ CaretakerTalosIntelligence(
 
 CaretakerTor(
     app, 'CaretakerTor',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerUltimateHosts(
+    app, 'CaretakerUltimateHosts',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'

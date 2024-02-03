@@ -105,8 +105,10 @@ I appreciate all the work that goes into maintaining these lists - thank you!
 - https://ellio.tech
 - https://feodotracker.abuse.ch
 - https://github.com/drb-ra
+- https://github.com/mitchellkrogza
 - https://github.com/montysecurity
 - https://github.com/stamparm
+- https://github.com/Ultimate-Hosts-Blacklist
 - https://greensnow.co
 - https://jamesbrine.com.au
 - https://mirai.security.gives
@@ -114,6 +116,7 @@ I appreciate all the work that goes into maintaining these lists - thank you!
 - https://osint.digitalside.it
 - https://otx.alienvault.com
 - https://phishing.army
+- https://phishstats.info
 - https://phishtank.com
 - https://report.cs.rutgers.edu
 - https://securityscorecard.com
