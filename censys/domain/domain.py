@@ -41,7 +41,25 @@ def handler(event, context):
             if name.split('.')[-1] in tlds:
                 if name.startswith('*.'):
                     name = name[2:]
-                domains.append(name.lower())
+                if name.startswith('www.'):
+                    domains.append(name.lower())
+                    name = name[4:]
+                    domains.append(name.lower())
+                else:
+                    domains.append(name.lower())
+                    name = 'www.' + name
+                    domains.append(name.lower())
+
+    count = 0
+    s3.download_file(os.environ['S3_BUCKET'], 'hotels.txt', '/tmp/hotels.txt')
+
+    with open('/tmp/hotels.txt') as f:
+        for line in f:
+            domains.append(line.strip())
+            count += 1
+    f.close()
+
+    print('Hotels: '+str(count))
 
     print('Domains: '+str(len(domains)))
     domains = list(set(domains))

@@ -22,7 +22,6 @@ from caretaker.caretaker_elliotech import CaretakerEllioTech
 from caretaker.caretaker_greensnow import CaretakerGreenSnow
 from caretaker.caretaker_ipsum import CaretakerIPSum
 from caretaker.caretaker_jamesbrine import CaretakerJamesBrine
-from caretaker.caretaker_miraisecurity import CaretakerMiraiSecurity
 from caretaker.caretaker_nubinetwork import CaretakerNubiNetwork
 from caretaker.caretaker_openphish import CaretakerOpenPhish
 from caretaker.caretaker_phishingarmy import CaretakerPhishingArmy
@@ -245,17 +244,6 @@ CaretakerIPSum(
 
 CaretakerJamesBrine(
     app, 'CaretakerJamesBrine',
-    env = cdk.Environment(
-        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
-    ),
-    synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
-    )
-)
-
-CaretakerMiraiSecurity(
-    app, 'CaretakerMiraiSecurity',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'

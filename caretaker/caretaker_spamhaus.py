@@ -51,7 +51,7 @@ class CaretakerSpamhaus(Stack):
 
         netaddr = _lambda.LayerVersion.from_layer_version_arn(
             self, 'netaddr',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:netaddr:3'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:netaddr:4'
         )
 
         requests = _lambda.LayerVersion.from_layer_version_arn(

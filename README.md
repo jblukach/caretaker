@@ -34,7 +34,7 @@ I added additional Internet Service Providers (ISPs) to guarantee coverage of th
 - 63414 - Dakota Central Telecommunications Cooperative
 - 400439 - Consolidated Telecommunications
 
-It results in **9,062,656** IPv4 addresses and **32** IPv6 cidr allocations to monitor for reputation. 
+It results in **9,062,656** IPv4 addresses and **33** IPv6 cidr allocations to monitor for reputation. 
 
 CenturyLink quadrupled the volume! :scream:
 
@@ -42,7 +42,7 @@ A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 1
 
 ### Brand Monitoring
 
-Every Monday at 10 AM UTC, a.k.a. 5 AM CT, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect **27,882** domain names for brand monitoring.
+Every Monday at 10 AM UTC, a.k.a. 5 AM CT, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect **21,746** domain names for ```apex``` and ```www``` brand monitoring.
 
 Thank you to **Censys** for providing research access that makes this possible!
 
@@ -55,6 +55,16 @@ Certificate Transparency (CT) is a security standard for monitoring and auditing
 Every Monday at 10:15 AM UTC, a.k.a. 5:15 AM CT, the domain names from the certificates are normalized to guarantee valid top-level domains with wild cards removed.
 
 - https://www.iana.org
+
+Google Maps Platform is used to find Places by Category located within North Dakota to identify brands hosted in the cloud.
+
+| Category | Count | Updated |
+|:---:|:---:|:---:|
+| hotel | 360 | Feb. 9th 2024 |
+
+### Email Security
+
+TBD
 
 ### Misconfiguration
 
@@ -111,7 +121,6 @@ I appreciate all the work that goes into maintaining these lists - thank you!
 - https://github.com/Ultimate-Hosts-Blacklist
 - https://greensnow.co
 - https://jamesbrine.com.au
-- https://mirai.security.gives
 - https://openphish.com
 - https://osint.digitalside.it
 - https://otx.alienvault.com
