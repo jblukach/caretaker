@@ -51,6 +51,17 @@ def handler(event, context):
                     domains.append(name.lower())
 
     count = 0
+    s3.download_file(os.environ['S3_EMAIL'], 'dns.txt', '/tmp/dns.txt')
+
+    with open('/tmp/dns.txt') as f:
+        for line in f:
+            domains.append(line.strip())
+            count += 1
+    f.close()
+
+    print('Email: '+str(count))
+
+    count = 0
     s3.download_file(os.environ['S3_BUCKET'], 'hotels.txt', '/tmp/hotels.txt')
 
     with open('/tmp/hotels.txt') as f:

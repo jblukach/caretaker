@@ -34,7 +34,11 @@ def handler(event, context):
         for address in page:
             ips.append(address['ip'])
             for name in address['dns']['names']:
-                dns.append(name)
+                domain = name.split('.')
+                if len(domain) > 2:
+                    dns.append(domain[-2]+'.'+domain[-1])
+                else:
+                    dns.append(name)
 
 ### EMAIL LABEL ###
 
@@ -52,7 +56,26 @@ def handler(event, context):
         for address in page:
             ips.append(address['ip'])
             for name in address['dns']['names']:
-                dns.append(name)
+                domain = name.split('.')
+                if len(domain) > 2:
+                    dns.append(domain[-2]+'.'+domain[-1])
+                else:
+                    dns.append(name)
+
+    count = 0
+    s3 = boto3.client('s3')
+    s3.download_file(os.environ['S3_CERTS'], 'hotels.txt', '/tmp/hotels.txt')
+
+    with open('/tmp/hotels.txt') as f:
+        for line in f:
+            if line.startswith('www.'):
+                continue
+            else:
+                dns.append(line.strip())
+                count += 1
+    f.close()
+
+    print('Hotels: '+str(count))
 
 ### WRITE FILES ###
 
