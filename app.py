@@ -36,6 +36,7 @@ from caretaker.caretaker_spamhaus import CaretakerSpamhaus
 from caretaker.caretaker_stack import CaretakerStack
 from caretaker.caretaker_talosintelligence import CaretakerTalosIntelligence
 from caretaker.caretaker_tor import CaretakerTor
+from caretaker.caretaker_tundralabs import CaretakerTundraLabs
 from caretaker.caretaker_ultimatehosts import CaretakerUltimateHosts
 from caretaker.caretaker_urlabuse import CaretakerUrlAbuse
 from caretaker.caretaker_verify import CaretakerVerify
@@ -398,6 +399,17 @@ CaretakerTalosIntelligence(
 
 CaretakerTor(
     app, 'CaretakerTor',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerTundraLabs(
+    app, 'CaretakerTundraLabs',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'

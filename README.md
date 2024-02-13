@@ -64,7 +64,7 @@ Google Maps Platform is used to find Places by Category located within North Dak
 
 ### Email Security
 
-TBD
+Every day starting at 10:30 AM UTC, a.k.a. 5:30 AM CT, domains are checked for **MX** records to determine if an email server is present; once identified, verification of **DMARC** and **SPF** records occurs.
 
 ### Misconfiguration
 

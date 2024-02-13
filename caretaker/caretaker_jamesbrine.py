@@ -1,7 +1,4 @@
-import cdk_nag
-
 from aws_cdk import (
-    Aspects,
     Duration,
     RemovalPolicy,
     Stack,
@@ -10,8 +7,7 @@ from aws_cdk import (
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_logs_destinations as _destinations,
-    aws_ssm as _ssm
+    aws_logs_destinations as _destinations
 )
 
 from constructs import Construct
@@ -23,24 +19,6 @@ class CaretakerJamesBrine(Stack):
 
         account = Stack.of(self).account
         region = Stack.of(self).region
-
-    ### CDK NAG ###
-
-        Aspects.of(self).add(
-            cdk_nag.AwsSolutionsChecks(
-                log_ignores = True,
-                verbose = True
-            )
-        )
-
-        cdk_nag.NagSuppressions.add_stack_suppressions(
-            self, suppressions = [
-                {"id":"AwsSolutions-IAM4","reason":"The IAM user, role, or group uses AWS managed policies."},
-                {"id":"AwsSolutions-IAM5","reason":"The IAM entity contains wildcard permissions and does not have a cdk-nag rule suppression with evidence for those permission."},
-                {"id":"AwsSolutions-L1","reason":"The non-container Lambda function is not configured to use the latest runtime version."},
-                {"id":"AwsSolutions-DDB3","reason":"The DynamoDB table does not have Point-in-time Recovery enabled."},
-            ]
-        )
 
     ### LAMBDA LAYERS ###
 
@@ -116,14 +94,6 @@ class CaretakerJamesBrine(Stack):
                 getpublicip,
                 requests
             ]
-        )
-
-        parameter = _ssm.StringParameter(
-            self, 'parameter',
-            description = 'Project Caretaker',
-            parameter_name = '/caretaker/ip/jamesbrine',
-            string_value = jamesbrine.function_name,
-            tier = _ssm.ParameterTier.STANDARD
         )
 
         logs = _logs.LogGroup(

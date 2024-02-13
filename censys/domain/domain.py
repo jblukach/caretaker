@@ -50,6 +50,8 @@ def handler(event, context):
                     name = 'www.' + name
                     domains.append(name.lower())
 
+    ### EMAIL DOMAINS ###
+
     count = 0
     s3.download_file(os.environ['S3_EMAIL'], 'dns.txt', '/tmp/dns.txt')
 
@@ -60,6 +62,8 @@ def handler(event, context):
     f.close()
 
     print('Email: '+str(count))
+
+    ### HOTEL DOMAINS ###
 
     count = 0
     s3.download_file(os.environ['S3_BUCKET'], 'hotels.txt', '/tmp/hotels.txt')

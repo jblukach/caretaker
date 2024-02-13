@@ -62,6 +62,8 @@ def handler(event, context):
                 else:
                     dns.append(name)
 
+    ### HOTEL DOMAINS ###
+
     count = 0
     s3 = boto3.client('s3')
     s3.download_file(os.environ['S3_CERTS'], 'hotels.txt', '/tmp/hotels.txt')
