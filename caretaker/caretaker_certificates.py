@@ -147,7 +147,7 @@ class CaretakerCertificates(Stack):
             self, 'event',
             schedule = _events.Schedule.cron(
                 minute = '0',
-                hour = '10',
+                hour = '9',
                 month = '*',
                 week_day = 'MON',
                 year = '*'
@@ -205,8 +205,8 @@ class CaretakerCertificates(Stack):
         domainevent = _events.Rule(
             self, 'domainevent',
             schedule = _events.Schedule.cron(
-                minute = '15',
-                hour = '10',
+                minute = '25',
+                hour = '9',
                 month = '*',
                 week_day = 'MON',
                 year = '*'
@@ -264,7 +264,7 @@ class CaretakerCertificates(Stack):
             self, 'tldevent',
             schedule = _events.Schedule.cron(
                 minute = '0',
-                hour = '10',
+                hour = '9',
                 month = '*',
                 week_day = 'MON',
                 year = '*'
@@ -322,8 +322,8 @@ class CaretakerCertificates(Stack):
         mailevent = _events.Rule(
             self, 'mailevent',
             schedule = _events.Schedule.cron(
-                minute = '0',
-                hour = '10',
+                minute = '20',
+                hour = '9',
                 month = '*',
                 week_day = '*',
                 year = '*'

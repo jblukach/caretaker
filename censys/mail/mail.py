@@ -79,7 +79,7 @@ def handler(event, context):
 
     print('Hotels: '+str(count))
 
-### WRITE FILES ###
+    ### WRITE FILES ###
 
     dns = list(set(dns))
     ips = list(set(ips))

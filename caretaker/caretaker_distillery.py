@@ -180,7 +180,7 @@ class CaretakerDistillery(Stack):
             self, 'event',
             schedule = _events.Schedule.cron(
                 minute = '0',
-                hour = '10',
+                hour = '9',
                 month = '*',
                 week_day = 'MON',
                 year = '*'
@@ -237,8 +237,8 @@ class CaretakerDistillery(Stack):
         cidrevent = _events.Rule(
             self, 'cidrevent',
             schedule = _events.Schedule.cron(
-                minute = '10',
-                hour = '10',
+                minute = '15',
+                hour = '9',
                 month = '*',
                 week_day = 'MON',
                 year = '*'
@@ -296,8 +296,8 @@ class CaretakerDistillery(Stack):
         addressevent = _events.Rule(
             self, 'addressevent',
             schedule = _events.Schedule.cron(
-                minute = '15',
-                hour = '10',
+                minute = '20',
+                hour = '9',
                 month = '*',
                 week_day = 'MON',
                 year = '*'
@@ -354,8 +354,8 @@ class CaretakerDistillery(Stack):
         ipv4event = _events.Rule(
             self, 'ipv4event',
             schedule = _events.Schedule.cron(
-                minute = '15',
-                hour = '10',
+                minute = '20',
+                hour = '9',
                 month = '*',
                 week_day = 'MON',
                 year = '*'
@@ -412,8 +412,8 @@ class CaretakerDistillery(Stack):
         ipv6event = _events.Rule(
             self, 'ipv6event',
             schedule = _events.Schedule.cron(
-                minute = '15',
-                hour = '10',
+                minute = '20',
+                hour = '9',
                 month = '*',
                 week_day = 'MON',
                 year = '*'
@@ -470,8 +470,8 @@ class CaretakerDistillery(Stack):
         ipv46event = _events.Rule(
             self, 'ipv46event',
             schedule = _events.Schedule.cron(
-                minute = '15',
-                hour = '10',
+                minute = '20',
+                hour = '9',
                 month = '*',
                 week_day = 'MON',
                 year = '*'
