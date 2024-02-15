@@ -25,7 +25,7 @@ class CaretakerCertificates(Stack):
 
         censys = _lambda.LayerVersion.from_layer_version_arn(
             self, 'censys',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:censys:4'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:censys:5'
         )
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
@@ -104,7 +104,7 @@ class CaretakerCertificates(Stack):
 
         certificate = _lambda.Function(
             self, 'certificate',
-            runtime = _lambda.Runtime.PYTHON_3_12,
+            runtime = _lambda.Runtime.PYTHON_3_11, # https://github.com/boto/botocore/issues/3111
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('censys/certificate'),
             timeout = Duration.seconds(900),
