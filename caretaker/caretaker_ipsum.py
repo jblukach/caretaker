@@ -2,12 +2,14 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
+    aws_cloudwatch as _cloudwatch,
+    aws_cloudwatch_actions as _actions,
     aws_events as _events,
     aws_events_targets as _targets,
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_logs_destinations as _destinations
+    aws_sns as _sns
 )
 
 from constructs import Construct
@@ -32,16 +34,11 @@ class CaretakerIPSum(Stack):
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:2'
         )
 
-    ### ERROR ###
+    ### TOPIC ###
 
-        error = _lambda.Function.from_function_arn(
-            self, 'error',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-error'
-        )
-
-        timeout = _lambda.Function.from_function_arn(
-            self, 'timeout',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-timeout'
+        topic = _sns.Topic.from_topic_arn(
+            self, 'topic',
+            topic_arn = 'arn:aws:sns:'+region+':'+account+':monitor'
         )
 
     ### IAM ###
@@ -103,19 +100,20 @@ class CaretakerIPSum(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        sub = _logs.SubscriptionFilter(
-            self, 'sub',
-            log_group = logs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        ipsumalarm = _cloudwatch.Alarm(
+            self, 'ipsumalarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = ipsum.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        time = _logs.SubscriptionFilter(
-            self, 'time',
-            log_group = logs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        ipsumalarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
+
 
         event = _events.Rule(
             self, 'event',
@@ -162,18 +160,18 @@ class CaretakerIPSum(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        blackbooksub = _logs.SubscriptionFilter(
-            self, 'blackbooksub',
-            log_group = blackbooklogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        blackbookalarm = _cloudwatch.Alarm(
+            self, 'blackbookalarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = blackbook.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        blackbooktime = _logs.SubscriptionFilter(
-            self, 'blackbooktime',
-            log_group = blackbooklogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        blackbookalarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
 
         blackbookevent = _events.Rule(

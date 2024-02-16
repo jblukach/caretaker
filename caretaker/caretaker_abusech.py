@@ -2,12 +2,14 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
+    aws_cloudwatch as _cloudwatch,
+    aws_cloudwatch_actions as _actions,
     aws_events as _events,
     aws_events_targets as _targets,
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_logs_destinations as _destinations
+    aws_sns as _sns
 )
 
 from constructs import Construct
@@ -32,16 +34,11 @@ class CaretakerAbuseCH(Stack):
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:2'
         )
 
-    ### ERROR ###
+    ### TOPIC ###
 
-        error = _lambda.Function.from_function_arn(
-            self, 'error',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-error'
-        )
-
-        timeout = _lambda.Function.from_function_arn(
-            self, 'timeout',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-timeout'
+        topic = _sns.Topic.from_topic_arn(
+            self, 'topic',
+            topic_arn = 'arn:aws:sns:'+region+':'+account+':monitor'
         )
 
     ### IAM ###
@@ -103,18 +100,18 @@ class CaretakerAbuseCH(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        feodotrackersub = _logs.SubscriptionFilter(
-            self, 'feodotrackersub',
-            log_group = feodotrackerlogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        feodotrackeralarm = _cloudwatch.Alarm(
+            self, 'feodotrackeralarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = feodotracker.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        feodotrackertime = _logs.SubscriptionFilter(
-            self, 'feodotrackertime',
-            log_group = feodotrackerlogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        feodotrackeralarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
 
         feodotrackerevent = _events.Rule(
@@ -163,18 +160,18 @@ class CaretakerAbuseCH(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        sslblsub = _logs.SubscriptionFilter(
-            self, 'sslblsub',
-            log_group = sslbllogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        sslblalarm = _cloudwatch.Alarm(
+            self, 'sslblalarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = sslbl.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        sslbltime = _logs.SubscriptionFilter(
-            self, 'sslbltime',
-            log_group = sslbllogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        sslblalarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
 
         sslblevent = _events.Rule(
@@ -222,18 +219,18 @@ class CaretakerAbuseCH(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        threatfoxsub = _logs.SubscriptionFilter(
-            self, 'threatfoxsub',
-            log_group = threatfoxlogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        threatfoxalarm = _cloudwatch.Alarm(
+            self, 'threatfoxalarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = threatfox.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        threatfoxtime = _logs.SubscriptionFilter(
-            self, 'threatfoxtime',
-            log_group = threatfoxlogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        threatfoxalarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
 
         threatfoxevent = _events.Rule(
@@ -281,18 +278,18 @@ class CaretakerAbuseCH(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        urlhaussub = _logs.SubscriptionFilter(
-            self, 'urlhaussub',
-            log_group = urlhauslogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        urlhausalarm = _cloudwatch.Alarm(
+            self, 'urlhausalarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = urlhaus.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        urlhaustime = _logs.SubscriptionFilter(
-            self, 'urlhaustime',
-            log_group = urlhauslogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        urlhausalarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
 
         urlhausevent = _events.Rule(

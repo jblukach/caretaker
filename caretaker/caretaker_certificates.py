@@ -2,13 +2,15 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
+    aws_cloudwatch as _cloudwatch,
+    aws_cloudwatch_actions as _actions,
     aws_dynamodb as _dynamodb,
     aws_events as _events,
     aws_events_targets as _targets,
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_logs_destinations as _destinations
+    aws_sns as _sns
 )
 
 from constructs import Construct
@@ -38,16 +40,11 @@ class CaretakerCertificates(Stack):
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:2'
         )
 
-    ### ERROR ###
+    ### TOPIC ###
 
-        error = _lambda.Function.from_function_arn(
-            self, 'error',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-error'
-        )
-
-        timeout = _lambda.Function.from_function_arn(
-            self, 'timeout',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-timeout'
+        topic = _sns.Topic.from_topic_arn(
+            self, 'topic',
+            topic_arn = 'arn:aws:sns:'+region+':'+account+':monitor'
         )
 
     ### DATABASE ###
@@ -129,18 +126,18 @@ class CaretakerCertificates(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        sub = _logs.SubscriptionFilter(
-            self, 'sub',
-            log_group = logs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        certificatealarm = _cloudwatch.Alarm(
+            self, 'certificatealarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = certificate.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        time = _logs.SubscriptionFilter(
-            self, 'time',
-            log_group = logs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        certificatealarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
 
         event = _events.Rule(
@@ -188,18 +185,18 @@ class CaretakerCertificates(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        domainsub = _logs.SubscriptionFilter(
-            self, 'domainsub',
-            log_group = domainlogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        domainalarm = _cloudwatch.Alarm(
+            self, 'domainalarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = domain.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        domaintime = _logs.SubscriptionFilter(
-            self, 'domaintime',
-            log_group = domainlogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        domainalarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
 
         domainevent = _events.Rule(
@@ -246,18 +243,18 @@ class CaretakerCertificates(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        tldsub = _logs.SubscriptionFilter(
-            self, 'tldsub',
-            log_group = tldlogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        tldalarm = _cloudwatch.Alarm(
+            self, 'tldalarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = tld.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        tldtime = _logs.SubscriptionFilter(
-            self, 'tldtime',
-            log_group = tldlogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        tldalarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
 
         tldevent = _events.Rule(
@@ -305,18 +302,18 @@ class CaretakerCertificates(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        mailsub = _logs.SubscriptionFilter(
-            self, 'mailsub',
-            log_group = maillogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        mailalarm = _cloudwatch.Alarm(
+            self, 'mailalarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = mail.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        mailtime = _logs.SubscriptionFilter(
-            self, 'mailtime',
-            log_group = maillogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        mailalarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
 
         mailevent = _events.Rule(

@@ -34,6 +34,13 @@ class CaretakerPhishTank(Stack):
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:2'
         )
 
+    ### TOPIC ###
+
+        topic = _sns.Topic.from_topic_arn(
+            self, 'topic',
+            topic_arn = 'arn:aws:sns:'+region+':'+account+':monitor'
+        )
+
     ### IAM ###
 
         role = _iam.Role(
@@ -92,8 +99,8 @@ class CaretakerPhishTank(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        alarm = _cloudwatch.Alarm(
-            self, 'alarm',
+        phishtankalarm = _cloudwatch.Alarm(
+            self, 'phishtankalarm',
             comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
             threshold = 0,
             evaluation_periods = 1,
@@ -102,12 +109,7 @@ class CaretakerPhishTank(Stack):
             )
         )
 
-        topic = _sns.Topic.from_topic_arn(
-            self, 'topic',
-            topic_arn = 'arn:aws:sns:'+region+':'+account+':monitor'
-        )
-
-        alarm.add_alarm_action(
+        phishtankalarm.add_alarm_action(
             _actions.SnsAction(topic)
         )
 

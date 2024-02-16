@@ -2,12 +2,14 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
+    aws_cloudwatch as _cloudwatch,
+    aws_cloudwatch_actions as _actions,
     aws_events as _events,
     aws_events_targets as _targets,
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_logs_destinations as _destinations
+    aws_sns as _sns
 )
 
 from constructs import Construct
@@ -32,16 +34,11 @@ class CaretakerPhishingDatabase(Stack):
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:2'
         )
 
-    ### ERROR ###
+    ### TOPIC ###
 
-        error = _lambda.Function.from_function_arn(
-            self, 'error',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-error'
-        )
-
-        timeout = _lambda.Function.from_function_arn(
-            self, 'timeout',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-timeout'
+        topic = _sns.Topic.from_topic_arn(
+            self, 'topic',
+            topic_arn = 'arn:aws:sns:'+region+':'+account+':monitor'
         )
 
     ### IAM ###
@@ -102,18 +99,18 @@ class CaretakerPhishingDatabase(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        phishingdatabasesub = _logs.SubscriptionFilter(
-            self, 'phishingdatabasesub',
-            log_group = phishingdatabaselogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        phishingdatabasealarm = _cloudwatch.Alarm(
+            self, 'phishingdatabasealarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = phishingdatabase.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        phishingdatabasetime = _logs.SubscriptionFilter(
-            self, 'phishingdatabasetime',
-            log_group = phishingdatabaselogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        phishingdatabasealarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
 
         phishingdatabaseevent = _events.Rule(

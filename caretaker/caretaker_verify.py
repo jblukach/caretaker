@@ -2,10 +2,12 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
+    aws_cloudwatch as _cloudwatch,
+    aws_cloudwatch_actions as _actions,
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_logs_destinations as _destinations
+    aws_sns as _sns
 )
 
 from constructs import Construct
@@ -25,16 +27,11 @@ class CaretakerVerify(Stack):
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:10'
         )
 
-    ### ERROR ###
+    ### TOPIC ###
 
-        error = _lambda.Function.from_function_arn(
-            self, 'error',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-error'
-        )
-
-        timeout = _lambda.Function.from_function_arn(
-            self, 'timeout',
-            'arn:aws:lambda:'+region+':'+account+':function:shipit-timeout'
+        topic = _sns.Topic.from_topic_arn(
+            self, 'topic',
+            topic_arn = 'arn:aws:sns:'+region+':'+account+':monitor'
         )
 
     ### IAM ###
@@ -99,16 +96,16 @@ class CaretakerVerify(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        sub = _logs.SubscriptionFilter(
-            self, 'sub',
-            log_group = logs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        verifyalarm = _cloudwatch.Alarm(
+            self, 'verifyalarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = verify.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        time = _logs.SubscriptionFilter(
-            self, 'time',
-            log_group = logs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        verifyalarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )

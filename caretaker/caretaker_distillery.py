@@ -2,13 +2,15 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
+    aws_cloudwatch as _cloudwatch,
+    aws_cloudwatch_actions as _actions,
     aws_dynamodb as _dynamodb,
     aws_events as _events,
     aws_events_targets as _targets,
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_logs_destinations as _destinations
+    aws_sns as _sns
 )
 
 from constructs import Construct
@@ -35,7 +37,7 @@ class CaretakerDistillery(Stack):
 
         netaddr = _lambda.LayerVersion.from_layer_version_arn(
             self, 'netaddr',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:netaddr:4'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:netaddr:5'
         )
 
         requests = _lambda.LayerVersion.from_layer_version_arn(
@@ -43,16 +45,11 @@ class CaretakerDistillery(Stack):
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:2'
         )
 
-    ### ERROR ###
+    ### TOPIC ###
 
-        error = _lambda.Function.from_function_arn(
-            self, 'error',
-            'arn:aws:lambda:'+region+':'+account+':function:shipittoo-error'
-        )
-
-        timeout = _lambda.Function.from_function_arn(
-            self, 'timeout',
-            'arn:aws:lambda:'+region+':'+account+':function:shipittoo-timeout'
+        topic = _sns.Topic.from_topic_arn(
+            self, 'topic',
+            topic_arn = 'arn:aws:sns:'+region+':'+account+':monitor'
         )
 
     ### DYNAMODB ###
@@ -162,18 +159,18 @@ class CaretakerDistillery(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        sub = _logs.SubscriptionFilter(
-            self, 'sub',
-            log_group = logs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        distilleryalarm = _cloudwatch.Alarm(
+            self, 'distilleryalarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = distillery.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        time = _logs.SubscriptionFilter(
-            self, 'time',
-            log_group = logs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        distilleryalarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
     
         event = _events.Rule(
@@ -220,18 +217,18 @@ class CaretakerDistillery(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        cidrsub = _logs.SubscriptionFilter(
-            self, 'cidrsub',
-            log_group = cidrlogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        cidralarm = _cloudwatch.Alarm(
+            self, 'cidralarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = cidr.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        cidrtime = _logs.SubscriptionFilter(
-            self, 'cidrtime',
-            log_group = cidrlogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        cidralarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
     
         cidrevent = _events.Rule(
@@ -279,18 +276,18 @@ class CaretakerDistillery(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        addresssub = _logs.SubscriptionFilter(
-            self, 'addresssub',
-            log_group = addresslogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        addressalarm = _cloudwatch.Alarm(
+            self, 'addressalarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = address.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        addresstime = _logs.SubscriptionFilter(
-            self, 'addresstime',
-            log_group = addresslogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        addressalarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
     
         addressevent = _events.Rule(
@@ -337,18 +334,18 @@ class CaretakerDistillery(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        ipv4sub = _logs.SubscriptionFilter(
-            self, 'ipv4sub',
-            log_group = ipv4logs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        ipv4alarm = _cloudwatch.Alarm(
+            self, 'ipv4alarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = ipv4.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        ipv4time = _logs.SubscriptionFilter(
-            self, 'ipv4time',
-            log_group = ipv4logs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        ipv4alarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
     
         ipv4event = _events.Rule(
@@ -395,18 +392,18 @@ class CaretakerDistillery(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        ipv6sub = _logs.SubscriptionFilter(
-            self, 'ipv6sub',
-            log_group = ipv6logs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        ipv6alarm = _cloudwatch.Alarm(
+            self, 'ipv6alarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = ipv6.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        ipv6time = _logs.SubscriptionFilter(
-            self, 'ipv6time',
-            log_group = ipv6logs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        ipv6alarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
     
         ipv6event = _events.Rule(
@@ -453,18 +450,18 @@ class CaretakerDistillery(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        ipv46sub = _logs.SubscriptionFilter(
-            self, 'ipv46sub',
-            log_group = ipv46logs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        ipv46alarm = _cloudwatch.Alarm(
+            self, 'ipv46alarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = ipv46.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        ipv46time = _logs.SubscriptionFilter(
-            self, 'ipv46time',
-            log_group = ipv46logs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        ipv46alarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
     
         ipv46event = _events.Rule(

@@ -2,12 +2,14 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
+    aws_cloudwatch as _cloudwatch,
+    aws_cloudwatch_actions as _actions,
     aws_events as _events,
     aws_events_targets as _targets,
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_logs_destinations as _destinations,
+    aws_sns as _sns,
     aws_ssm as _ssm,
     aws_stepfunctions as _sfn,
     aws_stepfunctions_tasks as _tasks
@@ -40,16 +42,11 @@ class CaretakerTundraLabs(Stack):
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:smartopen:1'
         )
 
-    ### ERROR ###
+    ### TOPIC ###
 
-        error = _lambda.Function.from_function_arn(
-            self, 'error',
-            'arn:aws:lambda:'+region+':'+account+':function:shipittoo-error'
-        )
-
-        timeout = _lambda.Function.from_function_arn(
-            self, 'timeout',
-            'arn:aws:lambda:'+region+':'+account+':function:shipittoo-timeout'
+        topic = _sns.Topic.from_topic_arn(
+            self, 'topic',
+            topic_arn = 'arn:aws:sns:'+region+':'+account+':monitor'
         )
 
     ### IAM ROLE ###
@@ -112,18 +109,18 @@ class CaretakerTundraLabs(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        startsub = _logs.SubscriptionFilter(
-            self, 'startsub',
-            log_group = startlogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        startalarm = _cloudwatch.Alarm(
+            self, 'startalarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = start.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        starttime = _logs.SubscriptionFilter(
-            self, 'starttime',
-            log_group = startlogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        startalarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
 
         startevent = _events.Rule(
@@ -170,18 +167,18 @@ class CaretakerTundraLabs(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        stepsub = _logs.SubscriptionFilter(
-            self, 'stepsub',
-            log_group = steplogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        stepalarm = _cloudwatch.Alarm(
+            self, 'stepalarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = step.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        steptime = _logs.SubscriptionFilter(
-            self, 'steptime',
-            log_group = steplogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        stepalarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
 
     ### READ LAMBDA ###
@@ -213,18 +210,18 @@ class CaretakerTundraLabs(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        readsub = _logs.SubscriptionFilter(
-            self, 'readsub',
-            log_group = readlogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
+        readalarm = _cloudwatch.Alarm(
+            self, 'readalarm',
+            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+            threshold = 0,
+            evaluation_periods = 1,
+            metric = read.metric_errors(
+                period = Duration.minutes(1)
+            )
         )
 
-        readtime = _logs.SubscriptionFilter(
-            self, 'readtime',
-            log_group = readlogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
+        readalarm.add_alarm_action(
+            _actions.SnsAction(topic)
         )
 
     ### STEP FUNCTION ###
@@ -264,20 +261,6 @@ class CaretakerTundraLabs(Stack):
             log_group_name = '/aws/state/tundralabs',
             retention = _logs.RetentionDays.ONE_MONTH,
             removal_policy = RemovalPolicy.DESTROY
-        )
-
-        statelogssub = _logs.SubscriptionFilter(
-            self, 'statelogssub',
-            log_group = statelogs,
-            destination = _destinations.LambdaDestination(error),
-            filter_pattern = _logs.FilterPattern.all_terms('ERROR')
-        )
-
-        statelogstime= _logs.SubscriptionFilter(
-            self, 'statelogstime',
-            log_group = statelogs,
-            destination = _destinations.LambdaDestination(timeout),
-            filter_pattern = _logs.FilterPattern.all_terms('Task','timed','out')
         )
 
         state = _sfn.StateMachine(
