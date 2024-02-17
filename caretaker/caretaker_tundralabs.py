@@ -29,7 +29,7 @@ class CaretakerTundraLabs(Stack):
 
         dnspython = _lambda.LayerVersion.from_layer_version_arn(
             self, 'dnspython',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:dnspython:2'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:dnspython:3'
         )
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
@@ -126,10 +126,10 @@ class CaretakerTundraLabs(Stack):
         startevent = _events.Rule(
             self, 'startevent',
             schedule = _events.Schedule.cron(
-                minute = '30',
+                minute = '0',
                 hour = '10',
                 month = '*',
-                week_day = '*',
+                week_day = 'MON',
                 year = '*'
             )
         )
