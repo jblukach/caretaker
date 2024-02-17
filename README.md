@@ -60,7 +60,15 @@ Google Maps Platform is used to find Places by Category located within North Dak
 
 | Category | Count | Updated |
 |:---:|:---:|:---:|
-| hotel | 360 | Feb. 9th 2024 |
+| church | 1,360 | Feb. 17th, 2024 |
+| hotel | 360 | Feb. 9th, 2024 |
+| restaurant | 1,120 | Feb. 16th, 2024 |
+| school | 904 | Feb. 17th, 2024 |
+| store | 3,206 | Feb. 17th, 2024 |
+
+Collecting domains to monitor got expensive and would require significant maintenance, so I tried Apify for the initial categories.
+
+- https://apify.com
 
 ### Email Security
 

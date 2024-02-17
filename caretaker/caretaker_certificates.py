@@ -322,7 +322,7 @@ class CaretakerCertificates(Stack):
                 minute = '20',
                 hour = '9',
                 month = '*',
-                week_day = '*',
+                week_day = 'MON',
                 year = '*'
             )
         )

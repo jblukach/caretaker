@@ -62,6 +62,23 @@ def handler(event, context):
                 else:
                     dns.append(name)
 
+    ### CHURCH DOMAINS ###
+
+    count = 0
+    s3 = boto3.client('s3')
+    s3.download_file(os.environ['S3_CERTS'], 'churches.txt', '/tmp/churches.txt')
+
+    with open('/tmp/churches.txt') as f:
+        for line in f:
+            if line.startswith('www.'):
+                continue
+            else:
+                dns.append(line.strip())
+                count += 1
+    f.close()
+
+    print('Churches: '+str(count))
+
     ### HOTEL DOMAINS ###
 
     count = 0
@@ -78,6 +95,57 @@ def handler(event, context):
     f.close()
 
     print('Hotels: '+str(count))
+
+    ### RESTAURANT DOMAINS ###
+
+    count = 0
+    s3 = boto3.client('s3')
+    s3.download_file(os.environ['S3_CERTS'], 'restaurants.txt', '/tmp/restaurants.txt')
+
+    with open('/tmp/restaurants.txt') as f:
+        for line in f:
+            if line.startswith('www.'):
+                continue
+            else:
+                dns.append(line.strip())
+                count += 1
+    f.close()
+
+    print('Restaurants: '+str(count))
+
+    ### SCHOOL DOMAINS ###
+
+    count = 0
+    s3 = boto3.client('s3')
+    s3.download_file(os.environ['S3_CERTS'], 'schools.txt', '/tmp/schools.txt')
+
+    with open('/tmp/schools.txt') as f:
+        for line in f:
+            if line.startswith('www.'):
+                continue
+            else:
+                dns.append(line.strip())
+                count += 1
+    f.close()
+
+    print('Schools: '+str(count))
+
+    ### STORE DOMAINS ###
+
+    count = 0
+    s3 = boto3.client('s3')
+    s3.download_file(os.environ['S3_CERTS'], 'stores.txt', '/tmp/stores.txt')
+
+    with open('/tmp/stores.txt') as f:
+        for line in f:
+            if line.startswith('www.'):
+                continue
+            else:
+                dns.append(line.strip())
+                count += 1
+    f.close()
+
+    print('Stores: '+str(count))
 
     ### WRITE FILES ###
 
