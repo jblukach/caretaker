@@ -129,6 +129,7 @@ I appreciate all the work that goes into maintaining these lists - thank you!
 - https://github.com/Ultimate-Hosts-Blacklist
 - https://greensnow.co
 - https://jamesbrine.com.au
+- https://mirai.security.gives
 - https://openphish.com
 - https://osint.digitalside.it
 - https://otx.alienvault.com
@@ -190,7 +191,3 @@ No threat feed is complete without a map to visualize the results using GeoLite2
 This product includes GeoLite2 data created by MaxMind, available from https://www.maxmind.com.
 
 - https://dev.maxmind.com/geoip/geolite2-free-geolocation-data
-
-### Statistics
-
-TBD

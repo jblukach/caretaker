@@ -29,7 +29,7 @@ class CaretakerTundraLabs(Stack):
 
         dnspython = _lambda.LayerVersion.from_layer_version_arn(
             self, 'dnspython',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:dnspython:3'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:dnspython:4'
         )
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(

@@ -14,7 +14,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-class CaretakerSpamhaus(Stack):
+class CaretakerMiraiSecurity(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -27,11 +27,6 @@ class CaretakerSpamhaus(Stack):
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:10'
-        )
-
-        netaddr = _lambda.LayerVersion.from_layer_version_arn(
-            self, 'netaddr',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:netaddr:6'
         )
 
         requests = _lambda.LayerVersion.from_layer_version_arn(
@@ -50,7 +45,7 @@ class CaretakerSpamhaus(Stack):
 
         role = _iam.Role(
             self, 'role',
-            role_name = 'spamhaus',
+            role_name = 'miraisecurity',
             assumed_by = _iam.ServicePrincipal(
                 'lambda.amazonaws.com'
             )
@@ -76,16 +71,15 @@ class CaretakerSpamhaus(Stack):
 
     ### LAMBDA ###
 
-        spamhaus = _lambda.Function(
-            self, 'spamhaus',
+        miraisecurity = _lambda.Function(
+            self, 'miraisecurity',
             runtime = _lambda.Runtime.PYTHON_3_12,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('sources/ip/spamhaus'),
+            code = _lambda.Code.from_asset('sources/ip/miraisecurity'),
             timeout = Duration.seconds(900),
-            handler = 'spamhaus.handler',
+            handler = 'miraisecurity.handler',
             environment = dict(
                 AWS_ACCOUNT = account,
-                DYNAMODB_TABLE = 'distillery',
                 FEED_TABLE = 'feed',
                 VERIFY_TABLE = 'verify',
                 S3_BUCKET = 'addresses.tundralabs.org'
@@ -95,29 +89,28 @@ class CaretakerSpamhaus(Stack):
             role = role,
             layers = [
                 getpublicip,
-                netaddr,
                 requests
             ]
         )
 
         logs = _logs.LogGroup(
             self, 'logs',
-            log_group_name = '/aws/lambda/'+spamhaus.function_name,
+            log_group_name = '/aws/lambda/'+miraisecurity.function_name,
             retention = _logs.RetentionDays.ONE_MONTH,
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        spamhausalarm = _cloudwatch.Alarm(
-            self, 'spamhausalarm',
+        miraisecurityalarm = _cloudwatch.Alarm(
+            self, 'miraisecurityalarm',
             comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
             threshold = 0,
             evaluation_periods = 1,
-            metric = spamhaus.metric_errors(
+            metric = miraisecurity.metric_errors(
                 period = Duration.minutes(1)
             )
         )
 
-        spamhausalarm.add_alarm_action(
+        miraisecurityalarm.add_alarm_action(
             _actions.SnsAction(topic)
         )
 
@@ -133,5 +126,5 @@ class CaretakerSpamhaus(Stack):
         )
 
         event.add_target(
-            _targets.LambdaFunction(spamhaus)
+            _targets.LambdaFunction(miraisecurity)
         )
