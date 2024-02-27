@@ -194,7 +194,7 @@ This product includes GeoLite2 data created by MaxMind, available from https://w
 
 ### Statistics
 
-Metrics are generated every hour, showing the current state, identifying trends, and previously mitigated detections.
+Metrics are generated every hour, showing the current state and previously mitigated detections.
 
 - https://config.tundralabs.org
 - https://dns.tundralabs.org
