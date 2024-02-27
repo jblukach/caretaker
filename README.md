@@ -191,3 +191,13 @@ No threat feed is complete without a map to visualize the results using GeoLite2
 This product includes GeoLite2 data created by MaxMind, available from https://www.maxmind.com.
 
 - https://dev.maxmind.com/geoip/geolite2-free-geolocation-data
+
+### Statistics
+
+Metrics are generated every hour, showing the current state, identifying trends, and previously mitigated detections.
+
+- https://config.tundralabs.org
+- https://dns.tundralabs.org
+- https://ip.tundralabs.org
+
+![Project Caretaker Statistics](images/statistics.png)
