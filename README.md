@@ -200,4 +200,4 @@ Metrics are generated every hour, showing the current state and previously mitig
 - https://dns.tundralabs.org
 - https://ip.tundralabs.org
 
-![Project Caretaker Statistics](images/statistics.png)
+![Project Caretaker Statistics](images/statistics.jpg)
