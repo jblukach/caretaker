@@ -20,6 +20,7 @@ from caretaker.caretaker_digitalside import CaretakerDigitalSide
 from caretaker.caretaker_distillery import CaretakerDistillery
 from caretaker.caretaker_elliotech import CaretakerEllioTech
 from caretaker.caretaker_greensnow import CaretakerGreenSnow
+from caretaker.caretaker_inversiondnsbl import CaretakerInversionDnsbl
 from caretaker.caretaker_ipsum import CaretakerIPSum
 from caretaker.caretaker_jamesbrine import CaretakerJamesBrine
 from caretaker.caretaker_miraisecurity import CaretakerMiraiSecurity
@@ -224,6 +225,17 @@ CaretakerEllioTech(
 
 CaretakerGreenSnow(
     app, 'CaretakerGreenSnow',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerInversionDnsbl(
+    app, 'CaretakerInversionDnsbl',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'

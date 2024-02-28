@@ -123,6 +123,7 @@ I appreciate all the work that goes into maintaining these lists - thank you!
 - https://ellio.tech
 - https://feodotracker.abuse.ch
 - https://github.com/drb-ra
+- https://github.com/elliotwutingfeng
 - https://github.com/mitchellkrogza
 - https://github.com/montysecurity
 - https://github.com/stamparm
