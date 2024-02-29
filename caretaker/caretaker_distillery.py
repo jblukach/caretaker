@@ -260,7 +260,7 @@ class CaretakerDistillery(Stack):
                 DYNAMODB_TABLE = table.table_name,
                 S3_BUCKET = 'addresses.tundralabs.org'
             ),
-            memory_size = 2048,
+            memory_size = 4096,
             retry_attempts = 0,
             role = role,
             layers = [

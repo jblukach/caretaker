@@ -71,7 +71,7 @@ def handler(event, context):
     print(service + ': ' + str(primarycount))
 
     query = h.search(
-        '(((location.province="North Dakota")) and autonomous_system.asn: {"209","11492"}) and services.service_name=`'+service+'`',
+        '(((location.province="North Dakota")) and autonomous_system.asn: {"209","6167","7018","11492","21928"}) and services.service_name=`'+service+'`',
         per_page = 100,
         pages = 100,
         fields = [
