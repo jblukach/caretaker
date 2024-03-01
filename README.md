@@ -200,6 +200,7 @@ This product includes GeoLite2 data created by MaxMind, available from https://w
 
 Metrics are generated every hour, showing the current state and previously mitigated detections.
 
+- https://asn.tundralabs.org
 - https://config.tundralabs.org
 - https://dns.tundralabs.org
 - https://ip.tundralabs.org
