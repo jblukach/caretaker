@@ -40,7 +40,7 @@ def handler(event, context):
     seen = json.dumps(now, default=dateconverter)
     seen = seen.replace('"','')
 
-   f = open('/tmp/tor.txt', 'w')
+    f = open('/tmp/tor.txt', 'w')
 
     for line in data.splitlines():
 

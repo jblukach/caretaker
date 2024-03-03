@@ -38,7 +38,7 @@ def handler(event, context):
     seen = json.dumps(now, default=dateconverter)
     seen = seen.replace('"','')
 
-   f = open('/tmp/talosintelligence.txt', 'w')
+    f = open('/tmp/talosintelligence.txt', 'w')
 
     for line in data.splitlines():
         if line.startswith('#'):

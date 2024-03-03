@@ -41,7 +41,7 @@ def handler(event, context):
     seen = json.dumps(now, default=dateconverter)
     seen = seen.replace('"','')
 
-   f = open('/tmp/spamhaus.txt', 'w')
+    f = open('/tmp/spamhaus.txt', 'w')
 
     for line in data.splitlines():
         if line.startswith(';'):
