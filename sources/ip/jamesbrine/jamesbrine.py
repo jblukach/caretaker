@@ -38,14 +38,30 @@ def handler(event, context):
     seen = json.dumps(now, default=dateconverter)
     seen = seen.replace('"','')
 
+    f = open('/tmp/jamesbrine.txt', 'w')
+
     for line in data.splitlines():
         if line.startswith('#'):
             continue
         else:
             if ipaddress.ip_network(line).version == 4:
                 iplist.append(str(line))
+                f.write(str(line)+'\n')
             else:
                 continue
+
+    f.close()
+
+    s3 = boto3.resource('s3')
+
+    s3.meta.client.upload_file(
+        '/tmp/jamesbrine.txt',
+        'projectcaretaker',
+        'ip/jamesbrine.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
 
     iplist = list(set(iplist))
     print('BL: '+str(len(iplist)))

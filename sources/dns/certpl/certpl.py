@@ -24,6 +24,7 @@ def handler(event, context):
     seen = seen.replace('"','')
 
     domains = []
+    f = open('/tmp/certpl.txt', 'w')
 
     for line in data.splitlines(True)[1:]:
         if line.startswith('#'):
@@ -31,6 +32,20 @@ def handler(event, context):
         else:
             line = line.split('\t')[1]
             domains.append(line)
+            f.write(str(line)+'\n')
+
+    f.close()
+
+    s3 = boto3.resource('s3')
+
+    s3.meta.client.upload_file(
+        '/tmp/certpl.txt',
+        'projectcaretaker',
+        'dns/certpl.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
 
     domains = list(set(domains))
     print('Domains: '+str(len(domains)))

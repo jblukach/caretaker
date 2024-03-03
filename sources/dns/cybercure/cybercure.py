@@ -24,6 +24,7 @@ def handler(event, context):
     seen = seen.replace('"','')
 
     domains = []
+    f = open('/tmp/cybercure.txt', 'w')
 
     for line in data.splitlines():
         try:
@@ -31,9 +32,22 @@ def handler(event, context):
             for url in urls:
                 out = url.split('/')
                 domains.append(out[2])
-                print(out[2])
+                f.write(str(out[2])+'\n')
         except:
             continue   
+
+    f.close()
+
+    s3 = boto3.resource('s3')
+
+    s3.meta.client.upload_file(
+        '/tmp/cybercure.txt',
+        'projectcaretaker',
+        'dns/cybercure.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
 
     domains = list(set(domains))
     print('Domains: '+str(len(domains)))

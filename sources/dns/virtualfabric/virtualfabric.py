@@ -24,12 +24,27 @@ def handler(event, context):
     seen = seen.replace('"','')
 
     domains = []
+    f = open('/tmp/virtualfabric.txt', 'w')
 
     for line in data.splitlines():
         if line.startswith('#'):
             continue
         else:
             domains.append(line)
+            f.write(str(line)+'\n')
+
+    f.close()
+
+    s3 = boto3.resource('s3')
+
+    s3.meta.client.upload_file(
+        '/tmp/virtualfabric.txt',
+        'projectcaretaker',
+        'dns/virtualfabric.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
 
     domains = list(set(domains))
     print('Domains: '+str(len(domains)))

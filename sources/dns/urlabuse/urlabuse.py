@@ -24,6 +24,7 @@ def handler(event, context):
     seen = seen.replace('"','')
 
     domains = []
+    f = open('/tmp/urlabuse.txt', 'w')
 
     for line in data.splitlines():
         if line.startswith('#'):
@@ -32,6 +33,20 @@ def handler(event, context):
             line = json.loads(line)
             line = line['url'].split('/')[2]
             domains.append(line)
+            f.write(str(line)+'\n')
+
+    f.close()
+
+    s3 = boto3.resource('s3')
+
+    s3.meta.client.upload_file(
+        '/tmp/urlabuse.txt',
+        'projectcaretaker',
+        'dns/urlabuse.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
 
     domains = list(set(domains))
     print('Domains: '+str(len(domains)))

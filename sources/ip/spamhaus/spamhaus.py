@@ -41,6 +41,8 @@ def handler(event, context):
     seen = json.dumps(now, default=dateconverter)
     seen = seen.replace('"','')
 
+   f = open('/tmp/spamhaus.txt', 'w')
+
     for line in data.splitlines():
         if line.startswith(';'):
             continue
@@ -59,6 +61,20 @@ def handler(event, context):
                 network = netaddr.IPNetwork(line[0])
                 for addr in network:
                     iplist.append(str(addr))
+                    f.write(str(addr)+'\n')
+
+    f.close()
+
+    s3 = boto3.resource('s3')
+
+    s3.meta.client.upload_file(
+        '/tmp/spamhaus.txt',
+        'projectcaretaker',
+        'ip/spamhaus.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
 
     iplist = list(set(iplist))
     print('BL: '+str(len(iplist)))

@@ -61,7 +61,8 @@ class CaretakerRescure(Stack):
             _iam.PolicyStatement(
                 actions = [
                     'dynamodb:PutItem',
-                    's3:GetObject'
+                    's3:GetObject',
+                    's3:PutObject'
                 ],
                 resources = [
                     '*'

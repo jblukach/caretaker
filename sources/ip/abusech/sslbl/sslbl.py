@@ -40,6 +40,8 @@ def handler(event, context):
     seen = json.dumps(now, default=dateconverter)
     seen = seen.replace('"','')
 
+    f = open('/tmp/sslbl.txt', 'w')
+
     for line in data.splitlines():
 
         if line.startswith('#'):
@@ -47,8 +49,10 @@ def handler(event, context):
         else:
             if ipaddress.ip_network(line).version == 4:
                 iplist.append(line)
+                f.write(str(line)+'\n')
             else:
                 intip = int(ipaddress.IPv6Address(line))
+                f.write(str(line)+'\n')
 
                 conn = sqlite3.connect('/tmp/distillery.sqlite3')
                 c = conn.cursor()
@@ -77,6 +81,19 @@ def handler(event, context):
                             'epoch': epoch
                         }
                     )
+
+    f.close()
+
+    s3 = boto3.resource('s3')
+
+    s3.meta.client.upload_file(
+        '/tmp/sslbl.txt',
+        'projectcaretaker',
+        'ip/sslbl.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
 
     iplist = list(set(iplist))
     print('BL: '+str(len(iplist)))

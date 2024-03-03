@@ -24,6 +24,7 @@ def handler(event, context):
     seen = seen.replace('"','')
 
     domains = []
+    f = open('/tmp/c2intelfeeds.txt', 'w')
 
     for line in data.splitlines():
         if line.startswith('#'):
@@ -31,6 +32,20 @@ def handler(event, context):
         else:
             out = line.split(',')
             domains.append(out[0])
+            f.write(str(out[0])+'\n')
+
+    f.close()
+
+    s3 = boto3.resource('s3')
+
+    s3.meta.client.upload_file(
+        '/tmp/c2intelfeeds.txt',
+        'projectcaretaker',
+        'dns/c2intelfeeds.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
 
     domains = list(set(domains))
     print('Domains: '+str(len(domains)))

@@ -24,6 +24,7 @@ def handler(event, context):
     seen = seen.replace('"','')
 
     domains = []
+    f = open('/tmp/threatfox.txt', 'w')
 
     for line in data.splitlines():
         if line.startswith('#'):
@@ -31,6 +32,20 @@ def handler(event, context):
         else:
             out = line.split('\t')
             domains.append(out[1])
+            f.write(str(out[1])+'\n')
+
+    f.close()
+
+    s3 = boto3.resource('s3')
+
+    s3.meta.client.upload_file(
+        '/tmp/threatfox.txt',
+        'projectcaretaker',
+        'dns/threatfox.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
 
     domains = list(set(domains))
     print('Domains: '+str(len(domains)))

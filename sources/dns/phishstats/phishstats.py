@@ -24,6 +24,7 @@ def handler(event, context):
     seen = seen.replace('"','')
 
     domains = []
+    f = open('/tmp/phishstats.txt', 'w')
 
     for line in data.splitlines():
         if line.startswith('#'):
@@ -32,6 +33,18 @@ def handler(event, context):
             line = line.split(',')[2]
             line = line.split('/')[2]
             domains.append(line)
+            f.write(str(line)+'\n')
+
+    s3 = boto3.resource('s3')
+
+    s3.meta.client.upload_file(
+        '/tmp/phishstats.txt',
+        'projectcaretaker',
+        'dns/phishstats.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
 
     domains = list(set(domains))
     print('Domains: '+str(len(domains)))

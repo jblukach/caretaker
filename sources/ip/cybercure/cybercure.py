@@ -38,14 +38,28 @@ def handler(event, context):
     seen = json.dumps(now, default=dateconverter)
     seen = seen.replace('"','')
 
+    f = open('/tmp/cybercure.txt', 'w')
+
     for line in data.splitlines():
         try:
             ips = line.split(',')
             for ip in ips:
                 if ipaddress.ip_network(ip).version == 4:
                     iplist.append(str(ip))
+                    f.write(str(ip)+'\n')
         except:
             continue        
+
+    s3 = boto3.resource('s3')
+
+    s3.meta.client.upload_file(
+        '/tmp/cybercure.txt',
+        'projectcaretaker',
+        'ip/cybercure.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
 
     iplist = list(set(iplist))
     print('BL: '+str(len(iplist)))

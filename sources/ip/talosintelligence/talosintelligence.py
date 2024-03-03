@@ -38,11 +38,27 @@ def handler(event, context):
     seen = json.dumps(now, default=dateconverter)
     seen = seen.replace('"','')
 
+   f = open('/tmp/talosintelligence.txt', 'w')
+
     for line in data.splitlines():
         if line.startswith('#'):
             continue
         else:
             iplist.append(str(line))
+            f.write(str(line)+'\n')
+
+    f.close()
+
+    s3 = boto3.resource('s3')
+
+    s3.meta.client.upload_file(
+        '/tmp/talosintelligence.txt',
+        'projectcaretaker',
+        'ip/talosintelligence.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
 
     iplist = list(set(iplist))
     print('BL: '+str(len(iplist)))
