@@ -50,6 +50,8 @@ def handler(event, context):
         except:
             continue        
 
+    f.close()
+
     s3 = boto3.resource('s3')
 
     s3.meta.client.upload_file(
