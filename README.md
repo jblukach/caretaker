@@ -154,7 +154,6 @@ I appreciate all the work that goes into maintaining these lists - thank you!
 - https://www.nubi-network.com
 - https://www.proofpoint.com
 - https://www.rescure.me
-- https://www.spamhaus.org
 
 The complied threat feed that focuses on North Dakota gets updated every hour.
 

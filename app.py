@@ -34,7 +34,6 @@ from caretaker.caretaker_proofpoint import CaretakerProofPoint
 from caretaker.caretaker_rescure import CaretakerRescure
 from caretaker.caretaker_rutgers import CaretakerRutgers
 from caretaker.caretaker_scorecard import CaretakerScoreCard
-from caretaker.caretaker_spamhaus import CaretakerSpamhaus
 from caretaker.caretaker_stack import CaretakerStack
 from caretaker.caretaker_talosintelligence import CaretakerTalosIntelligence
 from caretaker.caretaker_tor import CaretakerTor
@@ -379,17 +378,6 @@ CaretakerRutgers(
 
 CaretakerScoreCard(
     app, 'CaretakerScoreCard',
-    env = cdk.Environment(
-        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
-    ),
-    synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
-    )
-)
-
-CaretakerSpamhaus(
-    app, 'CaretakerSpamhaus',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'
