@@ -46,6 +46,8 @@ def handler(event, context):
 
         if line.startswith('#'):
             continue
+        elif line.startswith('<'):
+            continue
         elif ipaddress.ip_network(line).version == 4:
             iplist.append(line)
             f.write(str(line)+'\n')
