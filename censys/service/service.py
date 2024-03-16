@@ -70,33 +70,6 @@ def handler(event, context):
 
     print(service + ': ' + str(primarycount))
 
-    query = h.search(
-        '(((location.province="North Dakota")) and autonomous_system.asn: {"209","6167","7018","11492","21928"}) and services.service_name=`'+service+'`',
-        per_page = 100,
-        pages = 100,
-        fields = [
-            'ip'
-        ]
-    )
-
-    regioncount = 0
-
-    for page in query:
-        for address in page:
-            verify.put_item(
-                Item = {
-                    'pk': 'IP#',
-                    'sk': 'IP#'+str(address['ip'])+'#SOURCE#'+service+'-censys.io',
-                    'ip': str(address['ip']),
-                    'source': service+'-censys.io',
-                    'last': seen,
-                    'epoch': epoch
-                }
-            )
-            regioncount += 1
-    
-    print('North Dakota: ' + str(regioncount))
-
     return {
         'statusCode': 200,
         'body': json.dumps('Censys Hosts Service Search')

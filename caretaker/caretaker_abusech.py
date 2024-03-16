@@ -85,7 +85,7 @@ class CaretakerAbuseCH(Stack):
                 VERIFY_TABLE = 'verify',
                 S3_BUCKET = 'addresses.tundralabs.org'
             ),
-            memory_size = 4096,
+            memory_size = 512,
             retry_attempts = 0,
             role = role,
             layers = [
@@ -97,7 +97,7 @@ class CaretakerAbuseCH(Stack):
         feodotrackerlogs = _logs.LogGroup(
             self, 'feodotrackerlogs',
             log_group_name = '/aws/lambda/'+feodotracker.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
@@ -145,7 +145,7 @@ class CaretakerAbuseCH(Stack):
                 VERIFY_TABLE = 'verify',
                 S3_BUCKET = 'addresses.tundralabs.org'
             ),
-            memory_size = 4096,
+            memory_size = 512,
             retry_attempts = 0,
             role = role,
             layers = [
@@ -157,7 +157,7 @@ class CaretakerAbuseCH(Stack):
         sslbllogs = _logs.LogGroup(
             self, 'sslbllogs',
             log_group_name = '/aws/lambda/'+sslbl.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
@@ -216,7 +216,7 @@ class CaretakerAbuseCH(Stack):
         threatfoxlogs = _logs.LogGroup(
             self, 'threatfoxlogs',
             log_group_name = '/aws/lambda/'+threatfox.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
@@ -275,7 +275,7 @@ class CaretakerAbuseCH(Stack):
         urlhauslogs = _logs.LogGroup(
             self, 'urlhauslogs',
             log_group_name = '/aws/lambda/'+urlhaus.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 

@@ -85,7 +85,7 @@ class CaretakerDigitalSide(Stack):
                 VERIFY_TABLE = 'verify',
                 S3_BUCKET = 'addresses.tundralabs.org'
             ),
-            memory_size = 4096,
+            memory_size = 512,
             retry_attempts = 0,
             role = role,
             layers = [
@@ -97,7 +97,7 @@ class CaretakerDigitalSide(Stack):
         logs = _logs.LogGroup(
             self, 'logs',
             log_group_name = '/aws/lambda/'+digitalside.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
@@ -156,7 +156,7 @@ class CaretakerDigitalSide(Stack):
         digitalsidedomainlogs = _logs.LogGroup(
             self, 'digitalsidedomainlogs',
             log_group_name = '/aws/lambda/'+digitalsidedomain.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 

@@ -124,7 +124,7 @@ class CaretakerCensysService2(Stack):
             logs = _logs.LogGroup(
                 self, 'censyslogs'+search,
                 log_group_name = '/aws/lambda/'+service.function_name,
-                retention = _logs.RetentionDays.ONE_MONTH,
+                retention = _logs.RetentionDays.ONE_DAY,
                 removal_policy = RemovalPolicy.DESTROY
             )
 

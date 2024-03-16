@@ -155,7 +155,7 @@ class CaretakerDistillery(Stack):
         logs = _logs.LogGroup(
             self, 'logs',
             log_group_name = '/aws/lambda/'+distillery.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
@@ -190,64 +190,6 @@ class CaretakerDistillery(Stack):
 
     ### LAMBDA ###
 
-        cidr = _lambda.Function(
-            self, 'cidr',
-            runtime = _lambda.Runtime.PYTHON_3_12,
-            architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('censys/cidr'),
-            timeout = Duration.seconds(900),
-            handler = 'cidr.handler',
-            environment = dict(
-                AWS_ACCOUNT = account,
-                DYNAMODB_TABLE = table.table_name
-            ),
-            memory_size = 512,
-            retry_attempts = 0,
-            role = role,
-            layers = [
-                censys,
-                getpublicip
-            ]
-        )
-
-        cidrlogs = _logs.LogGroup(
-            self, 'cidrlogs',
-            log_group_name = '/aws/lambda/'+cidr.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
-            removal_policy = RemovalPolicy.DESTROY
-        )
-
-        cidralarm = _cloudwatch.Alarm(
-            self, 'cidralarm',
-            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
-            threshold = 0,
-            evaluation_periods = 1,
-            metric = cidr.metric_errors(
-                period = Duration.minutes(1)
-            )
-        )
-
-        cidralarm.add_alarm_action(
-            _actions.SnsAction(topic)
-        )
-    
-        cidrevent = _events.Rule(
-            self, 'cidrevent',
-            schedule = _events.Schedule.cron(
-                minute = '15',
-                hour = '9',
-                month = '*',
-                week_day = 'MON',
-                year = '*'
-            )
-        )
-
-        cidrevent.add_target(
-            _targets.LambdaFunction(cidr)
-        )
-
-    ### LAMBDA ###
-
         address = _lambda.Function(
             self, 'address',
             runtime = _lambda.Runtime.PYTHON_3_12,
@@ -260,7 +202,7 @@ class CaretakerDistillery(Stack):
                 DYNAMODB_TABLE = table.table_name,
                 S3_BUCKET = 'addresses.tundralabs.org'
             ),
-            memory_size = 4096,
+            memory_size = 512,
             retry_attempts = 0,
             role = role,
             layers = [
@@ -272,7 +214,7 @@ class CaretakerDistillery(Stack):
         addresslogs = _logs.LogGroup(
             self, 'addresslogs',
             log_group_name = '/aws/lambda/'+address.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
@@ -293,7 +235,7 @@ class CaretakerDistillery(Stack):
         addressevent = _events.Rule(
             self, 'addressevent',
             schedule = _events.Schedule.cron(
-                minute = '20',
+                minute = '15',
                 hour = '9',
                 month = '*',
                 week_day = 'MON',
@@ -303,64 +245,6 @@ class CaretakerDistillery(Stack):
 
         addressevent.add_target(
             _targets.LambdaFunction(address)
-        )
-
-    ### LAMBDA ###
-
-        ipv4 = _lambda.Function(
-            self, 'ipv4',
-            runtime = _lambda.Runtime.PYTHON_3_12,
-            architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('distillery/ipv4'),
-            timeout = Duration.seconds(900),
-            handler = 'ipv4.handler',
-            environment = dict(
-                AWS_ACCOUNT = account,
-                DYNAMODB_TABLE = table.table_name,
-                S3_BUCKET = 'addresses.tundralabs.org'
-            ),
-            memory_size = 512,
-            retry_attempts = 0,
-            role = role,
-            layers = [
-                getpublicip
-            ]
-        )
-
-        ipv4logs = _logs.LogGroup(
-            self, 'ipv4logs',
-            log_group_name = '/aws/lambda/'+ipv4.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
-            removal_policy = RemovalPolicy.DESTROY
-        )
-
-        ipv4alarm = _cloudwatch.Alarm(
-            self, 'ipv4alarm',
-            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
-            threshold = 0,
-            evaluation_periods = 1,
-            metric = ipv4.metric_errors(
-                period = Duration.minutes(1)
-            )
-        )
-
-        ipv4alarm.add_alarm_action(
-            _actions.SnsAction(topic)
-        )
-    
-        ipv4event = _events.Rule(
-            self, 'ipv4event',
-            schedule = _events.Schedule.cron(
-                minute = '20',
-                hour = '9',
-                month = '*',
-                week_day = 'MON',
-                year = '*'
-            )
-        )
-
-        ipv4event.add_target(
-            _targets.LambdaFunction(ipv4)
         )
 
     ### LAMBDA ###
@@ -377,7 +261,7 @@ class CaretakerDistillery(Stack):
                 DYNAMODB_TABLE = table.table_name,
                 S3_BUCKET = 'addresses.tundralabs.org'
             ),
-            memory_size = 512,
+            memory_size = 256,
             retry_attempts = 0,
             role = role,
             layers = [
@@ -388,7 +272,7 @@ class CaretakerDistillery(Stack):
         ipv6logs = _logs.LogGroup(
             self, 'ipv6logs',
             log_group_name = '/aws/lambda/'+ipv6.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
@@ -409,7 +293,7 @@ class CaretakerDistillery(Stack):
         ipv6event = _events.Rule(
             self, 'ipv6event',
             schedule = _events.Schedule.cron(
-                minute = '20',
+                minute = '15',
                 hour = '9',
                 month = '*',
                 week_day = 'MON',
@@ -435,7 +319,7 @@ class CaretakerDistillery(Stack):
                 DYNAMODB_TABLE = table.table_name,
                 S3_BUCKET = 'addresses.tundralabs.org'
             ),
-            memory_size = 512,
+            memory_size = 256,
             retry_attempts = 0,
             role = role,
             layers = [
@@ -446,7 +330,7 @@ class CaretakerDistillery(Stack):
         ipv46logs = _logs.LogGroup(
             self, 'ipv46logs',
             log_group_name = '/aws/lambda/'+ipv46.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
@@ -467,7 +351,7 @@ class CaretakerDistillery(Stack):
         ipv46event = _events.Rule(
             self, 'ipv46event',
             schedule = _events.Schedule.cron(
-                minute = '20',
+                minute = '15',
                 hour = '9',
                 month = '*',
                 week_day = 'MON',

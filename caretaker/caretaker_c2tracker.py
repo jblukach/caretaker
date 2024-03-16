@@ -85,7 +85,7 @@ class CaretakerC2Tracker(Stack):
                 VERIFY_TABLE = 'verify',
                 S3_BUCKET = 'addresses.tundralabs.org'
             ),
-            memory_size = 4096,
+            memory_size = 512,
             retry_attempts = 0,
             role = role,
             layers = [
@@ -97,7 +97,7 @@ class CaretakerC2Tracker(Stack):
         logs = _logs.LogGroup(
             self, 'logs',
             log_group_name = '/aws/lambda/'+c2tracker.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 

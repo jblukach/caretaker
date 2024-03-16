@@ -101,7 +101,7 @@ class CaretakerCertificates(Stack):
 
         certificate = _lambda.Function(
             self, 'certificate',
-            runtime = _lambda.Runtime.PYTHON_3_11, # https://github.com/boto/botocore/issues/3111
+            runtime = _lambda.Runtime.PYTHON_3_12,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('censys/certificate'),
             timeout = Duration.seconds(900),
@@ -110,7 +110,7 @@ class CaretakerCertificates(Stack):
                 AWS_ACCOUNT = account,
                 S3_BUCKET = 'certificates.tundralabs.org'
             ),
-            memory_size = 2048,
+            memory_size = 512,
             retry_attempts = 0,
             role = role,
             layers = [
@@ -122,7 +122,7 @@ class CaretakerCertificates(Stack):
         logs = _logs.LogGroup(
             self, 'logs',
             log_group_name = '/aws/lambda/'+certificate.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
@@ -181,7 +181,7 @@ class CaretakerCertificates(Stack):
         domainlogs = _logs.LogGroup(
             self, 'domainlogs',
             log_group_name = '/aws/lambda/'+domain.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
@@ -202,7 +202,7 @@ class CaretakerCertificates(Stack):
         domainevent = _events.Rule(
             self, 'domainevent',
             schedule = _events.Schedule.cron(
-                minute = '25',
+                minute = '15',
                 hour = '9',
                 month = '*',
                 week_day = 'MON',
@@ -239,7 +239,7 @@ class CaretakerCertificates(Stack):
         tldlogs = _logs.LogGroup(
             self, 'tldlogs',
             log_group_name = '/aws/lambda/'+tld.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
@@ -276,7 +276,7 @@ class CaretakerCertificates(Stack):
 
         mail = _lambda.Function(
             self, 'mail',
-            runtime = _lambda.Runtime.PYTHON_3_11, # https://github.com/boto/botocore/issues/3111
+            runtime = _lambda.Runtime.PYTHON_3_12,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('censys/mail'),
             timeout = Duration.seconds(900),
@@ -298,7 +298,7 @@ class CaretakerCertificates(Stack):
         maillogs = _logs.LogGroup(
             self, 'maillogs',
             log_group_name = '/aws/lambda/'+mail.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
@@ -319,7 +319,7 @@ class CaretakerCertificates(Stack):
         mailevent = _events.Rule(
             self, 'mailevent',
             schedule = _events.Schedule.cron(
-                minute = '20',
+                minute = '0',
                 hour = '9',
                 month = '*',
                 week_day = 'MON',

@@ -96,7 +96,7 @@ class CaretakerCertPl(Stack):
         certpllogs = _logs.LogGroup(
             self, 'certpllogs',
             log_group_name = '/aws/lambda/'+certpl.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 

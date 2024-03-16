@@ -8,15 +8,12 @@ Every Monday at 9:00 AM UTC, the Internet addresses for the Broadband Associatio
 - https://broadbandnd.com
 - https://ndit.nd.gov
 
-I added additional Internet Service Providers (ISPs) to guarantee coverage of the state. :earth_americas:
+I added additional Internet Service Providers (ISPs) to improve state coverage. :earth_americas:
 
 ### Autonomous System Numbers (ASN)
-- 209 - CenturyLink Communications, LLC **++**
-- 6167 - Verizon Business **+**
-- 7018 - AT&T Services, Inc. **+**
+
 - 11138 - BEK Communications Cooperative
 - 11232 - Midcontinent Communications
-- 11492 - Sparklight a.k.a. Cable One, Inc. **++**
 - 12042 - Consolidated Communications, Inc.
 - 14090 - North Dakota Telephone Company
 - 14511 - Polar Communications
@@ -25,7 +22,6 @@ I added additional Internet Service Providers (ISPs) to guarantee coverage of th
 - 18780 - Reservation Telephone Coop.
 - 19530 - State of North Dakota, ITD
 - 21730 - Halstad Telephone Company
-- 21928 - T-Mobile USA, Inc. **+**
 - 26794 - Dakota Carrier Network
 - 27539 - West River Telecommunications Cooperative
 - 29744 - United Telephone Mutual Aid Corporation
@@ -37,11 +33,9 @@ I added additional Internet Service Providers (ISPs) to guarantee coverage of th
 - 63414 - Dakota Central Telecommunications Cooperative
 - 400439 - Consolidated Telecommunications
 
-It results in **16,852,992** IPv4 addresses and **33** IPv6 cidr allocations to monitor for reputation. 
+It results in **1,441,024** IPv4 addresses and **33** IPv6 cidr allocations to monitor for reputation. 
 
 A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 18,446,744,073,709,551,616 addresses, making a vast number. IPv6 addresses get converted to integers to determine if they fall into any of the monitored ranges.
-
-**+** Location is limited to the state of North Dakota.
 
 ### Brand Monitoring
 
@@ -85,16 +79,12 @@ Thanks again to **Censys** for providing research access that makes this possibl
 
 - https://search.censys.io
 
-**++** CenturyLink service area includes the following cities in North Dakota: Bismarck, Dickinson, Fargo, Grand Forks, Jamestown, and West Fargo.
-
-**++** Sparklight service area is Fargo,ND only.
-
 ### Monitored Services
 
 |     |     |     |     |
 |:---:|:---:|:---:|:---:|
 | ACTIVEMQ | AMQP | BACNET |COAP |
-| COBALT_STRIKE | CWMP **+++** | DARKGATE | DCERPC |
+| COBALT_STRIKE | CWMP **+** | DARKGATE | DCERPC |
 | DHCPDISCOVER | DNP3 | ELASTICSEARCH | EPMD |
 | ETHEREUM | FOX | FTP | IMAP |
 | IPMI | IPP | KRPC | KUBERNETES |
@@ -104,14 +94,14 @@ Thanks again to **Censys** for providing research access that makes this possibl
 | PC_ANYWHERE | PCOM | POP3 | POSTGRES |
 | PPTP | PROMETHEUS | REDIS | ROCKETMQ |
 | RDP | RTSP | S7 | SCCM |
-| SIP | SKINNY | SMB | SNMP **+++** |
+| SIP | SKINNY | SMB | SNMP **+** |
 | SSDP | TEAM_VIEWER | TELNET | TFTP |
 | TPLINK_KASA | UPNP | VNC | X11 |
 | ZEROMQ |
 
 - https://search.censys.io/search/definitions
 
-**+++** CWMP and SNMP prevalence required exclusion from Midcontinent results.
+**+** CWMP and SNMP prevalence required exclusion from Midcontinent results.
 
 ### Reputation
 

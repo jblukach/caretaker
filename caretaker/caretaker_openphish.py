@@ -96,7 +96,7 @@ class CaretakerOpenPhish(Stack):
         openphishlogs = _logs.LogGroup(
             self, 'openphishlogs',
             log_group_name = '/aws/lambda/'+openphish.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 

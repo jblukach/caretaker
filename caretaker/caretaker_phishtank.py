@@ -96,7 +96,7 @@ class CaretakerPhishTank(Stack):
         phishtanklogs = _logs.LogGroup(
             self, 'phishtanklogs',
             log_group_name = '/aws/lambda/'+phishtank.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 

@@ -96,7 +96,7 @@ class CaretakerUrlAbuse(Stack):
         urlabuselogs = _logs.LogGroup(
             self, 'urlabuselogs',
             log_group_name = '/aws/lambda/'+urlabuse.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 

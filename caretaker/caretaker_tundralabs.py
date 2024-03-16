@@ -105,7 +105,7 @@ class CaretakerTundraLabs(Stack):
         startlogs = _logs.LogGroup(
             self, 'startlogs',
             log_group_name = '/aws/lambda/'+start.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
@@ -163,7 +163,7 @@ class CaretakerTundraLabs(Stack):
         steplogs = _logs.LogGroup(
             self, 'steplogs',
             log_group_name = '/aws/lambda/'+step.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
@@ -206,7 +206,7 @@ class CaretakerTundraLabs(Stack):
         readlogs = _logs.LogGroup(
             self, 'readlogs',
             log_group_name = '/aws/lambda/'+read.function_name,
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
