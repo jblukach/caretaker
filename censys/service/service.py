@@ -47,8 +47,7 @@ def handler(event, context):
     verify = dynamodb.Table('verify')
 
     now = datetime.datetime.now()
-    orig = datetime.datetime.utcfromtimestamp(0)
-    epoch = int((now - orig).total_seconds() * 1000.0)
+    epoch = int(datetime.datetime.now(datetime.timezone.utc).timestamp())
     seen = json.dumps(now, default=dateconverter)
     seen = seen.replace('"','')
 
