@@ -101,7 +101,7 @@ class CaretakerCertificates(Stack):
 
         certificate = _lambda.Function(
             self, 'certificate',
-            runtime = _lambda.Runtime.PYTHON_3_12,
+            runtime = _lambda.Runtime.PYTHON_3_11, # https://github.com/boto/botocore/issues/3111
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('censys/certificate'),
             timeout = Duration.seconds(900),
@@ -276,7 +276,7 @@ class CaretakerCertificates(Stack):
 
         mail = _lambda.Function(
             self, 'mail',
-            runtime = _lambda.Runtime.PYTHON_3_12,
+            runtime = _lambda.Runtime.PYTHON_3_11, # https://github.com/boto/botocore/issues/3111
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('censys/mail'),
             timeout = Duration.seconds(900),
