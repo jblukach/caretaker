@@ -42,6 +42,10 @@ def handler(event, context):
     for line in data.splitlines():
         if line.startswith('#'):
             continue
+        elif line.startswith('\n'):
+            continue
+        elif line.startswith(' '):
+            continue
         else:
             iplist.append(str(line))
             f.write(str(line)+'\n')
