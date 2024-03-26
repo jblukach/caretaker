@@ -28,6 +28,12 @@ def handler(event, context):
     for line in data.splitlines():
         if line.startswith('#'):
             continue
+        elif line.startswith('\n'):
+            continue
+        elif line.startswith('\r'):
+            continue
+        elif line.startswith(' '):
+            continue
         else:
             domains.append(line)
             f.write(str(line)+'\n')

@@ -139,7 +139,6 @@ I appreciate all the work that goes into maintaining these lists - thank you!
 - https://zonefiles.io
 - https://www.binarydefense.com
 - https://www.blocklist.de
-- https://www.cybercure.ai
 - https://www.dan.me.uk
 - https://www.nubi-network.com
 - https://www.proofpoint.com

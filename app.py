@@ -15,7 +15,6 @@ from caretaker.caretaker_censysservice3 import CaretakerCensysService3
 from caretaker.caretaker_certificates import CaretakerCertificates
 from caretaker.caretaker_certpl import CaretakerCertPl
 from caretaker.caretaker_cinsscore import CaretakerCinsScore
-from caretaker.caretaker_cybercure import CaretakerCyberCure
 from caretaker.caretaker_digitalside import CaretakerDigitalSide
 from caretaker.caretaker_distillery import CaretakerDistillery
 from caretaker.caretaker_elliotech import CaretakerEllioTech
@@ -178,16 +177,6 @@ CaretakerCinsScore(
     )
 )
 
-CaretakerCyberCure(
-    app, 'CaretakerCyberCure',
-    env = cdk.Environment(
-        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
-    ),
-    synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
-    )
-)
 
 CaretakerDigitalSide(
     app, 'CaretakerDigitalSide',
