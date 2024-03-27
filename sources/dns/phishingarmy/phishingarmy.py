@@ -28,6 +28,8 @@ def handler(event, context):
     for line in data.splitlines():
         if line.startswith('#'):
             continue
+        elif len(line) <= 2:
+            continue
         elif line.startswith('\n'):
             continue
         elif line.startswith('\r'):

@@ -39,7 +39,7 @@ class CaretakerTundraLabs(Stack):
 
         smartopen = _lambda.LayerVersion.from_layer_version_arn(
             self, 'smartopen',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:smartopen:3'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:smartopen:4'
         )
 
     ### TOPIC ###
