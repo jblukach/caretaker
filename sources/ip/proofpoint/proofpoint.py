@@ -36,6 +36,7 @@ def handler(event, context):
 
     now = datetime.datetime.now()
     epoch = int(datetime.datetime.now(datetime.timezone.utc).timestamp())
+    ttl = epoch+2592000 # plus 30 days
     seen = json.dumps(now, default=dateconverter)
     seen = seen.replace('"','')
 
@@ -64,7 +65,8 @@ def handler(event, context):
                         'ip': str(line),
                         'source': 'emergingthreats.net',
                         'last': seen,
-                        'epoch': epoch
+                        'epoch': epoch,
+                        'ttl': ttl
                     }
                 )
                 verify.put_item(
@@ -105,7 +107,8 @@ def handler(event, context):
                 'ip': str(match),
                 'source': 'emergingthreats.net',
                 'last': seen,
-                'epoch': epoch
+                'epoch': epoch,
+                'ttl': ttl
             }
         )
         verify.put_item(

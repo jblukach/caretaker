@@ -27,17 +27,17 @@ class CaretakerCertificates(Stack):
 
         censys = _lambda.LayerVersion.from_layer_version_arn(
             self, 'censys',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:censys:5'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:censys:6'
         )
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:10'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:11'
         )
 
         requests = _lambda.LayerVersion.from_layer_version_arn(
             self, 'requests',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:2'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:3'
         )
 
     ### TOPIC ###
@@ -101,7 +101,7 @@ class CaretakerCertificates(Stack):
 
         certificate = _lambda.Function(
             self, 'certificate',
-            runtime = _lambda.Runtime.PYTHON_3_11, # https://github.com/boto/botocore/issues/3111
+            runtime = _lambda.Runtime.PYTHON_3_12,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('censys/certificate'),
             timeout = Duration.seconds(900),
@@ -167,7 +167,6 @@ class CaretakerCertificates(Stack):
             environment = dict(
                 AWS_ACCOUNT = account,
                 S3_BUCKET = 'certificates.tundralabs.org',
-                S3_EMAIL = 'emails.tundralabs.org',
                 TLD_TABLE = tlddb.table_name
             ),
             memory_size = 512,
@@ -276,15 +275,14 @@ class CaretakerCertificates(Stack):
 
         mail = _lambda.Function(
             self, 'mail',
-            runtime = _lambda.Runtime.PYTHON_3_11, # https://github.com/boto/botocore/issues/3111
+            runtime = _lambda.Runtime.PYTHON_3_12,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('censys/mail'),
             timeout = Duration.seconds(900),
             handler = 'mail.handler',
             environment = dict(
                 AWS_ACCOUNT = account,
-                S3_BUCKET = 'emails.tundralabs.org',
-                S3_CERTS = 'certificates.tundralabs.org'
+                S3_BUCKET = 'emails.tundralabs.org'
             ),
             memory_size = 512,
             retry_attempts = 0,
@@ -319,7 +317,7 @@ class CaretakerCertificates(Stack):
         mailevent = _events.Rule(
             self, 'mailevent',
             schedule = _events.Schedule.cron(
-                minute = '0',
+                minute = '30',
                 hour = '9',
                 month = '*',
                 week_day = 'MON',

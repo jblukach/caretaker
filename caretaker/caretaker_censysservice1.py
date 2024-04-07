@@ -26,12 +26,12 @@ class CaretakerCensysService1(Stack):
 
         censys = _lambda.LayerVersion.from_layer_version_arn(
             self, 'censys',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:censys:5'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:censys:6'
         )
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:10'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:11'
         )
 
     ### TOPIC ###

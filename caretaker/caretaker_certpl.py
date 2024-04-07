@@ -26,12 +26,12 @@ class CaretakerCertPl(Stack):
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:10'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:11'
         )
 
         requests = _lambda.LayerVersion.from_layer_version_arn(
             self, 'requests',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:2'
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:3'
         )
 
     ### TOPIC ###

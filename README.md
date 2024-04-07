@@ -39,7 +39,7 @@ A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 1
 
 ### Brand Monitoring
 
-Every Monday at 9:00 AM UTC, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect **28,246** domain names for ```apex``` and ```www``` brand monitoring.
+Every Monday at 9:00 AM UTC, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect **21,550** domain names for ```apex``` and ```www``` brand monitoring.
 
 Thank you to **Censys** for providing research access that makes this possible!
 
@@ -53,27 +53,13 @@ The domain names from the certificates are normalized to guarantee valid top-lev
 
 - https://www.iana.org
 
-Google Maps Platform is used to find Places by Category located within North Dakota to identify brands hosted in the cloud.
-
-| Category | Count | Updated |
-|:---:|:---:|:---:|
-| church | 1,360 | Feb. 17th, 2024 |
-| hotel | 360 | Feb. 9th, 2024 |
-| restaurant | 1,120 | Feb. 16th, 2024 |
-| school | 904 | Feb. 17th, 2024 |
-| store | 3,206 | Feb. 17th, 2024 |
-
-Collecting domains to monitor got expensive and would require significant maintenance, so I tried Apify for the initial categories.
-
-- https://apify.com
-
 ### Email Security
 
 Every Monday at 10:00 AM UTC, domains are checked for **MX** records to determine if an email server is present; once identified, verification of **DMARC** and **SPF** records occurs.
 
 ### Misconfiguration
 
-Every day starting at 10:00 AM UTC, a.k.a. 5:00 AM CT, queries run against **Censys** for misconfigurations that expose insecure services to the Internet. 
+Every day starting at 10:00 AM UTC, queries run against **Censys** for misconfigurations that expose insecure services to the Internet. 
 
 Thanks again to **Censys** for providing research access that makes this possible!
 
@@ -105,7 +91,7 @@ Thanks again to **Censys** for providing research access that makes this possibl
 
 ### Reputation
 
-The following threat feeds pull once or twice an hour to determine if any addresses from North Dakota exist on the lists. 
+The following threat feeds pull at thirty minutes past the hour to determine if any addresses from North Dakota exist on the lists. 
 
 If there are others that you would like added, please open an issue on the repository?
 
@@ -144,7 +130,7 @@ I appreciate all the work that goes into maintaining these lists - thank you!
 - https://www.proofpoint.com
 - https://www.rescure.me
 
-The complied threat feed that focuses on North Dakota gets updated every hour.
+The complied threat feed focusing on North Dakota gets updated every hour with a thirty-day retention.
 
 - https://feed.tundralabs.org
 
@@ -174,7 +160,7 @@ When the website returns **red**, please try again or check back later.
 
 You may require additional assistance to resolve the issue outside of this project; at least the awareness to start asking questions will exist.
 
-No threat feed is complete without a map to visualize the results using GeoLite2 data created by MaxMind within a general area for privacy.
+No threat feed is complete without a map to visualize the results using GeoLite2 data created by MaxMind within a general area for privacy with a thirty-day retention.
 
 - https://map.tundralabs.org
 
@@ -186,7 +172,7 @@ This product includes GeoLite2 data created by MaxMind, available from https://w
 
 ### Statistics
 
-Metrics are generated every hour, showing the current state and previously mitigated detections.
+Every day, starting at 11:00 AM UTC, metrics show the current state and previously mitigated detections with a thirty-day retention.
 
 - https://asn.tundralabs.org
 - https://config.tundralabs.org
