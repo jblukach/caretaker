@@ -129,7 +129,7 @@ class CaretakerTundraLabs(Stack):
                 minute = '0',
                 hour = '10',
                 month = '*',
-                week_day = 'MON',
+                week_day = '*',
                 year = '*'
             )
         )

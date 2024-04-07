@@ -146,7 +146,7 @@ class CaretakerCertificates(Stack):
                 minute = '0',
                 hour = '9',
                 month = '*',
-                week_day = 'MON',
+                week_day = '*',
                 year = '*'
             )
         )
@@ -204,7 +204,7 @@ class CaretakerCertificates(Stack):
                 minute = '15',
                 hour = '9',
                 month = '*',
-                week_day = 'MON',
+                week_day = '*',
                 year = '*'
             )
         )
@@ -262,7 +262,7 @@ class CaretakerCertificates(Stack):
                 minute = '0',
                 hour = '9',
                 month = '*',
-                week_day = 'MON',
+                week_day = '*',
                 year = '*'
             )
         )
@@ -320,7 +320,7 @@ class CaretakerCertificates(Stack):
                 minute = '30',
                 hour = '9',
                 month = '*',
-                week_day = 'MON',
+                week_day = '*',
                 year = '*'
             )
         )

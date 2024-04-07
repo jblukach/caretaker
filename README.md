@@ -2,7 +2,7 @@
 
 Reputation is the most critical asset available when using the Internet, as it helps us decide which services we feel safe using. It can also impact an end-users ability to use the web if the connection had previous suspect behavior. Project Caretaker aims to provide a Threat Feed for North Dakota so that anyone can verify Internet reputation.
 
-Every Monday at 9:00 AM UTC, the Internet addresses for the Broadband Association of North Dakota (BAND) members, North Dakota Univesity System (NDUS), and the State of North Dakota (ITD) get updated from Security Trails, a Recorded Future company.
+Every day at 9:00 AM UTC, the Internet addresses for the Broadband Association of North Dakota (BAND) members, North Dakota Univesity System (NDUS), and the State of North Dakota (ITD) get updated from Security Trails, a Recorded Future company.
 
 - https://bgpview.io
 - https://broadbandnd.com
@@ -39,7 +39,7 @@ A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 1
 
 ### Brand Monitoring
 
-Every Monday at 9:00 AM UTC, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect **21,550** domain names for ```apex``` and ```www``` brand monitoring.
+Every day at 9:00 AM UTC, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect **21,550** domain names for ```apex``` and ```www``` brand monitoring.
 
 Thank you to **Censys** for providing research access that makes this possible!
 
@@ -55,7 +55,7 @@ The domain names from the certificates are normalized to guarantee valid top-lev
 
 ### Email Security
 
-Every Monday at 10:00 AM UTC, domains are checked for **MX** records to determine if an email server is present; once identified, verification of **DMARC** and **SPF** records occurs.
+Every day at 10:00 AM UTC, domains are checked for **MX** records to determine if an email server is present; once identified, verification of **DMARC** and **SPF** records occurs.
 
 ### Misconfiguration
 
@@ -172,7 +172,7 @@ This product includes GeoLite2 data created by MaxMind, available from https://w
 
 ### Statistics
 
-Every day, starting at 11:00 AM UTC, metrics show the current state and previously mitigated detections with a thirty-day retention.
+Every day at 11:00 AM UTC, metrics show the current state and previously mitigated detections with a thirty-day retention.
 
 - https://asn.tundralabs.org
 - https://config.tundralabs.org
