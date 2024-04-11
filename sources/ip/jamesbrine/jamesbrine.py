@@ -38,7 +38,7 @@ def handler(event, context):
     seen = json.dumps(now, default=dateconverter)
     seen = seen.replace('"','')
 
-    f = open('/tmp/jamesbrine.txt', 'w')
+    f = open('/tmp/jamesbrine4.txt', 'w')
 
     for line in data.splitlines():
         if line.startswith('#'):
@@ -55,9 +55,9 @@ def handler(event, context):
     s3 = boto3.resource('s3')
 
     s3.meta.client.upload_file(
-        '/tmp/jamesbrine.txt',
+        '/tmp/jamesbrine4.txt',
         'projectcaretaker',
-        'ip/jamesbrine.txt',
+        'ipv4/jamesbrine.txt',
         ExtraArgs = {
             'ContentType': "text/plain"
         }

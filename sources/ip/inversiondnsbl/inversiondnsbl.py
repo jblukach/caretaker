@@ -40,7 +40,8 @@ def handler(event, context):
     seen = json.dumps(now, default=dateconverter)
     seen = seen.replace('"','')
 
-    f = open('/tmp/inversiondnsbl.txt', 'w')
+    f = open('/tmp/inversiondnsbl4.txt', 'w')
+    g = open('/tmp/inversiondnsbl6.txt', 'w')
 
     for line in data.splitlines():
 
@@ -51,7 +52,7 @@ def handler(event, context):
             f.write(str(line)+'\n')
         else:
             intip = int(ipaddress.IPv6Address(line))
-            f.write(str(line)+'\n')
+            g.write(str(line)+'\n')
 
             conn = sqlite3.connect('/tmp/distillery.sqlite3')
             c = conn.cursor()
@@ -83,13 +84,23 @@ def handler(event, context):
                 )
 
     f.close()
+    g.close()
 
     s3 = boto3.resource('s3')
 
     s3.meta.client.upload_file(
-        '/tmp/inversiondnsbl.txt',
+        '/tmp/inversiondnsbl4.txt',
         'projectcaretaker',
-        'ip/inversiondnsbl.txt',
+        'ipv4/inversiondnsbl.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
+
+    s3.meta.client.upload_file(
+        '/tmp/inversiondnsbl6.txt',
+        'projectcaretaker',
+        'ipv6/inversiondnsbl.txt',
         ExtraArgs = {
             'ContentType': "text/plain"
         }

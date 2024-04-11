@@ -26,14 +26,25 @@ def handler(event, context):
     domains = []
     f = open('/tmp/phishtank.txt', 'w')
 
-    for line in data.splitlines(True)[1:]:
-        if line.startswith('#'):
-            continue
-        else:
-            line = line.split(',')[1]
-            line = line.split('/')[2]
-            domains.append(line)
-            f.write(str(line)+'\n')
+    try: # PhishTank Returns Image Binary Sporadically
+
+        for line in data.splitlines(True)[1:]:
+            if line.startswith('#'):
+                continue
+            else:
+                line = line.split(',')[1]
+                line = line.split('/')[2]
+                domains.append(line)
+                f.write(str(line)+'\n')
+
+    except Exception as e:
+
+        print(str(e))
+
+        return {
+            'statusCode': 500,
+            'body': json.dumps('PhishTank Returns Image Binary Sporadically')
+        }
 
     f.close()
 

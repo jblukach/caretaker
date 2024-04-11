@@ -40,7 +40,8 @@ def handler(event, context):
     seen = json.dumps(now, default=dateconverter)
     seen = seen.replace('"','')
 
-    f = open('/tmp/cinsscore.txt', 'w')
+    f = open('/tmp/cinsscore4.txt', 'w')
+    g = open('/tmp/cinsscore6.txt', 'w')
 
     for line in data.splitlines():
 
@@ -49,7 +50,7 @@ def handler(event, context):
             f.write(str(line)+'\n')
         else:
             intip = int(ipaddress.IPv6Address(line))
-            f.write(str(line)+'\n')
+            g.write(str(line)+'\n')
 
             conn = sqlite3.connect('/tmp/distillery.sqlite3')
             c = conn.cursor()
@@ -80,12 +81,24 @@ def handler(event, context):
                     }
                 )
 
+    f.close()
+    g.close()
+
     s3 = boto3.resource('s3')
 
     s3.meta.client.upload_file(
-        '/tmp/cinsscore.txt',
+        '/tmp/cinsscore4.txt',
         'projectcaretaker',
-        'ip/cinsscore.txt',
+        'ipv4/cinsscore.txt',
+        ExtraArgs = {
+            'ContentType': "text/plain"
+        }
+    )
+
+    s3.meta.client.upload_file(
+        '/tmp/cinsscore6.txt',
+        'projectcaretaker',
+        'ipv6/cinsscore.txt',
         ExtraArgs = {
             'ContentType': "text/plain"
         }
