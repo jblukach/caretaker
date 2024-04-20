@@ -2,6 +2,9 @@ import boto3
 import datetime
 import dns.resolver
 import json
+import requests
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 from smart_open import open
 
 def dateconverter(o):
@@ -50,6 +53,39 @@ def handler(event, context):
                 for rdata in answers:
                     if 'v=spf1' in str(rdata):
                         spf = 'YES'
+
+                        retry_strategy = Retry(
+                            total = 3,
+                            status_forcelist = [429, 500, 502, 503, 504],
+                            backoff_factor = 1
+                        )
+
+                        adapter = HTTPAdapter(
+                            max_retries = retry_strategy
+                        )
+
+                        http = requests.Session()
+                        http.mount("https://", adapter)
+
+                        headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
+                        response = http.get('https://spf.tundralabs.net/'+output, headers=headers)
+
+                        data = response.text
+                        data = json.loads(data)
+
+                        count = data['suspect_dns'] + data['suspect_ipv4'] + data['suspect_ipv6']
+                        if count > 0:
+                            feed.put_item(
+                                Item = {
+                                    'pk': 'DNS#',
+                                    'sk': 'DNS#'+str(output)+'#SOURCE#suspect.spf.tundralabs.org',
+                                    'dns': str(output),
+                                    'source': 'suspect.spf.tundralabs.org',
+                                    'last': seen,
+                                    'epoch': epoch,
+                                    'ttl': ttl
+                                }
+                            )
             except:
                 spf = 'NO'
                 pass

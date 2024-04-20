@@ -37,6 +37,11 @@ class CaretakerTundraLabs(Stack):
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:11'
         )
 
+        requests = _lambda.LayerVersion.from_layer_version_arn(
+            self, 'requests',
+            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:requests:3'
+        )
+
         smartopen = _lambda.LayerVersion.from_layer_version_arn(
             self, 'smartopen',
             layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:smartopen:4'
@@ -199,6 +204,7 @@ class CaretakerTundraLabs(Stack):
             layers = [
                 dnspython,
                 getpublicip,
+                requests,
                 smartopen
             ]
         )

@@ -55,7 +55,9 @@ The domain names from the certificates are normalized to guarantee valid top-lev
 
 ### Email Security
 
-Every day at 10:00 AM UTC, domains are checked for **MX** records to determine if an email server is present; once identified, verification of **DMARC** and **SPF** records occurs.
+Every day at 10:00 AM UTC, domains are checked for Mail Exchange (**MX**) records to determine if an email server is present; once identified, verification of Domain-based Message Authentication, Reporting & Conformance (**DMARC**), and Sender Policy Framework (**SPF**) records occurs.
+
+Sender Policy Framework is an email authentication standard that determines the addresses and domains that can send emails that require reputation monitoring.
 
 ### Misconfiguration
 
