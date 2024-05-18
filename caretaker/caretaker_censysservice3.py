@@ -81,6 +81,9 @@ class CaretakerCensysService3(Stack):
         searches.append('ZEROMQ')
         searches.append('PCOM')
         searches.append('DCERPC')
+        searches.append('ISCSI')
+        searches.append('WHOIS')
+        searches.append('WINRM')
 
         for search in searches:
 

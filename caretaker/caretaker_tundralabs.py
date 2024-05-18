@@ -265,7 +265,7 @@ class CaretakerTundraLabs(Stack):
         statelogs = _logs.LogGroup(
             self, 'statelogs',
             log_group_name = '/aws/state/tundralabs',
-            retention = _logs.RetentionDays.ONE_MONTH,
+            retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
 
