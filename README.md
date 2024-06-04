@@ -116,7 +116,6 @@ I appreciate all the work that goes into maintaining these lists - thank you!
 - https://phishing.army
 - https://phishtank.com
 - https://report.cs.rutgers.edu
-- https://securityscorecard.com
 - https://sslbl.abuse.ch
 - https://talosintelligence.com
 - https://urlabuse.com
