@@ -84,6 +84,8 @@ class CaretakerCensysService3(Stack):
         searches.append('ISCSI')
         searches.append('WHOIS')
         searches.append('WINRM')
+        searches.append('NNTP')
+        searches.append('IOTA')
 
         for search in searches:
 
