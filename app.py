@@ -18,6 +18,7 @@ from caretaker.caretaker_cinsscore import CaretakerCinsScore
 from caretaker.caretaker_digitalside import CaretakerDigitalSide
 from caretaker.caretaker_distillery import CaretakerDistillery
 from caretaker.caretaker_elliotech import CaretakerEllioTech
+from caretaker.caretaker_feed import CaretakerFeed
 from caretaker.caretaker_greensnow import CaretakerGreenSnow
 from caretaker.caretaker_inversiondnsbl import CaretakerInversionDnsbl
 from caretaker.caretaker_ipsum import CaretakerIPSum
@@ -196,6 +197,17 @@ CaretakerDistillery(
 
 CaretakerEllioTech(
     app, 'CaretakerEllioTech',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerFeed(
+    app, 'CaretakerFeed',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'
