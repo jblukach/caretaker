@@ -83,7 +83,7 @@ class CaretakerTor(Stack):
                 AWS_ACCOUNT = account,
                 FEED_TABLE = 'feed',
                 VERIFY_TABLE = 'verify',
-                S3_BUCKET = 'addresses.tundralabs.org'
+                S3_BUCKET = 'caretakerbucket'
             ),
             memory_size = 512,
             retry_attempts = 0,

@@ -91,7 +91,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/feodotracker4.txt',
-        'projectcaretaker',
+        os.environ['S3_BUCKET'],
         'ipv4/feodotracker.txt',
         ExtraArgs = {
             'ContentType': "text/plain"
@@ -100,7 +100,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/feodotracker6.txt',
-        'projectcaretaker',
+        os.environ['S3_BUCKET'],
         'ipv6/feodotracker.txt',
         ExtraArgs = {
             'ContentType': "text/plain"

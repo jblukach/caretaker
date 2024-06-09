@@ -95,7 +95,7 @@ class CaretakerTundraLabs(Stack):
             environment = dict(
                 AWS_ACCOUNT = account,
                 DYNAMODB_TABLE = 'feed',
-                S3_BUCKET = 'emails.tundralabs.org',
+                S3_BUCKET = 'caretakerbucket',
                 S3_OBJECT = 'dns.txt',
                 STEP_FUNCTION = '/caretaker/mx/step'
             ),

@@ -108,7 +108,7 @@ class CaretakerCertificates(Stack):
             handler = 'certificate.handler',
             environment = dict(
                 AWS_ACCOUNT = account,
-                S3_BUCKET = 'certificates.tundralabs.org'
+                S3_BUCKET = 'caretakerbucket'
             ),
             memory_size = 512,
             retry_attempts = 0,
@@ -166,7 +166,7 @@ class CaretakerCertificates(Stack):
             handler = 'domain.handler',
             environment = dict(
                 AWS_ACCOUNT = account,
-                S3_BUCKET = 'certificates.tundralabs.org',
+                S3_BUCKET = 'caretakerbucket',
                 TLD_TABLE = tlddb.table_name
             ),
             memory_size = 512,
@@ -282,7 +282,7 @@ class CaretakerCertificates(Stack):
             handler = 'mail.handler',
             environment = dict(
                 AWS_ACCOUNT = account,
-                S3_BUCKET = 'emails.tundralabs.org'
+                S3_BUCKET = 'caretakerbucket'
             ),
             memory_size = 512,
             retry_attempts = 0,

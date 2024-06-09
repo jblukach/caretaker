@@ -33,13 +33,13 @@ I added additional Internet Service Providers (ISPs) to improve state coverage. 
 - 63414 - Dakota Central Telecommunications Cooperative
 - 400439 - Consolidated Telecommunications
 
-It results in **1,441,024** IPv4 addresses and **33** IPv6 cidr allocations to monitor for reputation. 
+It results in **1,442,816** IPv4 addresses and **33** IPv6 cidr allocations to monitor for reputation. 
 
 A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 18,446,744,073,709,551,616 addresses, making a vast number. IPv6 addresses get converted to integers to determine if they fall into any of the monitored ranges.
 
 ### Brand Monitoring
 
-Every day at 9:00 AM UTC, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect **21,550** domain names for ```apex``` and ```www``` brand monitoring.
+Every day at 9:00 AM UTC, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect **22,242** domain names for ```apex``` and ```www``` brand monitoring.
 
 Thank you to **Censys** for providing research access that makes this possible!
 
@@ -127,10 +127,6 @@ I appreciate all the work that goes into maintaining these lists - thank you!
 - https://www.nubi-network.com
 - https://www.proofpoint.com
 
-The complied threat feed focusing on North Dakota gets updated every hour with a thirty-day retention.
-
-- https://feed.tundralabs.org
-
 The critical part is making the results usable by anyone with just a website visit!
 
 The lookup completes using the Internet address your connection originates from to protect the potential sensitivity of the returned results.
@@ -156,24 +152,3 @@ When the website returns **red**, please try again or check back later.
 ![Project Caretaker Error Alert](images/error.png)
 
 You may require additional assistance to resolve the issue outside of this project; at least the awareness to start asking questions will exist.
-
-No threat feed is complete without a map to visualize the results using GeoLite2 data created by MaxMind within a general area for privacy with a thirty-day retention.
-
-- https://map.tundralabs.org
-
-![Project Caretaker Map](images/map.png)
-
-This product includes GeoLite2 data created by MaxMind, available from https://www.maxmind.com.
-
-- https://dev.maxmind.com/geoip/geolite2-free-geolocation-data
-
-### Statistics
-
-Every day at 11:00 AM UTC, metrics show the current state and previously mitigated detections with a thirty-day retention.
-
-- https://asn.tundralabs.org
-- https://config.tundralabs.org
-- https://dns.tundralabs.org
-- https://ip.tundralabs.org
-
-![Project Caretaker Statistics](images/statistics.jpg)

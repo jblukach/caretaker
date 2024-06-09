@@ -40,7 +40,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/openphish.txt',
-        'projectcaretaker',
+        os.environ['S3_BUCKET'],
         'dns/openphish.txt',
         ExtraArgs = {
             'ContentType': "text/plain"

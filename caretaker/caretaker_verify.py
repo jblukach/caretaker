@@ -74,7 +74,7 @@ class CaretakerVerify(Stack):
             handler = 'verify.handler',
             environment = dict(
                 AWS_ACCOUNT = account,
-                S3_BUCKET = 'addresses.tundralabs.org',
+                S3_BUCKET = 'caretakerbucket',
                 VERIFY_TABLE = 'verify'
             ),
             memory_size = 128,
@@ -92,7 +92,7 @@ class CaretakerVerify(Stack):
         logs = _logs.LogGroup(
             self, 'logs',
             log_group_name = '/aws/lambda/'+verify.function_name,
-            retention = _logs.RetentionDays.ONE_DAY,
+            retention = _logs.RetentionDays.THIRTEEN_MONTHS,
             removal_policy = RemovalPolicy.DESTROY
         )
 

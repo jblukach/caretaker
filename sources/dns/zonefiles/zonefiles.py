@@ -39,7 +39,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/zonefiles.txt',
-        'projectcaretaker',
+        os.environ['S3_BUCKET'],
         'dns/zonefiles.txt',
         ExtraArgs = {
             'ContentType': "text/plain"

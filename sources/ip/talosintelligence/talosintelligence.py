@@ -53,7 +53,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/talosintelligence4.txt',
-        'projectcaretaker',
+        os.environ['S3_BUCKET'],
         'ipv4/talosintelligence.txt',
         ExtraArgs = {
             'ContentType': "text/plain"

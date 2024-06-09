@@ -88,7 +88,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/proofpoint4.txt',
-        'projectcaretaker',
+        os.environ['S3_BUCKET'],
         'ipv4/proofpoint.txt',
         ExtraArgs = {
             'ContentType': "text/plain"
@@ -97,7 +97,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/proofpoint6.txt',
-        'projectcaretaker',
+        os.environ['S3_BUCKET'],
         'ipv6/proofpoint.txt',
         ExtraArgs = {
             'ContentType': "text/plain"

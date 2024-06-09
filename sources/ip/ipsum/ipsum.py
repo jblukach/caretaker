@@ -57,7 +57,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/ipsum4.txt',
-        'projectcaretaker',
+        os.environ['S3_BUCKET'],
         'ipv4/ipsum.txt',
         ExtraArgs = {
             'ContentType': "text/plain"

@@ -52,7 +52,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/phishtank.txt',
-        'projectcaretaker',
+        os.environ['S3_BUCKET'],
         'dns/phishtank.txt',
         ExtraArgs = {
             'ContentType': "text/plain"

@@ -82,7 +82,7 @@ class CaretakerPhishTank(Stack):
             environment = dict(
                 AWS_ACCOUNT = account,
                 FEED_TABLE = 'feed',
-                S3_BUCKET = 'certificates.tundralabs.org'
+                S3_BUCKET = 'caretakerbucket'
             ),
             memory_size = 512,
             retry_attempts = 0,

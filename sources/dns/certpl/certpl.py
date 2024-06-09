@@ -40,7 +40,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/certpl.txt',
-        'projectcaretaker',
+        os.environ['S3_BUCKET'],
         'dns/certpl.txt',
         ExtraArgs = {
             'ContentType': "text/plain"

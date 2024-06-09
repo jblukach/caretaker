@@ -83,7 +83,7 @@ class CaretakerZoneFiles(Stack):
                 AWS_ACCOUNT = account,
                 FEED_TABLE = 'feed',
                 VERIFY_TABLE = 'verify',
-                S3_BUCKET = 'addresses.tundralabs.org'
+                S3_BUCKET = 'caretakerbucket'
             ),
             memory_size = 512,
             retry_attempts = 0,
@@ -142,7 +142,7 @@ class CaretakerZoneFiles(Stack):
             environment = dict(
                 AWS_ACCOUNT = account,
                 FEED_TABLE = 'feed',
-                S3_BUCKET = 'certificates.tundralabs.org'
+                S3_BUCKET = 'caretakerbucket'
             ),
             memory_size = 512,
             retry_attempts = 0,

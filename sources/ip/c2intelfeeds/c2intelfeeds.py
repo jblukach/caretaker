@@ -57,7 +57,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/c2intelfeeds4.txt',
-        'projectcaretaker',
+        os.environ['S3_BUCKET'],
         'ipv4/c2intelfeeds.txt',
         ExtraArgs = {
             'ContentType': "text/plain"

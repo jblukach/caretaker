@@ -40,7 +40,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/threatfox.txt',
-        'projectcaretaker',
+        os.environ['S3_BUCKET'],
         'dns/threatfox.txt',
         ExtraArgs = {
             'ContentType': "text/plain"

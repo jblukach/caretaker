@@ -88,7 +88,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/cinsscore4.txt',
-        'projectcaretaker',
+        os.environ['S3_BUCKET'],
         'ipv4/cinsscore.txt',
         ExtraArgs = {
             'ContentType': "text/plain"
@@ -97,7 +97,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/cinsscore6.txt',
-        'projectcaretaker',
+        os.environ['S3_BUCKET'],
         'ipv6/cinsscore.txt',
         ExtraArgs = {
             'ContentType': "text/plain"

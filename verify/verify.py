@@ -6,6 +6,8 @@ from boto3.dynamodb.conditions import Key
 
 def handler(event, context):
 
+    print(event)
+
     if event['rawPath'] == '/error':
 
         bg = 'Red'
