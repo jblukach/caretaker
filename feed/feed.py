@@ -31,6 +31,9 @@ def handler(event, context):
     output = {}
     output['name'] = 'Project Caretaker'
     output['description'] = 'Threat Feed for North Dakota'
+    output['created'] = str(datetime.datetime.now())
+    output['epoch'] = int(datetime.datetime.now().timestamp() * 1000)
+    output['source'] = 'https://github.com/jblukach/caretaker/releases'
 
 ### DNS ###
 
