@@ -113,10 +113,11 @@ def handler(event, context):
 
         year = datetime.datetime.now().strftime('%Y')
         month = datetime.datetime.now().strftime('%m')
+        day = datetime.datetime.now().strftime('%d')
         epoch = int(datetime.datetime.now(datetime.timezone.utc).timestamp())
 
         data = '''{
-            "tag_name":"v'''+str(year)+'''.'''+str(month)+'''.'''+str(epoch)+'''",
+            "tag_name":"v'''+str(year)+'''.'''+str(month)+str(day)+'''.'''+str(epoch)+'''",
             "target_commitish":"main",
             "name":"caretaker",
             "body":"The sha256 verification hash for the caretaker.json file is: '''+sha256+'''",
