@@ -14,7 +14,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-class CaretakerCensysService1(Stack):
+class CaretakerCensysService4(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -45,7 +45,7 @@ class CaretakerCensysService1(Stack):
 
         role = _iam.Role(
             self, 'role',
-            role_name = 'censysservice1',
+            role_name = 'censysservice4',
             assumed_by = _iam.ServicePrincipal(
                 'lambda.amazonaws.com'
             )
@@ -72,18 +72,18 @@ class CaretakerCensysService1(Stack):
     ### LAMBDA ###
 
         searches = []
-        searches.append('ELASTICSEARCH')
-        searches.append('FTP')
-        searches.append('IMAP')
-        searches.append('KUBERNETES')
-        searches.append('LDAP')
-        searches.append('MONGODB')
-        searches.append('MSSQL')
-        searches.append('MYSQL')
-        searches.append('NETBIOS')
-        searches.append('ORACLE')
-        searches.append('POP3')
-        searches.append('ROCKETMQ')
+        searches.append('POSTGRES')
+        searches.append('PPTP')
+        searches.append('PROMETHEUS')
+        searches.append('RDP')
+        searches.append('SCCM')
+        searches.append('SMB')
+        searches.append('SNMP')
+        searches.append('SSDP')
+        searches.append('TELNET')
+        searches.append('TFTP')
+        searches.append('UPNP')
+        searches.append('VNC')
 
         for search in searches:
 
@@ -134,7 +134,7 @@ class CaretakerCensysService1(Stack):
                 self, 'censysevent'+search,
                 schedule = _events.Schedule.cron(
                     minute = str(searches.index(search)*5),
-                    hour = '15',
+                    hour = '18',
                     month = '*',
                     week_day = '*',
                     year = '*'

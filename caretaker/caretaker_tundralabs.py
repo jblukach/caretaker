@@ -132,7 +132,7 @@ class CaretakerTundraLabs(Stack):
             self, 'startevent',
             schedule = _events.Schedule.cron(
                 minute = '0',
-                hour = '10',
+                hour = '15',
                 month = '*',
                 week_day = '*',
                 year = '*'

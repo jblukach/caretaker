@@ -14,7 +14,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-class CaretakerCensysService1(Stack):
+class CaretakerCensysService5(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -45,7 +45,7 @@ class CaretakerCensysService1(Stack):
 
         role = _iam.Role(
             self, 'role',
-            role_name = 'censysservice1',
+            role_name = 'censysservice5',
             assumed_by = _iam.ServicePrincipal(
                 'lambda.amazonaws.com'
             )
@@ -72,18 +72,18 @@ class CaretakerCensysService1(Stack):
     ### LAMBDA ###
 
         searches = []
-        searches.append('ELASTICSEARCH')
-        searches.append('FTP')
-        searches.append('IMAP')
-        searches.append('KUBERNETES')
-        searches.append('LDAP')
-        searches.append('MONGODB')
-        searches.append('MSSQL')
-        searches.append('MYSQL')
-        searches.append('NETBIOS')
-        searches.append('ORACLE')
-        searches.append('POP3')
-        searches.append('ROCKETMQ')
+        searches.append('FOX')
+        searches.append('IPMI')
+        searches.append('IPP')
+        searches.append('KRPC')
+        searches.append('MEMCACHED')
+        searches.append('MMS')
+        searches.append('MODBUS')
+        searches.append('MONERO_P2P')
+        searches.append('MQTT')
+        searches.append('OPC_UA')
+        searches.append('PC_ANYWHERE')
+        searches.append('IOTA')
 
         for search in searches:
 
@@ -134,7 +134,7 @@ class CaretakerCensysService1(Stack):
                 self, 'censysevent'+search,
                 schedule = _events.Schedule.cron(
                     minute = str(searches.index(search)*5),
-                    hour = '15',
+                    hour = '19',
                     month = '*',
                     week_day = '*',
                     year = '*'

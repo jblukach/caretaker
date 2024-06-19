@@ -2,6 +2,7 @@ import boto3
 import datetime
 import dns.resolver
 import json
+import time
 import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
@@ -86,6 +87,7 @@ def handler(event, context):
                                     'ttl': ttl
                                 }
                             )
+                        time.sleep(1)
             except:
                 spf = 'NO'
                 pass

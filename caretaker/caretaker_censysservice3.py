@@ -83,9 +83,7 @@ class CaretakerCensysService3(Stack):
         searches.append('DCERPC')
         searches.append('ISCSI')
         searches.append('WHOIS')
-        searches.append('WINRM')
-        searches.append('NNTP')
-        searches.append('IOTA')
+        searches.append('X11')
 
         for search in searches:
 
@@ -135,8 +133,8 @@ class CaretakerCensysService3(Stack):
             event = _events.Rule(
                 self, 'censysevent'+search,
                 schedule = _events.Schedule.cron(
-                    minute = str(searches.index(search)*2),
-                    hour = '12',
+                    minute = str(searches.index(search)*5),
+                    hour = '17',
                     month = '*',
                     week_day = '*',
                     year = '*'

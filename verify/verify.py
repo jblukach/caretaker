@@ -35,10 +35,7 @@ def handler(event, context):
             else:
                 ip = event['headers']['x-forwarded-for']
 
-            if ipaddress.ip_network(ip).version == 4:
-                intip = int(ipaddress.IPv4Address(ip))
-            else:
-                intip = int(ipaddress.IPv6Address(ip))
+            intip = str(int(ipaddress.ip_address(ip)))
 
             conn = sqlite3.connect('/tmp/allcidrs.sqlite3')
             c = conn.cursor()

@@ -83,19 +83,7 @@ class CaretakerCensysService2(Stack):
         searches.append('DNP3')
         searches.append('EPMD')
         searches.append('ETHEREUM')
-        searches.append('FOX')
-        searches.append('IPMI')
-        searches.append('IPP')
-        searches.append('KRPC')
-        searches.append('MEMCACHED')
-        searches.append('MMS')
-        searches.append('MODBUS')
-        searches.append('MONERO_P2P')
-        searches.append('MQTT')
-        searches.append('OPC_UA')
-        searches.append('PC_ANYWHERE')
         searches.append('REDIS')
-        searches.append('ROCKETMQ')
 
         for search in searches:
 
@@ -145,8 +133,8 @@ class CaretakerCensysService2(Stack):
             event = _events.Rule(
                 self, 'censysevent'+search,
                 schedule = _events.Schedule.cron(
-                    minute = str(searches.index(search)*2),
-                    hour = '11',
+                    minute = str(searches.index(search)*5),
+                    hour = '16',
                     month = '*',
                     week_day = '*',
                     year = '*'
