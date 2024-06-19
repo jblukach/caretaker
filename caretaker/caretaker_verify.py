@@ -13,6 +13,7 @@ from aws_cdk import (
     aws_route53 as _route53,
     aws_route53_targets as _r53targets,
     aws_s3 as _s3,
+    aws_s3_deployment as _deployment,
     aws_sns as _sns,
     aws_ssm as _ssm
 )
@@ -41,6 +42,20 @@ class CaretakerVerify(Stack):
             topic_arn = 'arn:aws:sns:'+region+':'+account+':monitor'
         )
 
+    ### S3 BUCKET ###
+
+        bucket = _s3.Bucket.from_bucket_name(
+            self, 'bucket',
+            bucket_name = 'caretakerbucket'
+        )
+
+        deployment = _deployment.BucketDeployment(
+            self, 'deployment',
+            sources = [_deployment.Source.asset('code')],
+            destination_bucket = bucket,
+            prune = False
+        )
+
     ### IAM ###
 
         role = _iam.Role(
@@ -60,8 +75,7 @@ class CaretakerVerify(Stack):
         role.add_to_policy(
             _iam.PolicyStatement(
                 actions = [
-                    'dynamodb:Query',
-                    's3:GetObject'
+                    'dynamodb:Query'
                 ],
                 resources = [
                     '*'

@@ -116,6 +116,8 @@ class CaretakerDistillery(Stack):
                     'dynamodb:DeleteItem',
                     'dynamodb:PutItem',
                     'dynamodb:Query',
+                    'lambda:UpdateFunctionCode',
+                    's3:GetObject',
                     's3:PutObject',
                     'ssm:GetParameter'
                 ],
