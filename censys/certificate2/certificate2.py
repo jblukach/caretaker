@@ -17,12 +17,12 @@ def handler(event, context):
 
     c = CensysCerts()
 
-### ND ###
+### North Dakota ###
 
     query = c.search(
-        'parsed.subject.province="ND"',
+        'parsed.subject.province="North Dakota"',
         per_page = 100,
-        pages = 100,
+        pages = 400,
         fields = [
             'names',
             'labels',
@@ -36,27 +36,27 @@ def handler(event, context):
         ]
     )
 
-    ndcount = 0
+    northdakotacount = 0
 
     for page in query:
         for certificate in page:
             certificates.append(certificate)
-            ndcount += 1
-
-    print('ND: ' + str(ndcount))
+            northdakotacount += 1
+    
+    print('North Dakota: ' + str(northdakotacount))
 
 ### Output ###
 
-    with open('/tmp/certificates.json', 'w') as outfile:
+    with open('/tmp/certificates2.json', 'w') as outfile:
         json.dump(certificates, outfile)
     outfile.close()
 
     s3 = boto3.resource('s3')
 
     s3.meta.client.upload_file(
-        '/tmp/certificates.json',
+        '/tmp/certificates2.json',
         os.environ['S3_BUCKET'],
-        'certificates.json',
+        'certificates2.json',
         ExtraArgs = {
             'ContentType': "application/json"
         }

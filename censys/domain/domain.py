@@ -27,10 +27,36 @@ def handler(event, context):
     print('DynamoDB: '+str(len(responsedata)))
     print('TLDs: '+str(len(tlds)))
 
+    ### CERTIFICATE ###
+
     s3 = boto3.client('s3')
     s3.download_file(os.environ['S3_BUCKET'], 'certificates.json', '/tmp/certificates.json')
 
     with open('/tmp/certificates.json') as json_file:
+        data = json.load(json_file)
+        print('S3: '+str(len(data)))
+
+    domains = []
+
+    for entry in data:
+        for name in entry['names']:
+            if name.split('.')[-1] in tlds:
+                if name.startswith('*.'):
+                    name = name[2:]
+                if name.startswith('www.'):
+                    domains.append(name.lower())
+                    name = name[4:]
+                    domains.append(name.lower())
+                else:
+                    domains.append(name.lower())
+                    name = 'www.' + name
+                    domains.append(name.lower())
+
+    ### CERTIFICATE2 ###
+
+    s3.download_file(os.environ['S3_BUCKET'], 'certificates2.json', '/tmp/certificates2.json')
+
+    with open('/tmp/certificates2.json') as json_file:
         data = json.load(json_file)
         print('S3: '+str(len(data)))
 
