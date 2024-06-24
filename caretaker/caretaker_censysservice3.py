@@ -9,7 +9,8 @@ from aws_cdk import (
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_sns as _sns
+    aws_sns as _sns,
+    aws_ssm as _ssm
 )
 
 from constructs import Construct
@@ -24,21 +25,26 @@ class CaretakerCensysService3(Stack):
 
     ### LAYERS ###
 
+        extensions = _ssm.StringParameter.from_string_parameter_attributes(
+            self, 'extensions',
+            parameter_name = '/extensions/account'
+        )
+
         censys = _lambda.LayerVersion.from_layer_version_arn(
             self, 'censys',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:censys:6'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:censys:6'
         )
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:12'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:12'
         )
 
     ### TOPIC ###
 
         topic = _sns.Topic.from_topic_arn(
             self, 'topic',
-            topic_arn = 'arn:aws:sns:'+region+':'+account+':monitor'
+            topic_arn = 'arn:aws:sns:'+region+':'+account+':caretaker'
         )
 
     ### IAM ###

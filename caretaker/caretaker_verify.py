@@ -30,16 +30,21 @@ class CaretakerVerify(Stack):
 
     ### LAMBDA LAYERS ###
 
+        extensions = _ssm.StringParameter.from_string_parameter_attributes(
+            self, 'extensions',
+            parameter_name = '/extensions/account'
+        )
+
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
-            layer_version_arn = 'arn:aws:lambda:'+region+':070176467818:layer:getpublicip:12'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:12'
         )
 
     ### TOPIC ###
 
         topic = _sns.Topic.from_topic_arn(
             self, 'topic',
-            topic_arn = 'arn:aws:sns:'+region+':'+account+':monitor'
+            topic_arn = 'arn:aws:sns:'+region+':'+account+':caretaker'
         )
 
     ### S3 BUCKET ###
