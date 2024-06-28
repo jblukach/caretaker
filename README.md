@@ -2,9 +2,9 @@
 
 Reputation is the most critical asset available when using the Internet, as it helps us decide which services we feel safe using. It can also impact an end-users ability to use the web if the connection had previous suspect behavior. Project Caretaker aims to provide a Threat Feed for North Dakota so that anyone can verify Internet reputation.
 
-Every day at 12:00 UTC, the Internet addresses for the Broadband Association of North Dakota (BAND) members, North Dakota Univesity System (NDUS), and the State of North Dakota (ITD) get updated from Security Trails, a Recorded Future company.
+Every day at 14:00 UTC, the Internet addresses for the Broadband Association of North Dakota (BAND) members, North Dakota Univesity System (NDUS), and the State of North Dakota (ITD) get updated from the American Registry for Internet Numbers (ARIN).
 
-- https://bgpview.io
+- https://arin.net
 - https://broadbandnd.com
 - https://ndit.nd.gov
 
@@ -29,17 +29,15 @@ I added additional Internet Service Providers (ISPs) to improve state coverage. 
 - 32809 - Dickey Rural Networks
 - 33339 - Nemont Telecommunications
 - 36374 - Stellar Association, LLC
-- 55105 - Northwest Communications Cooperative
 - 63414 - Dakota Central Telecommunications Cooperative
-- 400439 - Consolidated Telecommunications
 
-It results in **1,442,816** IPv4 addresses and **33** IPv6 cidr allocations to monitor for reputation. 
+It results in **594,698** IPv4 addresses and **23** IPv6 cidr allocations to monitor for reputation. 
 
 A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 18,446,744,073,709,551,616 addresses, making a vast number. IPv6 addresses get converted to integers to determine if they fall into any of the monitored ranges.
 
 ### Brand Monitoring
 
-Every day at 13:00 UTC, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect **22,242** domain names for ```apex``` and ```www``` brand monitoring.
+Every day at 14:00 UTC, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect **22,242** domain names for ```apex``` and ```www``` brand monitoring.
 
 Thank you to **Censys** for providing research access that makes this possible!
 

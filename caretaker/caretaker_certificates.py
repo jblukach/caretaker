@@ -117,7 +117,7 @@ class CaretakerCertificates(Stack):
                 S3_BUCKET = 'caretakerbucket'
             ),
             memory_size = 512,
-            retry_attempts = 1,
+            retry_attempts = 0,
             role = role,
             layers = [
                 censys,
@@ -150,7 +150,7 @@ class CaretakerCertificates(Stack):
             self, 'event',
             schedule = _events.Schedule.cron(
                 minute = '0',
-                hour = '13',
+                hour = '14',
                 month = '*',
                 week_day = '*',
                 year = '*'
@@ -175,7 +175,7 @@ class CaretakerCertificates(Stack):
                 S3_BUCKET = 'caretakerbucket'
             ),
             memory_size = 512,
-            retry_attempts = 1,
+            retry_attempts = 0,
             role = role,
             layers = [
                 censys,
@@ -207,8 +207,8 @@ class CaretakerCertificates(Stack):
         event2 = _events.Rule(
             self, 'event2',
             schedule = _events.Schedule.cron(
-                minute = '30',
-                hour = '13',
+                minute = '15',
+                hour = '14',
                 month = '*',
                 week_day = '*',
                 year = '*'
@@ -265,7 +265,7 @@ class CaretakerCertificates(Stack):
         domainevent = _events.Rule(
             self, 'domainevent',
             schedule = _events.Schedule.cron(
-                minute = '0',
+                minute = '30',
                 hour = '14',
                 month = '*',
                 week_day = '*',
@@ -324,7 +324,7 @@ class CaretakerCertificates(Stack):
             self, 'tldevent',
             schedule = _events.Schedule.cron(
                 minute = '0',
-                hour = '13',
+                hour = '14',
                 month = '*',
                 week_day = '*',
                 year = '*'
@@ -381,7 +381,7 @@ class CaretakerCertificates(Stack):
         mailevent = _events.Rule(
             self, 'mailevent',
             schedule = _events.Schedule.cron(
-                minute = '0',
+                minute = '30',
                 hour = '14',
                 month = '*',
                 week_day = '*',

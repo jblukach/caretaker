@@ -24,7 +24,7 @@ def handler(event, context):
     if service != 'CWMP' and service != 'SNMP':
 
         query = h.search(
-            '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530","400439","15267","21730","12042","55105","11232"}) and services.service_name=`'+service+'`',
+            '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530","15267","21730","12042","11232"}) and services.service_name=`'+service+'`',
             per_page = 100,
             pages = 100,
             fields = [
@@ -35,7 +35,7 @@ def handler(event, context):
     else:
 
         query = h.search(
-            '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530","400439","15267","21730","12042","55105"}) and services.service_name=`'+service+'`',
+            '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530","15267","21730","12042"}) and services.service_name=`'+service+'`',
             per_page = 100,
             pages = 100,
             fields = [
@@ -52,22 +52,29 @@ def handler(event, context):
     seen = seen.replace('"','')
 
     primarycount = 0
+    errorcount = 0
 
     for page in query:
         for address in page:
-            verify.put_item(
-                Item = {
-                    'pk': 'IP#',
-                    'sk': 'IP#'+str(address['ip'])+'#SOURCE#'+service+'-censys.io',
-                    'ip': str(address['ip']),
-                    'source': service+'-censys.io',
-                    'last': seen,
-                    'epoch': epoch
-                }
-            )
-            primarycount += 1
+            try:
+                verify.put_item(
+                    Item = {
+                        'pk': 'IP#',
+                        'sk': 'IP#'+str(address['ip'])+'#SOURCE#'+service+'-censys.io',
+                        'ip': str(address['ip']),
+                        'source': service+'-censys.io',
+                        'last': seen,
+                        'epoch': epoch
+                    }
+                )
+                primarycount += 1
+            except Exception as e:
+                print(e)
+                print(address)
+                errorcount += 1
 
     print(service + ': ' + str(primarycount))
+    print('error: '+service + ': ' + str(errorcount))
 
     return {
         'statusCode': 200,

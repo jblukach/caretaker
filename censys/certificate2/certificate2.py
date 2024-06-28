@@ -24,26 +24,25 @@ def handler(event, context):
         per_page = 100,
         pages = 400,
         fields = [
-            'names',
-            'labels',
-            'modified_at',
-            'fingerprint_sha1',
-            'fingerprint_sha256',
-            'parsed.issuer.organization',
-            'parsed.serial_number',
-            'parsed.validity_period.not_before',
-            'parsed.validity_period.not_after'
+            'names'
         ]
     )
 
     northdakotacount = 0
+    northdakotaerror = 0
 
     for page in query:
         for certificate in page:
-            certificates.append(certificate)
-            northdakotacount += 1
+            try:
+                certificates.append(certificate)
+                northdakotacount += 1
+            except Exception as e:
+                print(e)
+                print(certificate)
+                northdakotaerror += 1
     
     print('North Dakota: ' + str(northdakotacount))
+    print('ERROR: ' + str(northdakotaerror))
 
 ### Output ###
 

@@ -2,9 +2,13 @@ import boto3
 import ipaddress
 import json
 import os
+import random
 import requests
 import time
+import uuid
 from boto3.dynamodb.conditions import Key
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 
 def handler(event, context):
 
@@ -27,91 +31,104 @@ def handler(event, context):
         existing.append(item['cidr'])
 
     asns = []
-    asns.append('14090') # North Dakota Telephone
-    asns.append('29744') # United Telephone
-    asns.append('14511') # Polar Communications
-    asns.append('31758') # Griggs County Telephone
-    asns.append('26794') # Dakota Carrier Network
-    asns.append('11138') # BEK Communications
-    asns.append('63414') # Dakota Central Telecommunications
-    asns.append('32809') # Dickey Rural Networks
-    asns.append('14543') # SRT Communications
-    asns.append('27539') # West River Telecommunications
-    asns.append('18780') # Reservation Telephone
-    asns.append('33339') # Nemont Telecommunications
-    asns.append('36374') # Red River Communications
-    asns.append('19530') # State of North Dakota
-    asns.append('400439') # Consolidated Telcom
-    asns.append('15267') # 702 Communications
-    asns.append('21730') # Halstad Telephone Company
-    asns.append('12042') # Consolidated Communications
-    asns.append('11232') # Midcontinent Communications
-    asns.append('55105') # Northwest Communications Cooperative
+    asns.append({"num":14090,"desc":"North Dakota Telephone"})
+    asns.append({"num":29744,"desc":"United Telephone"})
+    asns.append({"num":14511,"desc":"Polar Communications"})
+    asns.append({"num":31758,"desc":"Griggs County Telephone"})
+    asns.append({"num":26794,"desc":"Dakota Carrier Network"})
+    asns.append({"num":11138,"desc":"BEK Communications"})
+    asns.append({"num":63414,"desc":"Dakota Central Telecommunications"})
+    asns.append({"num":32809,"desc":"Dickey Rural Networks"})
+    asns.append({"num":14543,"desc":"SRT Communications"})
+    asns.append({"num":27539,"desc":"West River Telecommunications"})
+    asns.append({"num":18780,"desc":"Reservation Telephone"})
+    asns.append({"num":33339,"desc":"Nemont Telecommunications"})
+    asns.append({"num":36374,"desc":"Red River Communications"})
+    asns.append({"num":19530,"desc":"State of North Dakota"})
+    asns.append({"num":15267,"desc":"702 Communications"})
+    asns.append({"num":21730,"desc":"Halstad Telephone Company"})
+    asns.append({"num":12042,"desc":"Consolidated Communications"})
+    asns.append({"num":11232,"desc":"Midcontinent Communications"})
 
     for asn in asns:
 
-        time.sleep(1)
+        time.sleep(random.randint(3, 7))
 
-        headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
-        r = requests.get('https://api.bgpview.io/asn/'+asn+'/prefixes', headers=headers)
-        print('AS'+asn+' Status Code: '+str(r.status_code))
+        retry_strategy = Retry(
+            total = 3,
+            status_forcelist = [429, 500, 502, 503, 504],
+            backoff_factor = 1
+        )
+
+        adapter = HTTPAdapter(
+            max_retries = retry_strategy
+        )
+
+        http = requests.Session()
+        http.mount("https://", adapter)
+
+        headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker) '+str(uuid.uuid1())}
+        r = requests.get('https://rdap.arin.net/registry/arin_originas0_networksbyoriginas/'+str(asn['num']), headers=headers)
+        print('AS'+str(asn['num'])+' Status Code: '+str(r.status_code))
         output = r.json()
 
-        for entry in output['data']['ipv4_prefixes']:
+        for item in output['arin_originas0_networkSearchResults']:
 
-            hostmask = entry['prefix'].split('/')
-            iptype = ipaddress.ip_address(hostmask[0])
-            netrange = ipaddress.IPv4Network(entry['prefix'])
-            first, last = netrange[0], netrange[-1]
-            firstip = int(ipaddress.IPv4Address(first))
-            lastip = int(ipaddress.IPv4Address(last))
+            if item['ipVersion'] == 'v4':
 
-            cidrlist.append(entry['prefix'])
+                value = item['cidr0_cidrs'][0]['v4prefix']+'/'+str(item['cidr0_cidrs'][0]['length'])
 
-            if entry['prefix'] not in existing:
+                netrange = ipaddress.IPv4Network(value)
+                first, last = netrange[0], netrange[-1]
+                firstip = int(ipaddress.IPv4Address(first))
+                lastip = int(ipaddress.IPv4Address(last))
 
-                print('Add: '+entry['prefix'])
+                cidrlist.append(value)
 
-                table.put_item(
-                    Item = {
-                        'pk': 'ASN#',
-                        'sk': 'ASN#IPv'+str(iptype.version)+'#'+entry['prefix'],
-                        'name': entry['name'],
-                        'description': entry['description'],
-                        'cidr': entry['prefix'],
-                        'firstip': firstip,
-                        'lastip': lastip,
-                        'asn': asn
-                    }
-                )
+                if value not in existing:
 
-        for entry in output['data']['ipv6_prefixes']:
+                    print('Add: '+value)
 
-            hostmask = entry['prefix'].split('/')
-            iptype = ipaddress.ip_address(hostmask[0])
-            netrange = ipaddress.IPv6Network(entry['prefix'])
-            first, last = netrange[0], netrange[-1]
-            firstip = int(ipaddress.IPv6Address(first))
-            lastip = int(ipaddress.IPv6Address(last))
+                    table.put_item(
+                        Item = {
+                            'pk': 'ASN#',
+                            'sk': 'ASN#IPv4#'+value,
+                            'name': 'AS'+str(asn['num']),
+                            'description': asn['desc'],
+                            'cidr': value,
+                            'firstip': firstip,
+                            'lastip': lastip,
+                            'asn': asn['num']
+                        }
+                    )
 
-            cidrlist.append(entry['prefix'])
+            elif item['ipVersion'] == 'v6':
 
-            if entry['prefix'] not in existing:
+                value = item['cidr0_cidrs'][0]['v6prefix']+'/'+str(item['cidr0_cidrs'][0]['length'])
 
-                print('Add: '+entry['prefix'])
+                netrange = ipaddress.IPv6Network(value)
+                first, last = netrange[0], netrange[-1]
+                firstip = int(ipaddress.IPv6Address(first))
+                lastip = int(ipaddress.IPv6Address(last))
 
-                table.put_item(
-                    Item = {
-                        'pk': 'ASN#',
-                        'sk': 'ASN#IPv'+str(iptype.version)+'#'+entry['prefix'],
-                        'name': entry['name'],
-                        'description': entry['description'],
-                        'cidr': entry['prefix'],
-                        'firstip': firstip,
-                        'lastip': lastip,
-                        'asn': asn
-                    }
-                )
+                cidrlist.append(value)
+
+                if value not in existing:
+
+                    print('Add: '+value)
+
+                    table.put_item(
+                        Item = {
+                            'pk': 'ASN#',
+                            'sk': 'ASN#IPv6#'+value,
+                            'name': 'AS'+str(asn['num']),
+                            'description': asn['desc'],
+                            'cidr': value,
+                            'firstip': firstip,
+                            'lastip': lastip,
+                            'asn': asn['num']
+                        }
+                    )
 
     for cidr in existing:
 

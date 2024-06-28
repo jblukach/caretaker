@@ -180,7 +180,7 @@ class CaretakerDistillery(Stack):
             self, 'event',
             schedule = _events.Schedule.cron(
                 minute = '0',
-                hour = '12',
+                hour = '14',
                 month = '*',
                 week_day = '*',
                 year = '*'
@@ -238,8 +238,8 @@ class CaretakerDistillery(Stack):
         addressevent = _events.Rule(
             self, 'addressevent',
             schedule = _events.Schedule.cron(
-                minute = '0',
-                hour = '13',
+                minute = '15',
+                hour = '14',
                 month = '*',
                 week_day = '*',
                 year = '*'
@@ -296,8 +296,8 @@ class CaretakerDistillery(Stack):
         ipv6event = _events.Rule(
             self, 'ipv6event',
             schedule = _events.Schedule.cron(
-                minute = '0',
-                hour = '13',
+                minute = '15',
+                hour = '14',
                 month = '*',
                 week_day = '*',
                 year = '*'
@@ -354,8 +354,8 @@ class CaretakerDistillery(Stack):
         ipv46event = _events.Rule(
             self, 'ipv46event',
             schedule = _events.Schedule.cron(
-                minute = '0',
-                hour = '13',
+                minute = '15',
+                hour = '14',
                 month = '*',
                 week_day = '*',
                 year = '*'
