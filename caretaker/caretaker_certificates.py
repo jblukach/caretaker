@@ -161,64 +161,6 @@ class CaretakerCertificates(Stack):
             _targets.LambdaFunction(certificate)
         )
 
-    ### CERTIFICATE2 ###
-
-        certificate2 = _lambda.Function(
-            self, 'certificate2',
-            runtime = _lambda.Runtime.PYTHON_3_12,
-            architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('censys/certificate2'),
-            timeout = Duration.seconds(900),
-            handler = 'certificate2.handler',
-            environment = dict(
-                AWS_ACCOUNT = account,
-                S3_BUCKET = 'caretakerbucket'
-            ),
-            memory_size = 512,
-            retry_attempts = 0,
-            role = role,
-            layers = [
-                censys,
-                getpublicip
-            ]
-        )
-
-        logs2 = _logs.LogGroup(
-            self, 'logs2',
-            log_group_name = '/aws/lambda/'+certificate2.function_name,
-            retention = _logs.RetentionDays.ONE_DAY,
-            removal_policy = RemovalPolicy.DESTROY
-        )
-
-        certificatealarm2 = _cloudwatch.Alarm(
-            self, 'certificatealarm2',
-            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
-            threshold = 0,
-            evaluation_periods = 1,
-            metric = certificate2.metric_errors(
-                period = Duration.minutes(1)
-            )
-        )
-
-        certificatealarm2.add_alarm_action(
-            _actions.SnsAction(topic)
-        )
-
-        event2 = _events.Rule(
-            self, 'event2',
-            schedule = _events.Schedule.cron(
-                minute = '15',
-                hour = '14',
-                month = '*',
-                week_day = '*',
-                year = '*'
-            )
-        )
-
-        event2.add_target(
-            _targets.LambdaFunction(certificate2)
-        )
-
     ### DOMAIN ###
 
         domain = _lambda.Function(

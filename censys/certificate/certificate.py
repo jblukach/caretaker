@@ -20,7 +20,7 @@ def handler(event, context):
 ### ND ###
 
     query = c.search(
-        'parsed.subject.province="ND"',
+        '((parsed.subject.province="North Dakota") or parsed.subject.province="ND") and labels=`trusted`',
         per_page = 100,
         pages = 100,
         fields = [

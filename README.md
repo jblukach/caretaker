@@ -37,7 +37,7 @@ A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 1
 
 ### Brand Monitoring
 
-Every day at 14:00 UTC, queries run against **Censys** for certificates with the province of either **North Dakota** or the abbreviation **ND** to collect **22,242** domain names for ```apex``` and ```www``` brand monitoring.
+Every day at 14:00 UTC, queries run against **Censys** for trusted certificates with the province of either **North Dakota** or the abbreviation **ND** to collect **8,232** domain names for ```apex``` and ```www``` brand monitoring.
 
 Thank you to **Censys** for providing research access that makes this possible!
 

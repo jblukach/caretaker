@@ -21,31 +21,9 @@ def handler(event, context):
 ### SMTP SERVICE ###
 
     query = h.search(
-        '(location.province="North Dakota") and services.service_name=`SMTP`',
+        '((labels=`email`) or services.service_name=`SMTP`) and location.province="North Dakota"',
         per_page = 100,
-        pages = 50,
-        fields = [
-            'dns.names',
-            'ip'
-        ]
-    )
-
-    for page in query:
-        for address in page:
-            ips.append(address['ip'])
-            for name in address['dns']['names']:
-                domain = name.split('.')
-                if len(domain) > 2:
-                    dns.append(domain[-2]+'.'+domain[-1])
-                else:
-                    dns.append(name)
-
-### EMAIL LABEL ###
-
-    query = h.search(
-        '(location.province="North Dakota") and labels=`email`',
-        per_page = 100,
-        pages = 50,
+        pages = 100,
         fields = [
             'dns.names',
             'ip'
