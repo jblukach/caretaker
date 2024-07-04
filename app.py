@@ -29,7 +29,6 @@ from caretaker.caretaker_jamesbrine import CaretakerJamesBrine
 from caretaker.caretaker_nubinetwork import CaretakerNubiNetwork
 from caretaker.caretaker_openphish import CaretakerOpenPhish
 from caretaker.caretaker_phishingarmy import CaretakerPhishingArmy
-from caretaker.caretaker_phishtank import CaretakerPhishTank
 from caretaker.caretaker_proofpoint import CaretakerProofPoint
 from caretaker.caretaker_rutgers import CaretakerRutgers
 from caretaker.caretaker_stack import CaretakerStack
@@ -321,17 +320,6 @@ CaretakerOpenPhish(
 
 CaretakerPhishingArmy(
     app, 'CaretakerPhishingArmy',
-    env = cdk.Environment(
-        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
-    ),
-    synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
-    )
-)
-
-CaretakerPhishTank(
-    app, 'CaretakerPhishTank',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'
