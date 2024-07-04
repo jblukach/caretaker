@@ -113,7 +113,6 @@ I appreciate all the work that goes into maintaining these lists - thank you!
 - https://osint.digitalside.it
 - https://otx.alienvault.com
 - https://phishing.army
-- https://phishtank.com
 - https://report.cs.rutgers.edu
 - https://sslbl.abuse.ch
 - https://talosintelligence.com
