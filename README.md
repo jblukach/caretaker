@@ -14,7 +14,7 @@ I added additional Internet Service Providers (ISPs) to improve state coverage. 
 
 * 11138 - BEK Communications Cooperative (BCC-141)
 * 11232 - Midcontinent Communications (MIDCO-1)
-* 14090 - North Dakota Telephone Company (NDT-4)
+* 14090 - North Dakota Telephone Company (GONDT)
 * 14511 - Polar Communications (PLAR)
 * 14543 - SRT Communications, Inc. (SRTC)
 * 15267 - 702 Communications (702COM)
@@ -32,7 +32,7 @@ I added additional Internet Service Providers (ISPs) to improve state coverage. 
 * 63414 - Dakota Central Telecommunications Cooperative (DAKTE)
 * 400439 - Consolidated Telecommunications (CONSO-10)
 
-It results in **594,698** IPv4 addresses and **23** IPv6 cidr allocations to monitor for reputation. 
+It results in **1,089,288** IPv4 addresses and **21** IPv6 cidr allocations to monitor for reputation. 
 
 A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 18,446,744,073,709,551,616 addresses, making a vast number. IPv6 addresses get converted to integers to determine if they fall into any of the monitored ranges.
 

@@ -31,24 +31,25 @@ def handler(event, context):
         existing.append(item['cidr'])
 
     asns = []
-    asns.append({"num":14090,"desc":"North Dakota Telephone"})
-    asns.append({"num":29744,"desc":"United Telephone"})
-    asns.append({"num":14511,"desc":"Polar Communications"})
-    asns.append({"num":31758,"desc":"Griggs County Telephone"})
-    asns.append({"num":26794,"desc":"Dakota Carrier Network"})
-    asns.append({"num":11138,"desc":"BEK Communications"})
-    asns.append({"num":63414,"desc":"Dakota Central Telecommunications"})
-    asns.append({"num":32809,"desc":"Dickey Rural Networks"})
-    asns.append({"num":14543,"desc":"SRT Communications"})
-    asns.append({"num":27539,"desc":"West River Telecommunications"})
-    asns.append({"num":18780,"desc":"Reservation Telephone"})
-    asns.append({"num":33339,"desc":"Nemont Telecommunications"})
-    asns.append({"num":36374,"desc":"Red River Communications"})
-    asns.append({"num":19530,"desc":"State of North Dakota"})
-    asns.append({"num":15267,"desc":"702 Communications"})
-    asns.append({"num":21730,"desc":"Halstad Telephone Company"})
-    asns.append({"num":12042,"desc":"Consolidated Communications"})
-    asns.append({"num":11232,"desc":"Midcontinent Communications"})
+    asns.append({"num":11138,"desc":"BEK Communications Cooperative","handle":"BCC-141"})
+    asns.append({"num":11232,"desc":"Midcontinent Communications","handle":"MIDCO-1"})
+    asns.append({"num":14090,"desc":"North Dakota Telephone Company","handle":"GONDT"})
+    asns.append({"num":14511,"desc":"Polar Communications","handle":"PLAR"})
+    asns.append({"num":14543,"desc":"SRT Communications, Inc.","handle":"SRTC"})
+    asns.append({"num":15267,"desc":"702 Communications","handle":"702COM"})
+    asns.append({"num":18780,"desc":"Reservation Telephone Coop.","handle":"RTC-81"})
+    asns.append({"num":19530,"desc":"State of North Dakota, ITD","handle":"SNDI-1"})
+    asns.append({"num":21730,"desc":"Halstad Telephone Company","handle":"HALSTA"})
+    asns.append({"num":26794,"desc":"Dakota Carrier Network","handle":"DCN-38"})
+    asns.append({"num":27539,"desc":"West River Telecommunications Cooperative","handle":"WRVR"})
+    asns.append({"num":29744,"desc":"United Telephone Mutual Aid Corporation","handle":"UNITED-190"})
+    asns.append({"num":31758,"desc":"Griggs County Telephone Co.","handle":"GCT-43"})
+    asns.append({"num":32809,"desc":"Dickey Rural Networks","handle":"DRN-3"})
+    asns.append({"num":33339,"desc":"Nemont Telecommunications","handle":"NEMON-2"})
+    asns.append({"num":36374,"desc":"Stellar Association, LLC","handle":"SAL-65"})
+    asns.append({"num":55105,"desc":"Northwest Communications Cooperative","handle":"NCC-115"})
+    asns.append({"num":63414,"desc":"Dakota Central Telecommunications Cooperative","handle":"DAKTE"})
+    asns.append({"num":400439,"desc":"Consolidated Telecommunications","handle":"CONSO-10"})
 
     for asn in asns:
 
@@ -68,11 +69,11 @@ def handler(event, context):
         http.mount("https://", adapter)
 
         headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker) '+str(uuid.uuid1())}
-        r = requests.get('https://rdap.arin.net/registry/arin_originas0_networksbyoriginas/'+str(asn['num']), headers=headers)
+        r = requests.get('https://rdap.arin.net/registry/entity/'+asn['handle'], headers=headers)
         print('AS'+str(asn['num'])+' Status Code: '+str(r.status_code))
         output = r.json()
 
-        for item in output['arin_originas0_networkSearchResults']:
+        for item in output['networks']:
 
             if item['ipVersion'] == 'v4':
 
@@ -98,7 +99,8 @@ def handler(event, context):
                             'cidr': value,
                             'firstip': firstip,
                             'lastip': lastip,
-                            'asn': asn['num']
+                            'asn': asn['num'],
+                            'handle': asn['handle']
                         }
                     )
 
@@ -126,7 +128,8 @@ def handler(event, context):
                             'cidr': value,
                             'firstip': firstip,
                             'lastip': lastip,
-                            'asn': asn['num']
+                            'asn': asn['num'],
+                            'handle': asn['handle']
                         }
                     )
 
