@@ -2,9 +2,9 @@
 
 Reputation is the most critical asset available when using the Internet, as it helps us decide which services we feel safe using. It can also impact an end-users ability to use the web if the connection had previous suspect behavior. Project Caretaker aims to provide a Threat Feed for North Dakota so that anyone can verify Internet reputation.
 
-Every day at 14:00 UTC, the Internet addresses for the Broadband Association of North Dakota (BAND) members, North Dakota Univesity System (NDUS), and the State of North Dakota (ITD) get updated from the American Registry for Internet Numbers (ARIN).
+Every day at 14:00 UTC, the Internet addresses for the Broadband Association of North Dakota (BAND) members, North Dakota Univesity System (NDUS), and the State of North Dakota (ITD) get updated from Security Trails, a Recorded Future company.
 
-- https://arin.net
+- https://bgpview.io
 - https://broadbandnd.com
 - https://ndit.nd.gov
 
@@ -32,7 +32,7 @@ I added additional Internet Service Providers (ISPs) to improve state coverage. 
 * 63414 - Dakota Central Telecommunications Cooperative (DAKTE)
 * 400439 - Consolidated Telecommunications (CONSO-10)
 
-It results in **1,089,288** IPv4 addresses and **21** IPv6 cidr allocations to monitor for reputation. 
+It results in **1,295,104** IPv4 addresses and **31** IPv6 cidr allocations to monitor for reputation. 
 
 A /32 subnet of IPv6 has 65,536 /48 subnets, each with 65,536 /64 subnets with 18,446,744,073,709,551,616 addresses, making a vast number. IPv6 addresses get converted to integers to determine if they fall into any of the monitored ranges.
 

@@ -53,85 +53,68 @@ def handler(event, context):
 
     for asn in asns:
 
-        time.sleep(random.randint(3, 7))
+        time.sleep(1)
 
-        retry_strategy = Retry(
-            total = 3,
-            status_forcelist = [429, 500, 502, 503, 504],
-            backoff_factor = 1
-        )
-
-        adapter = HTTPAdapter(
-            max_retries = retry_strategy
-        )
-
-        http = requests.Session()
-        http.mount("https://", adapter)
-
-        headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker) '+str(uuid.uuid1())}
-        r = requests.get('https://rdap.arin.net/registry/entity/'+asn['handle'], headers=headers)
+        headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
+        r = requests.get('https://api.bgpview.io/asn/'+str(asn['num'])+'/prefixes', headers=headers)
         print('AS'+str(asn['num'])+' Status Code: '+str(r.status_code))
         output = r.json()
 
-        for item in output['networks']:
+        for entry in output['data']['ipv4_prefixes']:
 
-            if item['ipVersion'] == 'v4':
+            hostmask = entry['prefix'].split('/')
+            iptype = ipaddress.ip_address(hostmask[0])
+            netrange = ipaddress.IPv4Network(entry['prefix'])
+            first, last = netrange[0], netrange[-1]
+            firstip = int(ipaddress.IPv4Address(first))
+            lastip = int(ipaddress.IPv4Address(last))
 
-                value = item['cidr0_cidrs'][0]['v4prefix']+'/'+str(item['cidr0_cidrs'][0]['length'])
+            cidrlist.append(entry['prefix'])
 
-                netrange = ipaddress.IPv4Network(value)
-                first, last = netrange[0], netrange[-1]
-                firstip = int(ipaddress.IPv4Address(first))
-                lastip = int(ipaddress.IPv4Address(last))
+            if entry['prefix'] not in existing:
 
-                cidrlist.append(value)
+                print('Add: '+entry['prefix'])
 
-                if value not in existing:
+                table.put_item(
+                    Item = {
+                        'pk': 'ASN#',
+                        'sk': 'ASN#IPv'+str(iptype.version)+'#'+entry['prefix'],
+                        'name': entry['name'],
+                        'description': entry['description'],
+                        'cidr': entry['prefix'],
+                        'firstip': firstip,
+                        'lastip': lastip,
+                        'asn': asn['num']
+                    }
+                )
 
-                    print('Add: '+value)
+        for entry in output['data']['ipv6_prefixes']:
 
-                    table.put_item(
-                        Item = {
-                            'pk': 'ASN#',
-                            'sk': 'ASN#IPv4#'+value,
-                            'name': 'AS'+str(asn['num']),
-                            'description': asn['desc'],
-                            'cidr': value,
-                            'firstip': firstip,
-                            'lastip': lastip,
-                            'asn': asn['num'],
-                            'handle': asn['handle']
-                        }
-                    )
+            hostmask = entry['prefix'].split('/')
+            iptype = ipaddress.ip_address(hostmask[0])
+            netrange = ipaddress.IPv6Network(entry['prefix'])
+            first, last = netrange[0], netrange[-1]
+            firstip = int(ipaddress.IPv6Address(first))
+            lastip = int(ipaddress.IPv6Address(last))
 
-            elif item['ipVersion'] == 'v6':
+            cidrlist.append(entry['prefix'])
 
-                value = item['cidr0_cidrs'][0]['v6prefix']+'/'+str(item['cidr0_cidrs'][0]['length'])
+            if entry['prefix'] not in existing:
 
-                netrange = ipaddress.IPv6Network(value)
-                first, last = netrange[0], netrange[-1]
-                firstip = int(ipaddress.IPv6Address(first))
-                lastip = int(ipaddress.IPv6Address(last))
+                print('Add: '+entry['prefix'])
 
-                cidrlist.append(value)
-
-                if value not in existing:
-
-                    print('Add: '+value)
-
-                    table.put_item(
-                        Item = {
-                            'pk': 'ASN#',
-                            'sk': 'ASN#IPv6#'+value,
-                            'name': 'AS'+str(asn['num']),
-                            'description': asn['desc'],
-                            'cidr': value,
-                            'firstip': firstip,
-                            'lastip': lastip,
-                            'asn': asn['num'],
-                            'handle': asn['handle']
-                        }
-                    )
+                table.put_item(
+                    Item = {
+                        'pk': 'ASN#',
+                        'sk': 'ASN#IPv'+str(iptype.version)+'#'+entry['prefix'],
+                        'name': entry['name'],
+                        'description': entry['description'],
+                        'cidr': entry['prefix'],
+                        'firstip': firstip,
+                        'lastip': lastip,
+                        'asn': asn['num']
+                    }
+                )
 
     for cidr in existing:
 
