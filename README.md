@@ -12,24 +12,25 @@ I added additional Internet Service Providers (ISPs) to improve state coverage. 
 
 ### Autonomous System Numbers (ASN)
 
-- 11138 - BEK Communications Cooperative
-- 11232 - Midcontinent Communications
-- 12042 - Consolidated Communications, Inc.
-- 14090 - North Dakota Telephone Company
-- 14511 - Polar Communications
-- 14543 - SRT Communications, Inc.
-- 15267 - 702 Communications
-- 18780 - Reservation Telephone Coop.
-- 19530 - State of North Dakota, ITD
-- 21730 - Halstad Telephone Company
-- 26794 - Dakota Carrier Network
-- 27539 - West River Telecommunications Cooperative
-- 29744 - United Telephone Mutual Aid Corporation
-- 31758 - Griggs County Telephone Co.
-- 32809 - Dickey Rural Networks
-- 33339 - Nemont Telecommunications
-- 36374 - Stellar Association, LLC
-- 63414 - Dakota Central Telecommunications Cooperative
+* 11138 - BEK Communications Cooperative (BCC-141)
+* 11232 - Midcontinent Communications (MIDCO-1)
+* 14090 - North Dakota Telephone Company (NDT-4)
+* 14511 - Polar Communications (PLAR)
+* 14543 - SRT Communications, Inc. (SRTC)
+* 15267 - 702 Communications (702COM)
+* 18780 - Reservation Telephone Coop. (RTC-81)
+* 19530 - State of North Dakota, ITD (SNDI-1)
+* 21730 - Halstad Telephone Company (HALSTA)
+* 26794 - Dakota Carrier Network (DCN-38)
+* 27539 - West River Telecommunications Cooperative (WRVR)
+* 29744 - United Telephone Mutual Aid Corporation (UNITED-190)
+* 31758 - Griggs County Telephone Co. (GCT-43)
+* 32809 - Dickey Rural Networks (DRN-3)
+* 33339 - Nemont Telecommunications (NEMON-2)
+* 36374 - Stellar Association, LLC (SAL-65)
+* 55105 - Northwest Communications Cooperative (NCC-115)
+* 63414 - Dakota Central Telecommunications Cooperative (DAKTE)
+* 400439 - Consolidated Telecommunications (CONSO-10)
 
 It results in **594,698** IPv4 addresses and **23** IPv6 cidr allocations to monitor for reputation. 
 

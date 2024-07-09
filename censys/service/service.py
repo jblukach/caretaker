@@ -24,7 +24,7 @@ def handler(event, context):
     if service != 'CWMP' and service != 'SNMP':
 
         query = h.search(
-            '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530","15267","21730","12042","11232"}) and services.service_name=`'+service+'`',
+            '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530","15267","21730","55105","400439","11232"}) and services.service_name=`'+service+'`',
             per_page = 100,
             pages = 100,
             fields = [
@@ -35,7 +35,7 @@ def handler(event, context):
     else:
 
         query = h.search(
-            '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530","15267","21730","12042"}) and services.service_name=`'+service+'`',
+            '(autonomous_system.asn: {"14090","29744","14511","31758","26794","11138","63414","32809","14543","27539","18780","33339","36374","19530","15267","21730","55105","400439"}) and services.service_name=`'+service+'`',
             per_page = 100,
             pages = 100,
             fields = [
