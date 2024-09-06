@@ -32,7 +32,7 @@ class CaretakerCensysService6(Stack):
 
         censys = _lambda.LayerVersion.from_layer_version_arn(
             self, 'censys',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:censys:7'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:censys:8'
         )
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
@@ -80,8 +80,14 @@ class CaretakerCensysService6(Stack):
         searches = []
         searches.append('WINRM')
         searches.append('NNTP')
-
-
+        searches.append('AFP')
+        searches.append('APPLE_AIRPORT_ADMIN')
+        searches.append('FINGERD')
+        searches.append('ECHO')
+        searches.append('TACACS_PLUS')
+        searches.append('PORTMAP')
+        searches.append('NBD')
+        searches.append('SPICE')
 
         for search in searches:
 
