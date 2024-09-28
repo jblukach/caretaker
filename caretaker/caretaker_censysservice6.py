@@ -88,6 +88,8 @@ class CaretakerCensysService6(Stack):
         searches.append('PORTMAP')
         searches.append('NBD')
         searches.append('SPICE')
+        searches.append('MDNS')
+        #searches.append('')
 
         for search in searches:
 

@@ -20,7 +20,6 @@ from caretaker.caretaker_certpl import CaretakerCertPl
 from caretaker.caretaker_cinsscore import CaretakerCinsScore
 from caretaker.caretaker_digitalside import CaretakerDigitalSide
 from caretaker.caretaker_distillery import CaretakerDistillery
-from caretaker.caretaker_elliotech import CaretakerEllioTech
 from caretaker.caretaker_feed import CaretakerFeed
 from caretaker.caretaker_greensnow import CaretakerGreenSnow
 from caretaker.caretaker_inversiondnsbl import CaretakerInversionDnsbl
@@ -32,7 +31,6 @@ from caretaker.caretaker_phishingarmy import CaretakerPhishingArmy
 from caretaker.caretaker_proofpoint import CaretakerProofPoint
 from caretaker.caretaker_rutgers import CaretakerRutgers
 from caretaker.caretaker_stack import CaretakerStack
-from caretaker.caretaker_talosintelligence import CaretakerTalosIntelligence
 from caretaker.caretaker_tor import CaretakerTor
 from caretaker.caretaker_tundralabs import CaretakerTundraLabs
 from caretaker.caretaker_ultimatehosts import CaretakerUltimateHosts
@@ -230,17 +228,6 @@ CaretakerDistillery(
     )
 )
 
-CaretakerEllioTech(
-    app, 'CaretakerEllioTech',
-    env = cdk.Environment(
-        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
-    ),
-    synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
-    )
-)
-
 CaretakerFeed(
     app, 'CaretakerFeed',
     env = cdk.Environment(
@@ -353,17 +340,6 @@ CaretakerRutgers(
 
 CaretakerStack(
     app, 'CaretakerStack',
-    env = cdk.Environment(
-        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
-    ),
-    synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
-    )
-)
-
-CaretakerTalosIntelligence(
-    app, 'CaretakerTalosIntelligence',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'
