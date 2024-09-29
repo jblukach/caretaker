@@ -26,6 +26,7 @@ from caretaker.caretaker_inversiondnsbl import CaretakerInversionDnsbl
 from caretaker.caretaker_ipsum import CaretakerIPSum
 from caretaker.caretaker_jamesbrine import CaretakerJamesBrine
 from caretaker.caretaker_nubinetwork import CaretakerNubiNetwork
+from caretaker.caretaker_oisd import CaretakerOisd
 from caretaker.caretaker_openphish import CaretakerOpenPhish
 from caretaker.caretaker_phishingarmy import CaretakerPhishingArmy
 from caretaker.caretaker_proofpoint import CaretakerProofPoint
@@ -285,6 +286,17 @@ CaretakerJamesBrine(
 
 CaretakerNubiNetwork(
     app, 'CaretakerNubiNetwork',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerOisd(
+    app, 'CaretakerOisd',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'
