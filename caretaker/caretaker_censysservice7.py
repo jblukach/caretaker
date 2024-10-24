@@ -15,7 +15,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-class CaretakerCensysService2(Stack):
+class CaretakerCensysService7(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -51,7 +51,7 @@ class CaretakerCensysService2(Stack):
 
         role = _iam.Role(
             self, 'role',
-            role_name = 'censysservice2',
+            role_name = 'censysservice7',
             assumed_by = _iam.ServicePrincipal(
                 'lambda.amazonaws.com'
             )
@@ -78,18 +78,18 @@ class CaretakerCensysService2(Stack):
     ### LAMBDA ###
 
         searches = []
-        searches.append('ACTIVEMQ')
-        searches.append('AMQP')
-        searches.append('BACNET')
-        searches.append('COAP')
-        searches.append('COBALT_STRIKE')
-        searches.append('CWMP')
-        searches.append('DARKGATE')
-        searches.append('DHCPDISCOVER')
-        searches.append('DNP3')
-        searches.append('EPMD')
-        searches.append('ETHEREUM')
-        searches.append('REDIS')
+        searches.append('PGBOUNCER')
+        #searches.append('')
+        #searches.append('')
+        #searches.append('')
+        #searches.append('')
+        #searches.append('')
+        #searches.append('')
+        #searches.append('')
+        #searches.append('')
+        #searches.append('')
+        #searches.append('')
+        #searches.append('')
 
         for search in searches:
 
@@ -140,7 +140,7 @@ class CaretakerCensysService2(Stack):
                 self, 'censysevent'+search,
                 schedule = _events.Schedule.cron(
                     minute = str(searches.index(search)*5),
-                    hour = '16',
+                    hour = '21',
                     month = '*',
                     week_day = '*',
                     year = '*'

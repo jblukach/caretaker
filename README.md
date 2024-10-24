@@ -80,14 +80,15 @@ Thanks again to **Censys** for providing research access that makes this possibl
 | MEMCACHED | MMS | MODBUS | MONERO_P2P |
 | MONGODB | MQTT | MSSQL | MYSQL |
 | NBD | NETBIOS | NNTP | OPC_UA |
-| ORACLE | PC_ANYWHERE | PCOM | POP3 |
-| PORTMAP | POSTGRES | PPTP | PROMETHEUS |
-| REDIS | ROCKETMQ | RDP | RTSP |
-| S7 | SCCM | SIP | SKINNY |
-| SMB | SNMP **+** | SPICE | SSDP |
-| TACACS_PLUS | TEAM_VIEWER | TELNET | TFTP |
-| TPLINK_KASA | UPNP | VNC | WHOIS |
-| WINRM | X11 | ZEROMQ |
+| ORACLE | PC_ANYWHERE | PCOM | PGBOUNCER |
+| POP3 | PORTMAP | POSTGRES | PPTP |
+| PROMETHEUS | REDIS | RLOGIN | ROCKETMQ |
+| RDP | RTSP | S7 | SCCM | 
+| SIP | SKINNY | SMB | SNMP **+** | 
+| SPICE | SSDP | TACACS_PLUS | TEAM_VIEWER |
+| TELNET | TFTP | TPLINK_KASA | UPNP |
+| VNC | WHOIS | WINRM | X11 |
+| ZEROMQ |
 
 - https://search.censys.io/search/definitions
 
@@ -102,10 +103,13 @@ If there are others that you would like added, please open an issue on the repos
 I appreciate all the work that goes into maintaining these lists - thank you!
 
 - https://cert.pl
+- https://check-the-sum.fr
 - https://cinsscore.com
+- https://ellio.tech
 - https://feodotracker.abuse.ch
 - https://github.com/drb-ra
 - https://github.com/elliotwutingfeng
+- https://github.com/jblukach
 - https://github.com/montysecurity
 - https://github.com/stamparm
 - https://github.com/Ultimate-Hosts-Blacklist

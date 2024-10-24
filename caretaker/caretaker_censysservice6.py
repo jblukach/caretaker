@@ -32,12 +32,12 @@ class CaretakerCensysService6(Stack):
 
         censys = _lambda.LayerVersion.from_layer_version_arn(
             self, 'censys',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:censys:9'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:censys:12'
         )
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:12'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:13'
         )
 
     ### TOPIC ###
@@ -89,7 +89,7 @@ class CaretakerCensysService6(Stack):
         searches.append('NBD')
         searches.append('SPICE')
         searches.append('MDNS')
-        #searches.append('')
+        searches.append('RLOGIN')
 
         for search in searches:
 

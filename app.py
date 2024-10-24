@@ -15,6 +15,7 @@ from caretaker.caretaker_censysservice3 import CaretakerCensysService3
 from caretaker.caretaker_censysservice4 import CaretakerCensysService4
 from caretaker.caretaker_censysservice5 import CaretakerCensysService5
 from caretaker.caretaker_censysservice6 import CaretakerCensysService6
+from caretaker.caretaker_censysservice7 import CaretakerCensysService7
 from caretaker.caretaker_certificates import CaretakerCertificates
 from caretaker.caretaker_certpl import CaretakerCertPl
 from caretaker.caretaker_cinsscore import CaretakerCinsScore
@@ -164,6 +165,17 @@ CaretakerCensysService5(
 
 CaretakerCensysService6(
     app, 'CaretakerCensysService6',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerCensysService7(
+    app, 'CaretakerCensysService7',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'

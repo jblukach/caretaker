@@ -34,22 +34,22 @@ class CaretakerTundraLabs(Stack):
 
         dnspython = _lambda.LayerVersion.from_layer_version_arn(
             self, 'dnspython',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:dnspython:4'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:dnspython:5'
         )
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:12'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:13'
         )
 
         requests = _lambda.LayerVersion.from_layer_version_arn(
             self, 'requests',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:requests:5'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:requests:6'
         )
 
         smartopen = _lambda.LayerVersion.from_layer_version_arn(
             self, 'smartopen',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:smartopen:4'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:smartopen:5'
         )
 
     ### TOPIC ###
