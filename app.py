@@ -18,10 +18,13 @@ from caretaker.caretaker_censysservice6 import CaretakerCensysService6
 from caretaker.caretaker_censysservice7 import CaretakerCensysService7
 from caretaker.caretaker_certificates import CaretakerCertificates
 from caretaker.caretaker_certpl import CaretakerCertPl
+from caretaker.caretaker_checksum import CaretakerChecksum
 from caretaker.caretaker_cinsscore import CaretakerCinsScore
 from caretaker.caretaker_digitalside import CaretakerDigitalSide
 from caretaker.caretaker_distillery import CaretakerDistillery
+from caretaker.caretaker_elliotech import CaretakerEllioTech
 from caretaker.caretaker_feed import CaretakerFeed
+from caretaker.caretaker_feedwalla import CaretakerFeedwalla
 from caretaker.caretaker_greensnow import CaretakerGreenSnow
 from caretaker.caretaker_inversiondnsbl import CaretakerInversionDnsbl
 from caretaker.caretaker_ipsum import CaretakerIPSum
@@ -207,6 +210,17 @@ CaretakerCertPl(
     )
 )
 
+CaretakerChecksum(
+    app, 'CaretakerChecksum',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
 CaretakerCinsScore(
     app, 'CaretakerCinsScore',
     env = cdk.Environment(
@@ -217,7 +231,6 @@ CaretakerCinsScore(
         qualifier = '4n6ir'
     )
 )
-
 
 CaretakerDigitalSide(
     app, 'CaretakerDigitalSide',
@@ -241,8 +254,30 @@ CaretakerDistillery(
     )
 )
 
+CaretakerEllioTech(
+    app, 'CaretakerEllioTech',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
 CaretakerFeed(
     app, 'CaretakerFeed',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerFeedwalla(
+    app, 'CaretakerFeedwalla',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'
