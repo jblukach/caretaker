@@ -103,9 +103,7 @@ If there are others that you would like added, please open an issue on the repos
 I appreciate all the work that goes into maintaining these lists - thank you!
 
 - https://cert.pl
-- https://check-the-sum.fr
 - https://cinsscore.com
-- https://ellio.tech
 - https://feodotracker.abuse.ch
 - https://github.com/drb-ra
 - https://github.com/elliotwutingfeng
