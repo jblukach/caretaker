@@ -126,23 +126,11 @@ class CaretakerVerify(Stack):
              zone_name = 'tundralabs.org'
         )   
 
-    ### CLOUDFRONT LOGS ###
-
-        caretakercloudfrontlogs = _s3.Bucket(
-            self, 'caretakercloudfrontlogs',
-            bucket_name = 'caretakercloudfrontlogs',
-            encryption = _s3.BucketEncryption.S3_MANAGED,
-            object_ownership = _s3.ObjectOwnership.OBJECT_WRITER,
-            block_public_access = _s3.BlockPublicAccess.BLOCK_ALL,
-            removal_policy = RemovalPolicy.DESTROY,
-            auto_delete_objects = True,
-            enforce_ssl = True,
-            versioned = True
-        )
-
-        caretakercloudfrontlogs.add_lifecycle_rule(
-            expiration = Duration.days(400),
-            noncurrent_version_expiration = Duration.days(1)
+        cdnlogs = _logs.LogGroup(
+            self, 'cdnlogs',
+            log_group_name = '/aws/cloudfront/verifytundralabsorg',
+            retention = _logs.RetentionDays.THIRTEEN_MONTHS,
+            removal_policy = RemovalPolicy.DESTROY
         )
 
     ### ACM CERTIFICATE ###
@@ -174,8 +162,6 @@ class CaretakerVerify(Stack):
                 )
             ],
             certificate = acm,
-            log_bucket = caretakercloudfrontlogs,
-            log_includes_cookies = True,
             minimum_protocol_version = _cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
             price_class = _cloudfront.PriceClass.PRICE_CLASS_100,
             http_version = _cloudfront.HttpVersion.HTTP2_AND_3,
