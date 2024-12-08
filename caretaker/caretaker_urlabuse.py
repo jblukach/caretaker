@@ -2,14 +2,11 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
-    aws_cloudwatch as _cloudwatch,
-    aws_cloudwatch_actions as _actions,
     aws_events as _events,
     aws_events_targets as _targets,
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_sns as _sns,
     aws_ssm as _ssm
 )
 
@@ -32,19 +29,12 @@ class CaretakerUrlAbuse(Stack):
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:13'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:14'
         )
 
         requests = _lambda.LayerVersion.from_layer_version_arn(
             self, 'requests',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:requests:6'
-        )
-
-    ### TOPIC ###
-
-        topic = _sns.Topic.from_topic_arn(
-            self, 'topic',
-            topic_arn = 'arn:aws:sns:'+region+':'+account+':caretaker'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:requests:7'
         )
 
     ### IAM ###
@@ -80,7 +70,7 @@ class CaretakerUrlAbuse(Stack):
 
         urlabuse = _lambda.Function(
             self, 'urlabuse',
-            runtime = _lambda.Runtime.PYTHON_3_12,
+            runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/dns/urlabuse'),
             timeout = Duration.seconds(900),
@@ -104,20 +94,6 @@ class CaretakerUrlAbuse(Stack):
             log_group_name = '/aws/lambda/'+urlabuse.function_name,
             retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
-        )
-
-        urlabusealarm = _cloudwatch.Alarm(
-            self, 'urlabusealarm',
-            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
-            threshold = 0,
-            evaluation_periods = 1,
-            metric = urlabuse.metric_errors(
-                period = Duration.minutes(1)
-            )
-        )
-
-        urlabusealarm.add_alarm_action(
-            _actions.SnsAction(topic)
         )
 
         urlabuseevent = _events.Rule(

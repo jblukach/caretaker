@@ -5,8 +5,6 @@ from aws_cdk import (
     aws_certificatemanager as _acm,
     aws_cloudfront as _cloudfront,
     aws_cloudfront_origins as _origins,
-    aws_cloudwatch as _cloudwatch,
-    aws_cloudwatch_actions as _actions,
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
@@ -37,14 +35,7 @@ class CaretakerVerify(Stack):
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:13'
-        )
-
-    ### TOPIC ###
-
-        topic = _sns.Topic.from_topic_arn(
-            self, 'topic',
-            topic_arn = 'arn:aws:sns:'+region+':'+account+':caretaker'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:14'
         )
 
     ### S3 BUCKET ###
@@ -93,7 +84,7 @@ class CaretakerVerify(Stack):
         verify = _lambda.Function(
             self, 'verify',
             function_name = 'verify',
-            runtime = _lambda.Runtime.PYTHON_3_12,
+            runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('verify'),
             timeout = Duration.seconds(7),
@@ -120,20 +111,6 @@ class CaretakerVerify(Stack):
             log_group_name = '/aws/lambda/'+verify.function_name,
             retention = _logs.RetentionDays.THIRTEEN_MONTHS,
             removal_policy = RemovalPolicy.DESTROY
-        )
-
-        verifyalarm = _cloudwatch.Alarm(
-            self, 'verifyalarm',
-            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
-            threshold = 0,
-            evaluation_periods = 1,
-            metric = verify.metric_errors(
-                period = Duration.minutes(1)
-            )
-        )
-
-        verifyalarm.add_alarm_action(
-            _actions.SnsAction(topic)
         )
 
     ### HOSTZONE ###

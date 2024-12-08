@@ -84,7 +84,7 @@ Thanks again to **Censys** for providing research access that makes this possibl
 | POP3 | PORTMAP | POSTGRES | PPTP |
 | PROMETHEUS | REDIS | RLOGIN | ROCKETMQ |
 | RDP | RTSP | S7 | SCCM | 
-| SIP | SKINNY | SMB | SNMP **+** | 
+| SIP | SKINNY | SMB | SNMP | 
 | SPICE | SSDP | TACACS_PLUS | TEAM_VIEWER |
 | TELNET | TFTP | TPLINK_KASA | UPNP |
 | VNC | WHOIS | WINRM | X11 |
@@ -92,7 +92,7 @@ Thanks again to **Censys** for providing research access that makes this possibl
 
 - https://search.censys.io/search/definitions
 
-**+** CWMP and SNMP prevalence required exclusion from Midcontinent results.
+**+** CWMP prevalence required exclusion from Midcontinent results.
 
 ### Reputation
 

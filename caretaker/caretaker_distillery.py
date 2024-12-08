@@ -2,15 +2,12 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
-    aws_cloudwatch as _cloudwatch,
-    aws_cloudwatch_actions as _actions,
     aws_dynamodb as _dynamodb,
     aws_events as _events,
     aws_events_targets as _targets,
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_sns as _sns,
     aws_ssm as _ssm
 )
 
@@ -33,24 +30,17 @@ class CaretakerDistillery(Stack):
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:13'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:14'
         )
 
         netaddr = _lambda.LayerVersion.from_layer_version_arn(
             self, 'netaddr',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:netaddr:7'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:netaddr:8'
         )
 
         requests = _lambda.LayerVersion.from_layer_version_arn(
             self, 'requests',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:requests:6'
-        )
-
-    ### TOPIC ###
-
-        topic = _sns.Topic.from_topic_arn(
-            self, 'topic',
-            topic_arn = 'arn:aws:sns:'+region+':'+account+':caretaker'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:requests:7'
         )
 
     ### DYNAMODB ###
@@ -137,7 +127,7 @@ class CaretakerDistillery(Stack):
 
         distillery = _lambda.Function(
             self, 'distillery',
-            runtime = _lambda.Runtime.PYTHON_3_12,
+            runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('distillery/cidr'),
             timeout = Duration.seconds(900),
@@ -161,20 +151,6 @@ class CaretakerDistillery(Stack):
             retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
-
-        distilleryalarm = _cloudwatch.Alarm(
-            self, 'distilleryalarm',
-            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
-            threshold = 0,
-            evaluation_periods = 1,
-            metric = distillery.metric_errors(
-                period = Duration.minutes(1)
-            )
-        )
-
-        distilleryalarm.add_alarm_action(
-            _actions.SnsAction(topic)
-        )
     
         event = _events.Rule(
             self, 'event',
@@ -195,7 +171,7 @@ class CaretakerDistillery(Stack):
 
         address = _lambda.Function(
             self, 'address',
-            runtime = _lambda.Runtime.PYTHON_3_12,
+            runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('distillery/address'),
             timeout = Duration.seconds(900),
@@ -220,20 +196,6 @@ class CaretakerDistillery(Stack):
             retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
-
-        addressalarm = _cloudwatch.Alarm(
-            self, 'addressalarm',
-            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
-            threshold = 0,
-            evaluation_periods = 1,
-            metric = address.metric_errors(
-                period = Duration.minutes(1)
-            )
-        )
-
-        addressalarm.add_alarm_action(
-            _actions.SnsAction(topic)
-        )
     
         addressevent = _events.Rule(
             self, 'addressevent',
@@ -254,7 +216,7 @@ class CaretakerDistillery(Stack):
 
         ipv6 = _lambda.Function(
             self, 'ipv6',
-            runtime = _lambda.Runtime.PYTHON_3_12,
+            runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('distillery/ipv6'),
             timeout = Duration.seconds(900),
@@ -278,20 +240,6 @@ class CaretakerDistillery(Stack):
             retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
         )
-
-        ipv6alarm = _cloudwatch.Alarm(
-            self, 'ipv6alarm',
-            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
-            threshold = 0,
-            evaluation_periods = 1,
-            metric = ipv6.metric_errors(
-                period = Duration.minutes(1)
-            )
-        )
-
-        ipv6alarm.add_alarm_action(
-            _actions.SnsAction(topic)
-        )
     
         ipv6event = _events.Rule(
             self, 'ipv6event',
@@ -312,7 +260,7 @@ class CaretakerDistillery(Stack):
 
         ipv46 = _lambda.Function(
             self, 'ipv46',
-            runtime = _lambda.Runtime.PYTHON_3_12,
+            runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('distillery/ipv46'),
             timeout = Duration.seconds(900),
@@ -335,20 +283,6 @@ class CaretakerDistillery(Stack):
             log_group_name = '/aws/lambda/'+ipv46.function_name,
             retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
-        )
-
-        ipv46alarm = _cloudwatch.Alarm(
-            self, 'ipv46alarm',
-            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
-            threshold = 0,
-            evaluation_periods = 1,
-            metric = ipv46.metric_errors(
-                period = Duration.minutes(1)
-            )
-        )
-
-        ipv46alarm.add_alarm_action(
-            _actions.SnsAction(topic)
         )
     
         ipv46event = _events.Rule(

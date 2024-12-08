@@ -2,14 +2,11 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
-    aws_cloudwatch as _cloudwatch,
-    aws_cloudwatch_actions as _actions,
     aws_events as _events,
     aws_events_targets as _targets,
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_sns as _sns,
     aws_ssm as _ssm,
     aws_stepfunctions as _sfn,
     aws_stepfunctions_tasks as _tasks
@@ -34,29 +31,22 @@ class CaretakerTundraLabs(Stack):
 
         dnspython = _lambda.LayerVersion.from_layer_version_arn(
             self, 'dnspython',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:dnspython:5'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:dnspython:6'
         )
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:13'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:14'
         )
 
         requests = _lambda.LayerVersion.from_layer_version_arn(
             self, 'requests',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:requests:6'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:requests:7'
         )
 
         smartopen = _lambda.LayerVersion.from_layer_version_arn(
             self, 'smartopen',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:smartopen:5'
-        )
-
-    ### TOPIC ###
-
-        topic = _sns.Topic.from_topic_arn(
-            self, 'topic',
-            topic_arn = 'arn:aws:sns:'+region+':'+account+':caretaker'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:smartopen:6'
         )
 
     ### IAM ROLE ###
@@ -92,7 +82,7 @@ class CaretakerTundraLabs(Stack):
 
         start = _lambda.Function(
             self, 'start',
-            runtime = _lambda.Runtime.PYTHON_3_12,
+            runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/mx/start'),
             timeout = Duration.seconds(900),
@@ -119,20 +109,6 @@ class CaretakerTundraLabs(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        startalarm = _cloudwatch.Alarm(
-            self, 'startalarm',
-            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
-            threshold = 0,
-            evaluation_periods = 1,
-            metric = start.metric_errors(
-                period = Duration.minutes(1)
-            )
-        )
-
-        startalarm.add_alarm_action(
-            _actions.SnsAction(topic)
-        )
-
         startevent = _events.Rule(
             self, 'startevent',
             schedule = _events.Schedule.cron(
@@ -154,7 +130,7 @@ class CaretakerTundraLabs(Stack):
 
         step = _lambda.Function(
             self, 'step',
-            runtime = _lambda.Runtime.PYTHON_3_12,
+            runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/mx/step'),
             timeout = Duration.seconds(3),
@@ -177,25 +153,11 @@ class CaretakerTundraLabs(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        stepalarm = _cloudwatch.Alarm(
-            self, 'stepalarm',
-            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
-            threshold = 0,
-            evaluation_periods = 1,
-            metric = step.metric_errors(
-                period = Duration.minutes(1)
-            )
-        )
-
-        stepalarm.add_alarm_action(
-            _actions.SnsAction(topic)
-        )
-
     ### READ LAMBDA ###
 
         read = _lambda.Function(
             self, 'read',
-            runtime = _lambda.Runtime.PYTHON_3_12,
+            runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/mx/read/tundralabs'),
             timeout = Duration.seconds(900),
@@ -219,20 +181,6 @@ class CaretakerTundraLabs(Stack):
             log_group_name = '/aws/lambda/'+read.function_name,
             retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
-        )
-
-        readalarm = _cloudwatch.Alarm(
-            self, 'readalarm',
-            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
-            threshold = 0,
-            evaluation_periods = 1,
-            metric = read.metric_errors(
-                period = Duration.minutes(1)
-            )
-        )
-
-        readalarm.add_alarm_action(
-            _actions.SnsAction(topic)
         )
 
     ### STEP FUNCTION ###

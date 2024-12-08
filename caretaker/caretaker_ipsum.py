@@ -2,14 +2,11 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
-    aws_cloudwatch as _cloudwatch,
-    aws_cloudwatch_actions as _actions,
     aws_events as _events,
     aws_events_targets as _targets,
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
-    aws_sns as _sns,
     aws_ssm as _ssm
 )
 
@@ -32,19 +29,12 @@ class CaretakerIPSum(Stack):
 
         getpublicip = _lambda.LayerVersion.from_layer_version_arn(
             self, 'getpublicip',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:13'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:getpublicip:14'
         )
 
         requests = _lambda.LayerVersion.from_layer_version_arn(
             self, 'requests',
-            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:requests:6'
-        )
-
-    ### TOPIC ###
-
-        topic = _sns.Topic.from_topic_arn(
-            self, 'topic',
-            topic_arn = 'arn:aws:sns:'+region+':'+account+':caretaker'
+            layer_version_arn = 'arn:aws:lambda:'+region+':'+extensions.string_value+':layer:requests:7'
         )
 
     ### IAM ###
@@ -80,7 +70,7 @@ class CaretakerIPSum(Stack):
 
         ipsum = _lambda.Function(
             self, 'ipsum',
-            runtime = _lambda.Runtime.PYTHON_3_12,
+            runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/ip/ipsum'),
             timeout = Duration.seconds(900),
@@ -107,21 +97,6 @@ class CaretakerIPSum(Stack):
             removal_policy = RemovalPolicy.DESTROY
         )
 
-        ipsumalarm = _cloudwatch.Alarm(
-            self, 'ipsumalarm',
-            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
-            threshold = 0,
-            evaluation_periods = 1,
-            metric = ipsum.metric_errors(
-                period = Duration.minutes(1)
-            )
-        )
-
-        ipsumalarm.add_alarm_action(
-            _actions.SnsAction(topic)
-        )
-
-
         event = _events.Rule(
             self, 'event',
             schedule = _events.Schedule.cron(
@@ -141,7 +116,7 @@ class CaretakerIPSum(Stack):
 
         blackbook = _lambda.Function(
             self, 'blackbook',
-            runtime = _lambda.Runtime.PYTHON_3_12,
+            runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('sources/dns/blackbook'),
             timeout = Duration.seconds(900),
@@ -165,20 +140,6 @@ class CaretakerIPSum(Stack):
             log_group_name = '/aws/lambda/'+blackbook.function_name,
             retention = _logs.RetentionDays.ONE_DAY,
             removal_policy = RemovalPolicy.DESTROY
-        )
-
-        blackbookalarm = _cloudwatch.Alarm(
-            self, 'blackbookalarm',
-            comparison_operator = _cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
-            threshold = 0,
-            evaluation_periods = 1,
-            metric = blackbook.metric_errors(
-                period = Duration.minutes(1)
-            )
-        )
-
-        blackbookalarm.add_alarm_action(
-            _actions.SnsAction(topic)
         )
 
         blackbookevent = _events.Rule(
