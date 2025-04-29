@@ -450,7 +450,7 @@ CaretakerZoneFiles(
     )
 )
 
-cdk.Tags.of(app).add('Alias','Caretaker')
+cdk.Tags.of(app).add('Alias','4n6ir.com')
 cdk.Tags.of(app).add('GitHub','https://github.com/jblukach/caretaker')
 
 app.synth()
