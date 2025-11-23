@@ -14,26 +14,36 @@ def handler(event, context):
     day = datetime.datetime.now().strftime('%d')
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
-    response = requests.get('https://raw.githubusercontent.com/drb-ra/C2IntelFeeds/master/feeds/domainC2s.csv', headers=headers)
+    response = requests.get('http://data.phishtank.com/data/online-valid.csv', headers=headers)
+    print(f'HTTP Status Code: {response.status_code}')
     data = response.text
 
-    fname = f'{year}-{month}-{day}-c2intelfeeds.csv'
+    fname = f'{year}-{month}-{day}-phishtank.csv'
     fpath = f'/tmp/{fname}'
+
+    domains = []
+
+    for line in data.splitlines(True)[1:]:
+        if line.startswith('#'):
+            continue
+        else:
+            line = line.split(',')[1]
+            line = line.split('/')[2]
+            domains.append(f"{line},H,{year}-{month}-{day}\n")
+            count += 1
+
+    domains = list(set(domains))
 
     f = open(fpath, 'w')
     f.write('domain,attrib,ts\n')
 
-    for line in data.splitlines():
-        if line.startswith('#'):
-            continue
-        else:
-            out = line.split(',')
-            f.write(f"{out[0]},A,{year}-{month}-{day}\n")
-            count += 1
+    for domain in domains:
+        f.write(domain)
 
     f.close()
 
     print(f'{count} Domains')
+    print(f'{len(domains)} Domains')
 
     s3 = boto3.resource('s3')
 
