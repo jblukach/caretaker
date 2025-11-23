@@ -61,9 +61,9 @@ class AddressesFeodoTracker(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('dns/certpl'),
+            code = _lambda.Code.from_asset('ips/feodotracker'),
             timeout = Duration.seconds(900),
-            handler = 'certpl.handler',
+            handler = 'feodotracker.handler',
             environment = dict(
                 S3_BUCKET = 'caretakerbucket',
                 S3_RESEARCH = 'caretakerresearch'
