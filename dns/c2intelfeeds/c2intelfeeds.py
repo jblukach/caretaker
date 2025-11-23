@@ -15,6 +15,7 @@ def handler(event, context):
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
     response = requests.get('https://raw.githubusercontent.com/drb-ra/C2IntelFeeds/master/feeds/domainC2s.csv', headers=headers)
+    print(f'HTTP Status Code: {response.status_code}')
     data = response.text
 
     fname = f'{year}-{month}-{day}-c2intelfeeds.csv'

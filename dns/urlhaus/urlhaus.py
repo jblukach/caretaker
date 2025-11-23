@@ -15,6 +15,7 @@ def handler(event, context):
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
     response = requests.get('https://urlhaus.abuse.ch/downloads/hostfile/', headers=headers)
+    print(f'HTTP Status Code: {response.status_code}')
     data = response.text
 
     fname = f'{year}-{month}-{day}-urlhaus.csv'

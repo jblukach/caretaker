@@ -94,6 +94,6 @@ class DomainsPhishTank(Stack):
             )
         )
 
-        #event.add_target(
-        #    _targets.LambdaFunction(compute)
-        #)
+        event.add_target(
+            _targets.LambdaFunction(compute)
+        )

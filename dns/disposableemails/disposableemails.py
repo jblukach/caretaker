@@ -15,6 +15,7 @@ def handler(event, context):
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
     response = requests.get('https://raw.githubusercontent.com/disposable-email-domains/disposable-email-domains/refs/heads/main/disposable_email_blocklist.conf', headers=headers)
+    print(f'HTTP Status Code: {response.status_code}')
     data = response.text
 
     fname = f'{year}-{month}-{day}-disposableemails.csv'

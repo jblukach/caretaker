@@ -13,23 +13,29 @@ def handler(event, context):
     month = datetime.datetime.now().strftime('%m')
     day = datetime.datetime.now().strftime('%d')
 
-    headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
-    response = requests.get('https://raw.githubusercontent.com/drb-ra/C2IntelFeeds/master/feeds/domainC2s.csv', headers=headers)
-    data = response.text
-
-    fname = f'{year}-{month}-{day}-c2intelfeeds.csv'
+    fname = f'{year}-{month}-{day}-ultimatehosts.csv'
     fpath = f'/tmp/{fname}'
 
     f = open(fpath, 'w')
     f.write('domain,attrib,ts\n')
 
-    for line in data.splitlines():
-        if line.startswith('#'):
-            continue
+    for i in range(20):
+
+        headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
+        response = requests.get(f'https://raw.githubusercontent.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist/refs/heads/master/domains/domains{i}.list', headers=headers)
+        print(f'HTTP Status Code: {response.status_code}')
+        data = response.text
+        
+        if response.status_code == 200:
+            print(f'Processing {i} List')
+            for line in data.splitlines():
+                if line.startswith('#'):
+                    continue
+                else:
+                    f.write(f"{line},K,{year}-{month}-{day}\n")
+                    count += 1
         else:
-            out = line.split(',')
-            f.write(f"{out[0]},A,{year}-{month}-{day}\n")
-            count += 1
+            break
 
     f.close()
 
