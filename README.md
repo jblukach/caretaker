@@ -12,8 +12,35 @@ Huge thanks to everyone who maintains these lists — they take a ton of work to
 
 ### Addresses
 
-| id  | short name | url |
-|:---:|:----------:|:---:|
+| id | short name | url |
+|:--:|:----------:|:---:|
+| 1  | blocklistde | https://www.blocklist.de |
+| 2  | blocklistua | https://blocklist.net.ua |
+| 3  | binarydefense | https://binarydefense.com |
+| 4  | botscout | https://botscout.com |
+| 5  | bruteforceblocker | https://danger.rulez.sk |
+| 6  | c2intelfeeds | https://github.com/drb-ra/C2IntelFeeds |
+| 7  | c2tracker | https://github.com/montysecurity/C2-Tracker |
+| 8  | cinsscore | https://cinsscore.com |
+| 9  | feodotracker | https://feodotracker.abuse.ch |
+| 10 | firehol | https://iplists.firehol.org |
+| 11 | freeproxylist | https://free-proxy-list.net |
+| 12 | greensnow | https://www.greensnow.co |
+| 13 | inversiondnsbl | https://github.com/elliotwutingfeng/Inversion-DNSBL-Blocklists |
+| 14 | ipsum | https://github.com/stamparm/ipsum |
+| 15 | jamesbrine | https://jamesbrine.com.au |
+| 16 | myipms | https://myip.ms |
+| 17 | nubinetwork | https://www.nubi-network.com |
+| 18 | proofpoint | https://www.proofpoint.com |
+| 19 | rutgers | https://report.cs.rutgers.edu |
+| 20 | sansisc | https://isc.sans.edu |
+| 21 | sblam | https://sblam.com |
+| 22 | stopforumspam | https://stopforumspam.com |
+| 23 | torexit | https://www.torproject.org |
+| 24 | torlist | https://www.dan.me.uk |
+| 25 | ultimatehosts | https://github.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist |
+
+**+** retired source
 
 ### Domains
 
@@ -31,6 +58,8 @@ Huge thanks to everyone who maintains these lists — they take a ton of work to
 | J  | threatview | https://threatview.io |
 | K  | ultimatehosts | https://github.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist |
 | L  | urlhaus | https://urlhaus.abuse.ch |
+
+**+** retired source
 
 ## TO-DO
 
