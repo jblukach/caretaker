@@ -4,7 +4,6 @@ from aws_cdk import (
     Stack,
     aws_iam as _iam,
     aws_s3 as _s3,
-    aws_s3_deployment as _deployment,
     aws_ssm as _ssm
 )
 
@@ -23,24 +22,6 @@ class CaretakerStack(Stack):
         )
 
     ### S3 BUCKET ###
-
-        binary = _s3.Bucket(
-            self, 'binary',
-            bucket_name = 'caretakerbinary',
-            encryption = _s3.BucketEncryption.S3_MANAGED,
-            block_public_access = _s3.BlockPublicAccess.BLOCK_ALL,
-            removal_policy = RemovalPolicy.DESTROY,
-            auto_delete_objects = True,
-            enforce_ssl = True,
-            versioned = False
-        )
-
-        deployment = _deployment.BucketDeployment(
-            self, 'deployment',
-            sources = [_deployment.Source.asset('binary')],
-            destination_bucket = binary,
-            prune = False
-        )
 
         bucket = _s3.Bucket(
             self, 'bucket',
