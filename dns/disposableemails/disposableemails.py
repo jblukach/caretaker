@@ -14,10 +14,10 @@ def handler(event, context):
     day = datetime.datetime.now().strftime('%d')
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
-    response = requests.get('https://raw.githubusercontent.com/drb-ra/C2IntelFeeds/master/feeds/domainC2s.csv', headers=headers)
+    response = requests.get('https://raw.githubusercontent.com/disposable-email-domains/disposable-email-domains/refs/heads/main/disposable_email_blocklist.conf', headers=headers)
     data = response.text
 
-    fname = f'{year}-{month}-{day}-c2intelfeeds.csv'
+    fname = f'{year}-{month}-{day}-disposableemails.csv'
     fpath = f'/tmp/{fname}'
 
     f = open(fpath, 'w')
@@ -27,8 +27,7 @@ def handler(event, context):
         if line.startswith('#'):
             continue
         else:
-            out = line.split(',')
-            f.write(f"{out[0]},A,{year}-{month}-{day}\n")
+            f.write(f"{line},C,{year}-{month}-{day}\n")
             count += 1
 
     f.close()
