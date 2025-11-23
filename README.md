@@ -14,9 +14,9 @@ Huge thanks to everyone who maintains these lists — they take a ton of work to
 
 | id | short name | url |
 |:--:|:----------:|:---:|
-| 1  | blocklistde | https://www.blocklist.de |
-| 2  | blocklistua | https://blocklist.net.ua |
-| 3  | binarydefense | https://binarydefense.com |
+| 1  | binarydefense | https://binarydefense.com |
+| 2  | blocklistde | https://www.blocklist.de |
+| 3  | blocklistua | https://blocklist.net.ua |
 | 4  | botscout | https://botscout.com |
 | 5  | bruteforceblocker | https://danger.rulez.sk |
 | 6  | c2intelfeeds | https://github.com/drb-ra/C2IntelFeeds |

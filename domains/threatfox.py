@@ -47,7 +47,6 @@ class DomainsThreatFox(Stack):
         role.add_to_policy(
             _iam.PolicyStatement(
                 actions = [
-                   's3:GetObject',
                     's3:PutObject'
                 ],
                 resources = [
