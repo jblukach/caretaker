@@ -1,6 +1,7 @@
 import boto3
 import datetime
 import gzip
+import ipaddress
 import json
 import os
 import requests
@@ -14,11 +15,11 @@ def handler(event, context):
     day = datetime.datetime.now().strftime('%d')
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
-    response = requests.get('https://www.binarydefense.com/banlist.txt', headers=headers)
+    response = requests.get('https://blocklist.net.ua/blocklist.csv', headers=headers)
     print(f'HTTP Status Code: {response.status_code}')
     data = response.text
 
-    fname = f'{year}-{month}-{day}-binarydefense.csv'
+    fname = f'{year}-{month}-{day}-blocklistua.csv'
     fpath = f'/tmp/{fname}'
 
     f = open(fpath, 'w')
@@ -27,11 +28,16 @@ def handler(event, context):
     for line in data.splitlines():
         if line.startswith('#'):
             continue
-        elif line.strip() == '':
+        elif line.startswith('IP'):
             continue
         else:
-            f.write(f"{line},1,{year}-{month}-{day}\n")
-            count += 1
+            out = line.split(';')
+            try:
+                if ipaddress.ip_network(out[0]).version == 4 or ipaddress.ip_network(out[0]).version == 6:
+                    f.write(f"{out[0]},3,{year}-{month}-{day}\n")
+                    count += 1
+            except ValueError:
+                continue
 
     f.close()
 
