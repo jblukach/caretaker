@@ -14,11 +14,11 @@ def handler(event, context):
     day = datetime.datetime.now().strftime('%d')
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
-    response = requests.get('https://www.binarydefense.com/banlist.txt', headers=headers)
+    response = requests.get('https://iplists.firehol.org/files/stopforumspam.ipset', headers=headers)
     print(f'HTTP Status Code: {response.status_code}')
     data = response.text
 
-    fname = f'{year}-{month}-{day}-binarydefense.csv'
+    fname = f'{year}-{month}-{day}-stopforumspam.csv'
     fpath = f'/tmp/{fname}'
 
     f = open(fpath, 'w')
@@ -27,10 +27,8 @@ def handler(event, context):
     for line in data.splitlines():
         if line.startswith('#'):
             continue
-        elif line.strip() == '':
-            continue
         else:
-            f.write(f"{line},1,{year}-{month}-{day}\n")
+            f.write(f"{line},22,{year}-{month}-{day}\n")
             count += 1
 
     f.close()
