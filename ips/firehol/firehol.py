@@ -13,29 +13,47 @@ def handler(event, context):
     month = datetime.datetime.now().strftime('%m')
     day = datetime.datetime.now().strftime('%d')
 
-    headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
-    response = requests.get('https://www.binarydefense.com/banlist.txt', headers=headers)
-    print(f'HTTP Status Code: {response.status_code}')
-    data = response.text
+    feeds = []
+    feeds.append('https://iplists.firehol.org/files/firehol_abusers_1d.netset')
+    feeds.append('https://iplists.firehol.org/files/firehol_anonymous.netset')
+    feeds.append('https://iplists.firehol.org/files/firehol_level1.netset')
+    feeds.append('https://iplists.firehol.org/files/firehol_level2.netset')
+    feeds.append('https://iplists.firehol.org/files/firehol_level3.netset')
+    feeds.append('https://iplists.firehol.org/files/firehol_level4.netset')
+    feeds.append('https://iplists.firehol.org/files/firehol_proxies.netset')
+    feeds.append('https://iplists.firehol.org/files/firehol_webserver.netset')
 
-    fname = f'{year}-{month}-{day}-binarydefense.csv'
+    fname = f'{year}-{month}-{day}-firehol.csv'
     fpath = f'/tmp/{fname}'
+
+    addresses = []
+
+    for feed in feeds:
+
+        headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
+        response = requests.get(feed, headers=headers)
+        print(f'HTTP Status Code: {response.status_code}')
+        data = response.text
+
+        for line in data.splitlines():
+            if line.startswith('#'):
+                continue
+            else:
+                addresses.append(f"{line},10,{year}-{month}-{day}\n")
+                count += 1
+
+    addresses = list(set(addresses))
 
     f = open(fpath, 'w')
     f.write('address,attrib,ts\n')
 
-    for line in data.splitlines():
-        if line.startswith('#'):
-            continue
-        elif line.strip() == '':
-            continue
-        else:
-            f.write(f"{line},1,{year}-{month}-{day}\n")
-            count += 1
+    for address in addresses:
+        f.write(address)
 
     f.close()
 
     print(f'{count} Addresses')
+    print(f'{len(addresses)} Unique')
 
     s3 = boto3.resource('s3')
 
