@@ -66,23 +66,3 @@ Huge thanks to everyone who maintains these lists — they take a ton of work to
 | L  | urlhaus | https://urlhaus.abuse.ch |
 
 **+** retired source
-
-## TO-DO
-
-The critical part is making the results usable by anyone with just a website visit!
-
-The lookup completes using the Internet address your connection originates from to protect the potential sensitivity of the returned results.
-
-We don't want to tip the hand like playing cards, losing the advantage!
-
-- https://verify.tundralabs.org
-
-If the website returns **gray**, it means there is no data currently available, but that does not mean there still could not be a problem. 
-
-When the website returns **orange**, it will list sources and last-seen timestamps of potential reputation concerns.
-
-When the website returns **yellow**, monitoring is not occurring.
-
-When the website returns **red**, please try again or check back later.
-
-You may require additional assistance to resolve the issue outside of this project; at least the awareness to start asking questions will exist.

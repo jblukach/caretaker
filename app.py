@@ -29,7 +29,14 @@ from addresses.torexit import AddressesTorExit
 from addresses.torlist import AddressesTorList
 from addresses.ultimatehosts import AddressesUltimateHosts
 from caretaker.caretaker_build import CaretakerBuild
+from caretaker.caretaker_deploy import CaretakerDeploy
+from caretaker.caretaker_dns import CaretakerDns
+from caretaker.caretaker_ipv4 import CaretakerIpv4
+from caretaker.caretaker_ipv6 import CaretakerIpv6
+from caretaker.caretaker_spf import CaretakerSpf
+from caretaker.caretaker_sqlite import CaretakerSqlite
 from caretaker.caretaker_stack import CaretakerStack
+from caretaker.caretaker_verify import CaretakerVerify
 from domains.c2intelfeeds import DomainsC2IntelFeeds
 from domains.certpl import DomainsCertPl
 from domains.disposableemails import DomainsDisposableEmails
@@ -331,8 +338,85 @@ CaretakerBuild(
     )
 )
 
+CaretakerDeploy(
+    app, 'CaretakerDeploy',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerDns(
+    app, 'CaretakerDns',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerIpv4(
+    app, 'CaretakerIpv4',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerIpv6(
+    app, 'CaretakerIpv6',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerSpf(
+    app, 'CaretakerSpf',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerSqlite(
+    app, 'CaretakerSqlite',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
 CaretakerStack(
     app, 'CaretakerStack',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerVerify(
+    app, 'CaretakerVerify',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'

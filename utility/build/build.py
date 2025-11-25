@@ -78,7 +78,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/domains.csv',
-        os.environ['S3_BUCKET'],
+        os.environ['STAGED_S3'],
         'domains.csv',
         ExtraArgs = {
             'ContentType': "text/csv"
@@ -87,7 +87,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/ipv4s.csv',
-        os.environ['S3_BUCKET'],
+        os.environ['STAGED_S3'],
         'ipv4s.csv',
         ExtraArgs = {
             'ContentType': "text/csv"
@@ -96,7 +96,7 @@ def handler(event, context):
 
     s3.meta.client.upload_file(
         '/tmp/ipv6s.csv',
-        os.environ['S3_BUCKET'],
+        os.environ['STAGED_S3'],
         'ipv6s.csv',
         ExtraArgs = {
             'ContentType': "text/csv"

@@ -55,7 +55,8 @@ class CaretakerBuild(Stack):
             timeout = Duration.seconds(900),
             handler = 'build.handler',
             environment = dict(
-                S3_BUCKET = 'caretakerbucket'
+                S3_BUCKET = 'caretakerbucket',
+                STAGED_S3 = 'caretakerstaged'
             ),
             ephemeral_storage_size = Size.gibibytes(1),
             memory_size = 2048,
@@ -72,7 +73,7 @@ class CaretakerBuild(Stack):
         event = _events.Rule(
             self, 'event',
             schedule = _events.Schedule.cron(
-                minute = '3',
+                minute = '5',
                 hour = '11',
                 month = '*',
                 week_day = '*',

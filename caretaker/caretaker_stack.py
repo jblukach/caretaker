@@ -5,6 +5,7 @@ from aws_cdk import (
     aws_glue_alpha as _glue,
     aws_iam as _iam,
     aws_s3 as _s3,
+    aws_s3_deployment as _deployment,
     aws_ssm as _ssm
 )
 
@@ -40,42 +41,6 @@ class CaretakerStack(Stack):
             noncurrent_version_expiration = Duration.days(1)
         )
 
-        bucket_policy = _iam.PolicyStatement(
-            effect = _iam.Effect(
-                'ALLOW'
-            ),
-            principals = [
-                _iam.AnyPrincipal()
-            ],
-            actions = [
-                's3:ListBucket'
-            ],
-            resources = [
-                bucket.bucket_arn
-            ],
-            conditions = {"StringEquals": {"aws:PrincipalOrgID": organization.string_value}}
-        )
-
-        bucket.add_to_resource_policy(bucket_policy)
-
-        object_policy = _iam.PolicyStatement(
-            effect = _iam.Effect(
-                'ALLOW'
-            ),
-            principals = [
-                _iam.AnyPrincipal()
-            ],
-            actions = [
-                's3:GetObject'
-            ],
-            resources = [
-                bucket.arn_for_objects('*')
-            ],
-            conditions = {"StringEquals": {"aws:PrincipalOrgID": organization.string_value}}
-        )
-
-        bucket.add_to_resource_policy(object_policy)
-
         output = _s3.Bucket(
             self, 'output',
             bucket_name = 'caretakeroutput',
@@ -102,6 +67,60 @@ class CaretakerStack(Stack):
             enforce_ssl = True,
             versioned = False
         )
+
+        staged = _s3.Bucket(
+            self, 'staged',
+            bucket_name = 'caretakerstaged',
+            encryption = _s3.BucketEncryption.S3_MANAGED,
+            block_public_access = _s3.BlockPublicAccess.BLOCK_ALL,
+            removal_policy = RemovalPolicy.DESTROY,
+            auto_delete_objects = True,
+            enforce_ssl = True,
+            versioned = False
+        )
+
+        deployment = _deployment.BucketDeployment(
+            self, 'deployment',
+            sources = [_deployment.Source.asset('code')],
+            destination_bucket = staged,
+            prune = False
+        )
+
+        bucket_policy = _iam.PolicyStatement(
+            effect = _iam.Effect(
+                'ALLOW'
+            ),
+            principals = [
+                _iam.AnyPrincipal()
+            ],
+            actions = [
+                's3:ListBucket'
+            ],
+            resources = [
+                staged.bucket_arn
+            ],
+            conditions = {"StringEquals": {"aws:PrincipalOrgID": organization.string_value}}
+        )
+
+        staged.add_to_resource_policy(bucket_policy)
+
+        object_policy = _iam.PolicyStatement(
+            effect = _iam.Effect(
+                'ALLOW'
+            ),
+            principals = [
+                _iam.AnyPrincipal()
+            ],
+            actions = [
+                's3:GetObject'
+            ],
+            resources = [
+                staged.arn_for_objects('*')
+            ],
+            conditions = {"StringEquals": {"aws:PrincipalOrgID": organization.string_value}}
+        )
+
+        staged.add_to_resource_policy(object_policy)
 
         temporary = _s3.Bucket(
             self, 'temporary',
