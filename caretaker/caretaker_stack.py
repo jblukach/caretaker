@@ -2,6 +2,7 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
+    aws_glue_alpha as _glue,
     aws_iam as _iam,
     aws_s3 as _s3,
     aws_ssm as _ssm
@@ -116,4 +117,67 @@ class CaretakerStack(Stack):
         temporary.add_lifecycle_rule(
             expiration = Duration.days(1),
             noncurrent_version_expiration = Duration.days(1)
+        )
+
+    ### GLUE DATABASE ###
+
+        database = _glue.Database(
+            self, 'database',
+            database_name = 'caretaker'
+        )
+
+    ### GLUE TABLES ###
+
+        address =  _glue.Table(
+            self, 'address',
+            bucket = research,
+            s3_prefix = 'ips/',
+            database = database,
+            table_name = 'address',
+            columns = [
+                _glue.Column(
+                    name = 'address',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'attrib',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'ts',
+                    type = _glue.Schema.STRING
+                )
+            ],
+            data_format = _glue.DataFormat(
+                input_format = _glue.InputFormat.TEXT,
+                output_format = _glue.OutputFormat.PARQUET,
+                serialization_library = _glue.SerializationLibrary.OPEN_CSV
+            )
+        )
+
+        domain =  _glue.Table(
+            self, 'domain',
+            bucket = research,
+            s3_prefix = 'dns/',
+            database = database,
+            table_name = 'domain',
+            columns = [
+                _glue.Column(
+                    name = 'domain',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'attrib',
+                    type = _glue.Schema.STRING
+                ),
+                _glue.Column(
+                    name = 'ts',
+                    type = _glue.Schema.STRING
+                )
+            ],
+            data_format = _glue.DataFormat(
+                input_format = _glue.InputFormat.TEXT,
+                output_format = _glue.OutputFormat.PARQUET,
+                serialization_library = _glue.SerializationLibrary.OPEN_CSV
+            )
         )
