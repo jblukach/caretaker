@@ -1,8 +1,14 @@
-![Project Caretaker](images/caretaker.png)
+![Project Caretaker](caretaker.png)
 
 Your online reputation is one of your most valuable assets. It helps you decide which websites and online services you can trust - and in some cases, it can even affect your own ability to access the internet if your connection has shown suspicious activity in the past.
 
-Project Caretaker makes this easy. It offers a simple, transparent way for anyone to check and verify their Internet reputation just by visiting a website - helping you stay safe, trusted, and connected online.
+Project Caretaker makes this easy. It offers a simple, transparent way for anyone to check and verify their Internet reputation against Open Source Intelligence (OSINT), just by visiting a website - helping you stay safe, trusted, and connected online.
+
+## Reputation
+
+### Internet Connection
+
+### Sender Policy Framework
 
 ## Attribution
 
@@ -73,18 +79,10 @@ We don't want to tip the hand like playing cards, losing the advantage!
 
 If the website returns **gray**, it means there is no data currently available, but that does not mean there still could not be a problem. 
 
-![Project Caretaker Unknown Alert](images/unknown.png)
-
 When the website returns **orange**, it will list sources and last-seen timestamps of potential reputation concerns.
-
-![Project Caretaker Suspect Alert](images/suspect.png)
 
 When the website returns **yellow**, monitoring is not occurring.
 
-![Project Caretaker Suspect Alert](images/monitor.png)
-
 When the website returns **red**, please try again or check back later.
-
-![Project Caretaker Error Alert](images/error.png)
 
 You may require additional assistance to resolve the issue outside of this project; at least the awareness to start asking questions will exist.

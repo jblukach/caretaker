@@ -61,7 +61,7 @@ class AddressesBinaryDefense(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('ips/binarydefense'),
+            code = _lambda.Code.from_asset('address/binarydefense'),
             timeout = Duration.seconds(900),
             handler = 'binarydefense.handler',
             environment = dict(

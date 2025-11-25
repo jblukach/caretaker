@@ -61,7 +61,7 @@ class AddressesC2IntelFeeds(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('ips/c2intelfeeds'),
+            code = _lambda.Code.from_asset('address/c2intelfeeds'),
             timeout = Duration.seconds(900),
             handler = 'c2intelfeeds.handler',
             environment = dict(

@@ -61,7 +61,7 @@ class AddressesIpsum(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('ips/ipsum'),
+            code = _lambda.Code.from_asset('address/ipsum'),
             timeout = Duration.seconds(900),
             handler = 'ipsum.handler',
             environment = dict(

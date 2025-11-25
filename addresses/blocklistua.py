@@ -61,7 +61,7 @@ class AddressesBlocklistUa(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('ips/blocklistua'),
+            code = _lambda.Code.from_asset('address/blocklistua'),
             timeout = Duration.seconds(900),
             handler = 'blocklistua.handler',
             environment = dict(

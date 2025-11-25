@@ -28,6 +28,7 @@ from addresses.stopforumspam import AddressesStopForumSpam
 from addresses.torexit import AddressesTorExit
 from addresses.torlist import AddressesTorList
 from addresses.ultimatehosts import AddressesUltimateHosts
+from caretaker.caretaker_build import CaretakerBuild
 from caretaker.caretaker_stack import CaretakerStack
 from domains.c2intelfeeds import DomainsC2IntelFeeds
 from domains.certpl import DomainsCertPl
@@ -310,6 +311,17 @@ AddressesTorList(
 
 AddressesUltimateHosts(
     app, 'AddressesUltimateHosts',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerBuild(
+    app, 'CaretakerBuild',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'

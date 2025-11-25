@@ -61,7 +61,7 @@ class AddressesUltimateHosts(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('ips/ultimatehosts'),
+            code = _lambda.Code.from_asset('address/ultimatehosts'),
             timeout = Duration.seconds(900),
             handler = 'ultimatehosts.handler',
             environment = dict(

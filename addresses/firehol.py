@@ -61,7 +61,7 @@ class AddressesFirehol(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('ips/firehol'),
+            code = _lambda.Code.from_asset('address/firehol'),
             timeout = Duration.seconds(900),
             handler = 'firehol.handler',
             environment = dict(

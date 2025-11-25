@@ -1,33 +1,21 @@
 from aws_cdk import (
     Duration,
     RemovalPolicy,
+    Size,
     Stack,
     aws_events as _events,
     aws_events_targets as _targets,
     aws_iam as _iam,
     aws_lambda as _lambda,
-    aws_logs as _logs,
-    aws_ssm as _ssm
+    aws_logs as _logs
 )
 
 from constructs import Construct
 
-class AddressesFeodoTracker(Stack):
+class CaretakerBuild(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
-
-    ### LAMBDA LAYERS ###
-
-        pkgrequests = _ssm.StringParameter.from_string_parameter_arn(
-            self, 'pkgrequests',
-            'arn:aws:ssm:us-east-1:070176467818:parameter/pkg/requests'
-        )
-
-        requests = _lambda.LayerVersion.from_layer_version_arn(
-            self, 'requests',
-            layer_version_arn = pkgrequests.string_value
-        )
 
     ### IAM ROLE ###
 
@@ -47,6 +35,8 @@ class AddressesFeodoTracker(Stack):
         role.add_to_policy(
             _iam.PolicyStatement(
                 actions = [
+                    's3:GetObject',
+                    's3:ListBucket',
                     's3:PutObject'
                 ],
                 resources = [
@@ -61,18 +51,15 @@ class AddressesFeodoTracker(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('address/feodotracker'),
+            code = _lambda.Code.from_asset('utility/build'),
             timeout = Duration.seconds(900),
-            handler = 'feodotracker.handler',
+            handler = 'build.handler',
             environment = dict(
-                S3_BUCKET = 'caretakerbucket',
-                S3_RESEARCH = 'caretakerresearch'
+                S3_BUCKET = 'caretakerbucket'
             ),
-            memory_size = 1024,
-            role = role,
-            layers = [
-                requests
-            ]
+            ephemeral_storage_size = Size.gibibytes(1),
+            memory_size = 2048,
+            role = role
         )
 
         logs = _logs.LogGroup(
@@ -85,7 +72,7 @@ class AddressesFeodoTracker(Stack):
         event = _events.Rule(
             self, 'event',
             schedule = _events.Schedule.cron(
-                minute = '0',
+                minute = '3',
                 hour = '11',
                 month = '*',
                 week_day = '*',

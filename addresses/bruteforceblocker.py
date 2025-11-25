@@ -61,7 +61,7 @@ class AddressesBruteForceBlocker(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('ips/bruteforceblocker'),
+            code = _lambda.Code.from_asset('address/bruteforceblocker'),
             timeout = Duration.seconds(900),
             handler = 'bruteforceblocker.handler',
             environment = dict(

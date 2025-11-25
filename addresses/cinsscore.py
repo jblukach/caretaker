@@ -61,7 +61,7 @@ class AddressesCinsScore(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('ips/cinsscore'),
+            code = _lambda.Code.from_asset('address/cinsscore'),
             timeout = Duration.seconds(900),
             handler = 'cinsscore.handler',
             environment = dict(

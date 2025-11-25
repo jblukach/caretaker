@@ -61,7 +61,7 @@ class AddressesFreeProxyList(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('ips/freeproxylist'),
+            code = _lambda.Code.from_asset('address/freeproxylist'),
             timeout = Duration.seconds(900),
             handler = 'freeproxylist.handler',
             environment = dict(

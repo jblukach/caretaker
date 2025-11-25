@@ -61,7 +61,7 @@ class AddressesTorExit(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('ips/torexit'),
+            code = _lambda.Code.from_asset('address/torexit'),
             timeout = Duration.seconds(900),
             handler = 'torexit.handler',
             environment = dict(

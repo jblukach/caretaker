@@ -61,7 +61,7 @@ class DomainsOisd(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('dns/oisd'),
+            code = _lambda.Code.from_asset('domain/oisd'),
             timeout = Duration.seconds(900),
             handler = 'oisd.handler',
             environment = dict(

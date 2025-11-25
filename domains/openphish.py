@@ -61,7 +61,7 @@ class DomainsOpenPhish(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('dns/openphish'),
+            code = _lambda.Code.from_asset('domain/openphish'),
             timeout = Duration.seconds(900),
             handler = 'openphish.handler',
             environment = dict(

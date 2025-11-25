@@ -61,7 +61,7 @@ class AddressesInversionDnsbl(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('ips/inversiondnsbl'),
+            code = _lambda.Code.from_asset('address/inversiondnsbl'),
             timeout = Duration.seconds(900),
             handler = 'inversiondnsbl.handler',
             environment = dict(

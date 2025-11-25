@@ -61,7 +61,7 @@ class DomainsDisposableEmails(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('dns/disposableemails'),
+            code = _lambda.Code.from_asset('domain/disposableemails'),
             timeout = Duration.seconds(900),
             handler = 'disposableemails.handler',
             environment = dict(
