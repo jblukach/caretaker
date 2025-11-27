@@ -18,8 +18,8 @@ Huge thanks to everyone who maintains these lists — they take a ton of work to
 
 ### Addresses
 
-| id | short name | url |
-|:--:|:----------:|:---:|
+| id | name | url |
+|:--:|:----:|:---:|
 | 1  | binarydefense | https://binarydefense.com |
 | 2  | blocklistde | https://www.blocklist.de |
 | 3  | blocklistua | https://blocklist.net.ua |
@@ -50,8 +50,8 @@ Huge thanks to everyone who maintains these lists — they take a ton of work to
 
 ### Domains
 
-| id | short name | url |
-|:--:|:----------:|:---:|
+| id | name | url |
+|:--:|:----:|:---:|
 | A  | c2intelfeeds | https://github.com/drb-ra/C2IntelFeeds |
 | B  | certpl | https://cert.pl |
 | C. | disposableemails | https://github.com/disposable-email-domains/disposable-email-domains |
