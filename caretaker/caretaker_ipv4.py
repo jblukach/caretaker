@@ -50,6 +50,7 @@ class CaretakerIpv4(Stack):
 
         compute = _lambda.Function(
             self, 'compute',
+            function_name = 'ipv4',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('utility/ipv4'),

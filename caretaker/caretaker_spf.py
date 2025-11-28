@@ -62,6 +62,7 @@ class CaretakerSpf(Stack):
 
         compute = _lambda.Function(
             self, 'compute',
+            function_name = 'spf',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('utility/spf'),
