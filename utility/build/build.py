@@ -1,8 +1,13 @@
 import boto3
+import datetime
 import json
 import os
 
 def handler(event, context):
+
+    year = datetime.datetime.now().strftime('%Y')
+    month = datetime.datetime.now().strftime('%m')
+    day = datetime.datetime.now().strftime('%d')
 
     domains = []
     ipv4s = []
@@ -20,20 +25,22 @@ def handler(event, context):
 
     for key in objects['Contents']:
 
-        s3.download_file(os.environ['S3_BUCKET'], key['Key'], '/tmp/'+key['Key'].split('/')[-1])
+        if key['Key'].split('/')[-1].startswith(year+'-'+month+'-'+day):
 
-        with open('/tmp/'+key['Key'].split('/')[-1], 'r') as f:
-            lines = f.readlines()
-            for line in lines:
-                parts = line.strip().split(',')
-                if parts[0] != 'address':
-                    if '.' in parts[0]:
-                        ipv4s.append(str(parts[0])+','+str(parts[1]))
-                        uniqipv4.append(str(parts[0]))
-                    if ':' in parts[0]:
-                        ipv6s.append(str(parts[0])+','+str(parts[1]))
-                        uniqipv6.append(str(parts[0]))
-        f.close()
+            s3.download_file(os.environ['S3_BUCKET'], key['Key'], '/tmp/'+key['Key'].split('/')[-1])
+
+            with open('/tmp/'+key['Key'].split('/')[-1], 'r') as f:
+                lines = f.readlines()
+                for line in lines:
+                    parts = line.strip().split(',')
+                    if parts[0] != 'address':
+                        if '.' in parts[0]:
+                            ipv4s.append(str(parts[0])+','+str(parts[1]))
+                            uniqipv4.append(str(parts[0]))
+                        if ':' in parts[0]:
+                            ipv6s.append(str(parts[0])+','+str(parts[1]))
+                            uniqipv6.append(str(parts[0]))
+            f.close()
 
     print(f'IPv4s: {len(ipv4s)}')
     print(f'Unique IPv4s: {len(uniqipv4)}')
@@ -57,16 +64,18 @@ def handler(event, context):
 
     for key in objects['Contents']:
 
-        s3.download_file(os.environ['S3_BUCKET'], key['Key'], '/tmp/'+key['Key'].split('/')[-1])
+        if key['Key'].split('/')[-1].startswith(year+'-'+month+'-'+day):
 
-        with open('/tmp/'+key['Key'].split('/')[-1], 'r') as f:
-            lines = f.readlines()
-            for line in lines:
-                parts = line.strip().split(',')
-                if parts[0] != 'domain' and '.' in parts[0]:
-                    domains.append(str(parts[0])+','+str(parts[1]))
-                    uniqdns.append(str(parts[0]))
-        f.close()
+            s3.download_file(os.environ['S3_BUCKET'], key['Key'], '/tmp/'+key['Key'].split('/')[-1])
+
+            with open('/tmp/'+key['Key'].split('/')[-1], 'r') as f:
+                lines = f.readlines()
+                for line in lines:
+                    parts = line.strip().split(',')
+                    if parts[0] != 'domain' and '.' in parts[0]:
+                        domains.append(str(parts[0])+','+str(parts[1]))
+                        uniqdns.append(str(parts[0]))
+            f.close()
 
     print(f'Domains: {len(domains)}')
     print(f'Unique Domains: {len(uniqdns)}')    

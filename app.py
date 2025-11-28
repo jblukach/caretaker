@@ -29,6 +29,7 @@ from addresses.torexit import AddressesTorExit
 from addresses.torlist import AddressesTorList
 from addresses.ultimatehosts import AddressesUltimateHosts
 from caretaker.caretaker_build import CaretakerBuild
+from caretaker.caretaker_deploy import CaretakerDeploy
 from caretaker.caretaker_dns import CaretakerDns
 from caretaker.caretaker_ipv4 import CaretakerIpv4
 from caretaker.caretaker_ipv6 import CaretakerIpv6
@@ -328,6 +329,17 @@ AddressesUltimateHosts(
 
 CaretakerBuild(
     app, 'CaretakerBuild',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+CaretakerDeploy(
+    app, 'CaretakerDeploy',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'

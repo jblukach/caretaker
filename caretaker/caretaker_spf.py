@@ -50,8 +50,7 @@ class CaretakerSpf(Stack):
         role.add_to_policy(
             _iam.PolicyStatement(
                 actions = [
-                    'apigateway:GET',
-                    's3:GetObject'
+                    'apigateway:GET'
                 ],
                 resources = [
                     '*'

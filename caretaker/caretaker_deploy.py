@@ -12,7 +12,7 @@ from aws_cdk import (
 
 from constructs import Construct
 
-class CaretakerSqlite(Stack):
+class CaretakerDeploy(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -35,6 +35,7 @@ class CaretakerSqlite(Stack):
         role.add_to_policy(
             _iam.PolicyStatement(
                 actions = [
+                    'lambda:UpdateFunctionCode',
                     's3:GetObject',
                     's3:PutObject'
                 ],
@@ -50,9 +51,9 @@ class CaretakerSqlite(Stack):
             self, 'compute',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('utility/sqlite'),
+            code = _lambda.Code.from_asset('utility/deploy'),
             timeout = Duration.seconds(900),
-            handler = 'sqlite.handler',
+            handler = 'deploy.handler',
             environment = dict(
                 STAGED_S3 = 'caretakerstaged'
             ),
@@ -71,7 +72,7 @@ class CaretakerSqlite(Stack):
         event = _events.Rule(
             self, 'event',
             schedule = _events.Schedule.cron(
-                minute = '10',
+                minute = '15',
                 hour = '11',
                 month = '*',
                 week_day = '*',

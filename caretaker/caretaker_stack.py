@@ -5,6 +5,7 @@ from aws_cdk import (
     aws_glue_alpha as _glue,
     aws_iam as _iam,
     aws_s3 as _s3,
+    aws_s3_deployment as _deployment,
     aws_ssm as _ssm
 )
 
@@ -76,6 +77,13 @@ class CaretakerStack(Stack):
             auto_delete_objects = True,
             enforce_ssl = True,
             versioned = False
+        )
+
+        deployment = _deployment.BucketDeployment(
+            self, 'deployment',
+            sources = [_deployment.Source.asset('code')],
+            destination_bucket = staged,
+            prune = False
         )
 
         bucket_policy = _iam.PolicyStatement(

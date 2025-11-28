@@ -1,9 +1,18 @@
 import boto3
+import datetime
 import json
 import os
 import sqlite3
 
 def handler(event, context):
+
+    year = datetime.datetime.now().strftime('%Y')
+    month = datetime.datetime.now().strftime('%m')
+    day = datetime.datetime.now().strftime('%d')
+    hour = datetime.datetime.now().strftime('%H')
+    minute = datetime.datetime.now().strftime('%M')
+    second = datetime.datetime.now().strftime('%S')
+    now = str(year)+"-"+str(month)+"-"+str(day)+" "+str(hour)+":"+str(minute)+":"+str(second)+" UTC"
 
     if os.path.exists('/tmp/dns.sqlite3'):
         os.remove('/tmp/dns.sqlite3')
@@ -12,7 +21,8 @@ def handler(event, context):
     dns.execute('CREATE TABLE IF NOT EXISTS dns (pk INTEGER PRIMARY KEY, artifact TEXT, scrid TEXT)')
     dns.execute('CREATE INDEX artifact_index ON dns (artifact)')
     dns.execute('CREATE TABLE IF NOT EXISTS desc (pk INTEGER PRIMARY KEY, scrid TEXT, name TEXT, url TEXT)')
-    dns.execute('CREATE INDEX scrid_index ON desc (scrid)')
+    dns.execute('CREATE TABLE IF NOT EXISTS last (pk INTEGER PRIMARY KEY, updated TEXT)')
+    dns.execute('INSERT INTO last (updated) VALUES (?)', (now,))
 
     if os.path.exists('/tmp/ipv4.sqlite3'):
         os.remove('/tmp/ipv4.sqlite3')
@@ -21,7 +31,8 @@ def handler(event, context):
     ipv4.execute('CREATE TABLE IF NOT EXISTS ipv4 (pk INTEGER PRIMARY KEY, artifact TEXT, scrid TEXT)')
     ipv4.execute('CREATE INDEX artifact_index ON ipv4 (artifact)')
     ipv4.execute('CREATE TABLE IF NOT EXISTS desc (pk INTEGER PRIMARY KEY, scrid TEXT, name TEXT, url TEXT)')
-    ipv4.execute('CREATE INDEX scrid_index ON desc (scrid)')
+    ipv4.execute('CREATE TABLE IF NOT EXISTS last (pk INTEGER PRIMARY KEY, updated TEXT)')
+    ipv4.execute('INSERT INTO last (updated) VALUES (?)', (now,))
 
     if os.path.exists('/tmp/ipv6.sqlite3'):
         os.remove('/tmp/ipv6.sqlite3')
@@ -30,7 +41,8 @@ def handler(event, context):
     ipv6.execute('CREATE TABLE IF NOT EXISTS ipv6 (pk INTEGER PRIMARY KEY, artifact TEXT, scrid TEXT)')
     ipv6.execute('CREATE INDEX artifact_index ON ipv6 (artifact)')
     ipv6.execute('CREATE TABLE IF NOT EXISTS desc (pk INTEGER PRIMARY KEY, scrid TEXT, name TEXT, url TEXT)')
-    ipv6.execute('CREATE INDEX scrid_index ON desc (scrid)')
+    ipv6.execute('CREATE TABLE IF NOT EXISTS last (pk INTEGER PRIMARY KEY, updated TEXT)')
+    ipv6.execute('INSERT INTO last (updated) VALUES (?)', (now,))
 
     if os.path.exists('/tmp/verify.sqlite3'):
         os.remove('/tmp/verify.sqlite3')
@@ -39,7 +51,8 @@ def handler(event, context):
     verify.execute('CREATE TABLE IF NOT EXISTS verify (pk INTEGER PRIMARY KEY, artifact TEXT, scrid TEXT)')
     verify.execute('CREATE INDEX artifact_index ON verify (artifact)')
     verify.execute('CREATE TABLE IF NOT EXISTS desc (pk INTEGER PRIMARY KEY, scrid TEXT, name TEXT, url TEXT)')
-    verify.execute('CREATE INDEX scrid_index ON desc (scrid)')
+    verify.execute('CREATE TABLE IF NOT EXISTS last (pk INTEGER PRIMARY KEY, updated TEXT)')
+    verify.execute('INSERT INTO last (updated) VALUES (?)', (now,))
 
     addresses = []
     addresses.append({"id":"1","name":"binarydefense","url":"https://binarydefense.com"})
