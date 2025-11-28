@@ -1,8 +1,45 @@
 import boto3
 import json
 import os
+import sqlite3
 
 def handler(event, context):
+
+    if os.path.exists('/tmp/dns.sqlite3'):
+        os.remove('/tmp/dns.sqlite3')
+
+    dns = sqlite3.connect('/tmp/dns.sqlite3')
+    dns.execute('CREATE TABLE IF NOT EXISTS dns (pk INTEGER PRIMARY KEY, artifact TEXT, scrid TEXT)')
+    dns.execute('CREATE INDEX artifact_index ON dns (artifact)')
+    dns.execute('CREATE TABLE IF NOT EXISTS desc (pk INTEGER PRIMARY KEY, scrid TEXT, name TEXT, url TEXT)')
+    dns.execute('CREATE INDEX scrid_index ON desc (scrid)')
+
+    if os.path.exists('/tmp/ipv4.sqlite3'):
+        os.remove('/tmp/ipv4.sqlite3')
+
+    ipv4 = sqlite3.connect('/tmp/ipv4.sqlite3')
+    ipv4.execute('CREATE TABLE IF NOT EXISTS ipv4 (pk INTEGER PRIMARY KEY, artifact TEXT, scrid TEXT)')
+    ipv4.execute('CREATE INDEX artifact_index ON ipv4 (artifact)')
+    ipv4.execute('CREATE TABLE IF NOT EXISTS desc (pk INTEGER PRIMARY KEY, scrid TEXT, name TEXT, url TEXT)')
+    ipv4.execute('CREATE INDEX scrid_index ON desc (scrid)')
+
+    if os.path.exists('/tmp/ipv6.sqlite3'):
+        os.remove('/tmp/ipv6.sqlite3')
+
+    ipv6 = sqlite3.connect('/tmp/ipv6.sqlite3')
+    ipv6.execute('CREATE TABLE IF NOT EXISTS ipv6 (pk INTEGER PRIMARY KEY, artifact TEXT, scrid TEXT)')
+    ipv6.execute('CREATE INDEX artifact_index ON ipv6 (artifact)')
+    ipv6.execute('CREATE TABLE IF NOT EXISTS desc (pk INTEGER PRIMARY KEY, scrid TEXT, name TEXT, url TEXT)')
+    ipv6.execute('CREATE INDEX scrid_index ON desc (scrid)')
+
+    if os.path.exists('/tmp/verify.sqlite3'):
+        os.remove('/tmp/verify.sqlite3')
+
+    verify = sqlite3.connect('/tmp/verify.sqlite3')
+    verify.execute('CREATE TABLE IF NOT EXISTS verify (pk INTEGER PRIMARY KEY, artifact TEXT, scrid TEXT)')
+    verify.execute('CREATE INDEX artifact_index ON verify (artifact)')
+    verify.execute('CREATE TABLE IF NOT EXISTS desc (pk INTEGER PRIMARY KEY, scrid TEXT, name TEXT, url TEXT)')
+    verify.execute('CREATE INDEX scrid_index ON desc (scrid)')
 
     addresses = []
     addresses.append({"id":"1","name":"binarydefense","url":"https://binarydefense.com"})
@@ -45,18 +82,86 @@ def handler(event, context):
     domains.append({"id":"K","name":"ultimatehosts","url":"https://github.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist"})
     domains.append({"id":"L","name":"urlhaus","url":"https://urlhaus.abuse.ch"})
 
+    for address in addresses:
+        ipv4.execute('INSERT INTO desc (scrid, name, url) VALUES (?, ?, ?)', (address["id"], address["name"], address["url"]))
+        ipv6.execute('INSERT INTO desc (scrid, name, url) VALUES (?, ?, ?)', (address["id"], address["name"], address["url"]))
+        verify.execute('INSERT INTO desc (scrid, name, url) VALUES (?, ?, ?)', (address["id"], address["name"], address["url"]))
+
+    for domain in domains:
+        dns.execute('INSERT INTO desc (scrid, name, url) VALUES (?, ?, ?)', (domain["id"], domain["name"], domain["url"]))
+    
     s3 = boto3.client('s3')
 
     s3.download_file(os.environ['STAGED_S3'], 'domains.csv', '/tmp/domains.csv')
     s3.download_file(os.environ['STAGED_S3'], 'ipv4s.csv', '/tmp/ipv4s.csv')
     s3.download_file(os.environ['STAGED_S3'], 'ipv6s.csv', '/tmp/ipv6s.csv')
 
-    for address in addresses:
-        print(address)
+    with open('/tmp/domains.csv', 'r') as f:
+        for line in f:
+            parts = line.strip().split(',')
+            dns.execute('INSERT INTO dns (artifact, scrid) VALUES (?, ?)', (parts[0], parts[1]))
+    f.close()
 
-    for domain in domains:
-        print(domain)
+    with open('/tmp/ipv4s.csv', 'r') as f:
+        for line in f:
+            parts = line.strip().split(',')
+            ipv4.execute('INSERT INTO ipv4 (artifact, scrid) VALUES (?, ?)', (parts[0], parts[1]))
+            verify.execute('INSERT INTO verify (artifact, scrid) VALUES (?, ?)', (parts[0], parts[1]))
+    f.close()
 
+    with open('/tmp/ipv6s.csv', 'r') as f:
+        for line in f:
+            parts = line.strip().split(',')
+            ipv6.execute('INSERT INTO ipv6 (artifact, scrid) VALUES (?, ?)', (parts[0], parts[1]))
+            verify.execute('INSERT INTO verify (artifact, scrid) VALUES (?, ?)', (parts[0], parts[1]))
+    f.close()
+
+    dns.commit()
+    dns.close()
+    ipv4.commit()
+    ipv4.close()
+    ipv6.commit()
+    ipv6.close()
+    verify.commit()
+    verify.close()
+
+    s3 = boto3.resource('s3')
+
+    s3.meta.client.upload_file(
+        '/tmp/dns.sqlite3',
+        os.environ['STAGED_S3'],
+        'dns.sqlite3',
+        ExtraArgs = {
+            'ContentType': "application/x-sqlite3"
+        }
+    )
+
+    s3.meta.client.upload_file(
+        '/tmp/ipv4.sqlite3',
+        os.environ['STAGED_S3'],
+        'ipv4.sqlite3',
+        ExtraArgs = {
+            'ContentType': "application/x-sqlite3"
+        }
+    )
+
+    s3.meta.client.upload_file(
+        '/tmp/ipv6.sqlite3',
+        os.environ['STAGED_S3'],
+        'ipv6.sqlite3',
+        ExtraArgs = {
+            'ContentType': "application/x-sqlite3"
+        }
+    )
+
+    s3.meta.client.upload_file(
+        '/tmp/verify.sqlite3',
+        os.environ['STAGED_S3'],
+        'verify.sqlite3',
+        ExtraArgs = {
+            'ContentType': "application/x-sqlite3"
+        }
+    )
 
     return {
         'statusCode': 200,
