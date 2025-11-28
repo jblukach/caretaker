@@ -38,7 +38,8 @@ class CaretakerIpv6(Stack):
         role.add_to_policy(
             _iam.PolicyStatement(
                 actions = [
-                    'apigateway:GET'
+                    'apigateway:GET',
+                    's3:GetObject'
                 ],
                 resources = [
                     '*'

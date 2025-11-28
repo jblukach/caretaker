@@ -20,6 +20,18 @@ class CaretakerSpf(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
+    ### LAMBDA LAYERS ###
+
+        pkgdnspython = _ssm.StringParameter.from_string_parameter_arn(
+            self, 'pkgdnspython',
+            'arn:aws:ssm:us-east-1:070176467818:parameter/pkg/dnspython'
+        )
+
+        dnspython = _lambda.LayerVersion.from_layer_version_arn(
+            self, 'dnspython',
+            layer_version_arn = pkgdnspython.string_value
+        )
+
     ### IAM ROLE ###
 
         role = _iam.Role(
@@ -38,7 +50,8 @@ class CaretakerSpf(Stack):
         role.add_to_policy(
             _iam.PolicyStatement(
                 actions = [
-                    'apigateway:GET'
+                    'apigateway:GET',
+                    's3:GetObject'
                 ],
                 resources = [
                     '*'
@@ -56,7 +69,10 @@ class CaretakerSpf(Stack):
             handler = 'spf.handler',
             timeout = Duration.seconds(7),
             memory_size = 128,
-            role = role
+            role = role,
+            layers = [
+                dnspython
+            ]
         )
 
         logs = _logs.LogGroup(
