@@ -12,17 +12,17 @@ When accessing [verify.tundralabs.org](https://verify.4n6ir.com), the color-code
 
 **Gray Status - Unknown:**
 
-A gray result means no data is presently available from monitoring sources. This should not be interpreted as a guarantee of safety; it simply indicates that there is no current evidence associating the IP with malicious activity.
+A gray result means no data is currently available from monitoring sources. This does **not** guarantee that the IP is safe; it simply indicates there is no evidence at this time linking it to malicious activity.
 
 **Orange Status - Suspect:**
 
-An orange result indicates that one or more threat-intelligence sources have flagged the IP address as suspect. In this case, the system will display the specific sources, enabling further investigation or remediation.
+An orange result indicates that one or more threat-intelligence sources have flagged the IP address as suspect. The system will list the specific sources, allowing for further investigation or remediation.
 
 ### Sender Policy Framework
 
-Maintaining a clean domain reputation is essential for ensuring reliable email deliverability, protecting your brand, and strengthening your overall security posture. A domain reputation review helps identify which IP addresses and domains are authorized to send emails on behalf of your domain and highlights identified threat-intelligence.
+Maintaining a strong domain reputation is essential for ensuring reliable email deliverability, protecting your brand, and enhancing your overall security posture. A domain reputation review helps identify which IP addresses and domains are authorized to send emails on behalf of your domain and highlights any potential threats.
 
-When accessing [https://spf.4n6ir.com/?4n6ir.com](https://spf.4n6ir.com/?4n6ir.com) a reputation check of the 4n6ir.com sending domain is completed.
+By visiting [https://spf.4n6ir.com/?4n6ir.com](https://spf.4n6ir.com/?4n6ir.com), you can perform a reputation check for the **4n6ir.com** sending domain.
 
 ## Attribution
 
