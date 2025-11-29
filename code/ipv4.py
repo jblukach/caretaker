@@ -41,7 +41,6 @@ def handler(event, context):
     except ValueError:
         code = 404
         msg = 'Invalid IP Address'
-        pass
 
     return {
         'statusCode': code,

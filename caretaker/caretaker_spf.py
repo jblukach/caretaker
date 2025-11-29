@@ -32,6 +32,16 @@ class CaretakerSpf(Stack):
             layer_version_arn = pkgdnspython.string_value
         )
 
+        pkgnetaddr = _ssm.StringParameter.from_string_parameter_arn(
+            self, 'pkgnetaddr',
+            'arn:aws:ssm:us-east-1:070176467818:parameter/pkg/netaddr'
+        )
+
+        netaddr = _lambda.LayerVersion.from_layer_version_arn(
+            self, 'netaddr',
+            layer_version_arn = pkgnetaddr.string_value
+        )
+
     ### IAM ROLE ###
 
         role = _iam.Role(
@@ -67,11 +77,12 @@ class CaretakerSpf(Stack):
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('utility/spf'),
             handler = 'spf.handler',
-            timeout = Duration.seconds(7),
-            memory_size = 128,
+            timeout = Duration.seconds(30),
+            memory_size = 1024,
             role = role,
             layers = [
-                dnspython
+                dnspython,
+                netaddr
             ]
         )
 
