@@ -8,7 +8,19 @@ Project Caretaker makes this easy. It offers a simple, transparent way for anyon
 
 ### Internet Connection
 
+When accessing [verify.tundralabs.org](https://verify.4n6ir.com), the color-coded result indicates whether any threat-intelligence sources currently flag the queried IP address.
+
+**Gray Status - Unknown:**
+
+A gray result means no data is presently available from monitoring sources. This should not be interpreted as a guarantee of safety; it simply indicates that there is no current evidence associating the IP with malicious activity.
+
+**Orange Status - Suspect:**
+
+An orange result indicates that one or more threat-intelligence sources have flagged the IP address as suspect. In this case, the system will display the specific sources, enabling further investigation or remediation.
+
 ### Sender Policy Framework
+
+
 
 ## Attribution
 
