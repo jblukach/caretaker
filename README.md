@@ -20,7 +20,9 @@ An orange result indicates that one or more threat-intelligence sources have fla
 
 ### Sender Policy Framework
 
+Maintaining a clean domain reputation is essential for ensuring reliable email deliverability, protecting your brand, and strengthening your overall security posture. A domain reputation review helps identify which IP addresses and domains are authorized to send emails on behalf of your domain and highlights identified threat-intelligence.
 
+When accessing [https://spf.4n6ir.com/?4n6ir.com](https://spf.4n6ir.com/?4n6ir.com) a reputation check of the 4n6ir.com sending domain is completed.
 
 ## Attribution
 
