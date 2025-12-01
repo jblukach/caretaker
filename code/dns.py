@@ -22,7 +22,7 @@ def handler(event, context):
         if len(items) == 0:
 
             msg = {
-                'ip': dns,
+                'dns': dns,
                 'status': 'unknown',
                 'updated': str(last_updated)
             }
@@ -30,7 +30,7 @@ def handler(event, context):
         else:
 
             msg = {
-                'ip': dns,
+                'dns': dns,
                 'status': 'suspect',
                 'attribution':items,
                 'updated': str(last_updated)

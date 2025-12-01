@@ -8,15 +8,15 @@ Project Caretaker makes this easy. It offers a simple, transparent way for anyon
 
 ### Internet Connection
 
-When accessing [verify.tundralabs.org](https://verify.4n6ir.com), the color-coded result indicates whether any threat-intelligence sources currently flag the queried IP address.
+When accessing [verify.tundralabs.org](https://verify.4n6ir.com), the color-coded result indicates whether any threat-intelligence feeds currently flag the queried IP address.
 
 **Gray Status - Unknown:**
 
-A gray result means no data is currently available from monitoring sources. This does **not** guarantee that the IP is safe; it simply indicates there is no evidence at this time linking it to malicious activity.
+A gray result means no data is currently available from monitoring feeds. This does **not** guarantee that the IP is safe; it simply indicates there is no evidence at this time linking it to malicious activity.
 
 **Orange Status - Suspect:**
 
-An orange result indicates that one or more threat-intelligence sources have flagged the IP address as suspect. The system will list the specific sources, allowing for further investigation or remediation.
+An orange result indicates that one or more threat-intelligence feeds have flagged the IP address as suspect. The system will list the specific feeds, allowing for further investigation or remediation.
 
 ### Sender Policy Framework
 
@@ -60,7 +60,7 @@ Huge thanks to everyone who maintains these lists — they take a ton of work to
 | 24 | torlist | https://www.dan.me.uk |
 | 25 | ultimatehosts | https://github.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist |
 
-**+** retired source
+**+** retired feed
 
 ### Domains
 
@@ -79,4 +79,4 @@ Huge thanks to everyone who maintains these lists — they take a ton of work to
 | K  | ultimatehosts | https://github.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist |
 | L  | urlhaus | https://urlhaus.abuse.ch |
 
-**+** retired source
+**+** retired feed
