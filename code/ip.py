@@ -1,9 +1,8 @@
 import ipaddress
+import json
 import sqlite3
 
 def handler(event, context):
-
-    print(event)
 
     try:
         ip = ipaddress.ip_address(event['rawQueryString'])
@@ -12,38 +11,34 @@ def handler(event, context):
         ip = ipaddress.ip_address(event['requestContext']['http']['sourceIp'])
         ip = str(event['requestContext']['http']['sourceIp'])
 
-    conn = sqlite3.connect('verify.sqlite3')
+    conn = sqlite3.connect('ip.sqlite3')
     c = conn.cursor()
-    c.execute("SELECT verify.artifact, desc.name, desc.url FROM verify JOIN desc ON verify.scrid = desc.scrid WHERE verify.artifact = ?", (ip,))
+    c.execute("SELECT ip.artifact, desc.name, desc.url FROM ip JOIN desc ON ip.scrid = desc.scrid WHERE ip.artifact = ?", (ip,))
     items = c.fetchall()
     c.execute("SELECT updated FROM last")
     last_updated = c.fetchone()[0]
     conn.close()
 
+    code = 200
+
     if len(items) == 0:
 
-        bg = 'LightGray'
-        msg = '<h3>'+ip+' - Unknown</h3>'
-        msg = msg+'<br><i>Last Updated: '+str(last_updated)+'</i>'
+        msg = {
+            'dns': ip,
+            'status': 'unknown',
+            'updated': str(last_updated)
+        }
 
     else:
 
-        bg = 'Orange'
-        msg = '<h3>'+ip+' - Suspect</h3>'
-        msg = msg+'<ul>'
-
-        for item in items:
-            msg += '<li><b>'+str(item[1])+'</b> - '+str(item[2])+'</li>'
-
-        msg = msg+'</ul>'
-        msg = msg+'<br><i>Last Updated: '+str(last_updated)+'</i>'
-
-    html = '''<html><head><title>Project Caretaker</title></head><body bgcolor="'''+bg+'''">'''+msg+'''</body></html>'''
+        msg = {
+            'dns': ip,
+            'status': 'suspect',
+            'attribution':items,
+            'updated': str(last_updated)
+        }
 
     return {
-        'statusCode': 200,
-        'body': html,
-        'headers': {
-            'Content-Type': 'text/html'
-        }
+        'statusCode': code,
+        'body': json.dumps(msg, indent = 4)
     }

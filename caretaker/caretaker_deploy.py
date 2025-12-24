@@ -17,6 +17,8 @@ class CaretakerDeploy(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
+        account = Stack.of(self).account
+
     ### IAM ROLE ###
 
         role = _iam.Role(
@@ -55,7 +57,13 @@ class CaretakerDeploy(Stack):
             timeout = Duration.seconds(900),
             handler = 'deploy.handler',
             environment = dict(
-                STAGED_S3 = 'caretakerstaged'
+                STAGED_S3 = 'caretakerstaged',
+                STAGED_S3_USE1 = 'caretakerstageduse1',
+                STAGED_S3_USW2 = 'caretakerstagedusw2',
+                LAMBDA_DNS_USE1 = 'arn:aws:lambda:us-east-1:'+str(account)+':function:dns',
+                LAMBDA_DNS_USW2 = 'arn:aws:lambda:us-west-2:'+str(account)+':function:dns',
+                LAMBDA_IP_USE1 = 'arn:aws:lambda:us-east-1:'+str(account)+':function:ip',
+                LAMBDA_IP_USW2 = 'arn:aws:lambda:us-west-2:'+str(account)+':function:ip'
             ),
             ephemeral_storage_size = Size.gibibytes(1),
             memory_size = 2048,
@@ -80,6 +88,6 @@ class CaretakerDeploy(Stack):
             )
         )
 
-        #event.add_target(
-        #    _targets.LambdaFunction(compute)
-        #)
+        event.add_target(
+            _targets.LambdaFunction(compute)
+        )

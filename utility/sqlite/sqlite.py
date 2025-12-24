@@ -24,35 +24,15 @@ def handler(event, context):
     dns.execute('CREATE TABLE IF NOT EXISTS last (pk INTEGER PRIMARY KEY, updated TEXT)')
     dns.execute('INSERT INTO last (updated) VALUES (?)', (now,))
 
-    if os.path.exists('/tmp/ipv4.sqlite3'):
-        os.remove('/tmp/ipv4.sqlite3')
+    if os.path.exists('/tmp/ip.sqlite3'):
+        os.remove('/tmp/ip.sqlite3')
 
-    ipv4 = sqlite3.connect('/tmp/ipv4.sqlite3')
-    ipv4.execute('CREATE TABLE IF NOT EXISTS ipv4 (pk INTEGER PRIMARY KEY, artifact TEXT, scrid TEXT)')
-    ipv4.execute('CREATE INDEX artifact_index ON ipv4 (artifact)')
-    ipv4.execute('CREATE TABLE IF NOT EXISTS desc (pk INTEGER PRIMARY KEY, scrid TEXT, name TEXT, url TEXT)')
-    ipv4.execute('CREATE TABLE IF NOT EXISTS last (pk INTEGER PRIMARY KEY, updated TEXT)')
-    ipv4.execute('INSERT INTO last (updated) VALUES (?)', (now,))
-
-    if os.path.exists('/tmp/ipv6.sqlite3'):
-        os.remove('/tmp/ipv6.sqlite3')
-
-    ipv6 = sqlite3.connect('/tmp/ipv6.sqlite3')
-    ipv6.execute('CREATE TABLE IF NOT EXISTS ipv6 (pk INTEGER PRIMARY KEY, artifact TEXT, scrid TEXT)')
-    ipv6.execute('CREATE INDEX artifact_index ON ipv6 (artifact)')
-    ipv6.execute('CREATE TABLE IF NOT EXISTS desc (pk INTEGER PRIMARY KEY, scrid TEXT, name TEXT, url TEXT)')
-    ipv6.execute('CREATE TABLE IF NOT EXISTS last (pk INTEGER PRIMARY KEY, updated TEXT)')
-    ipv6.execute('INSERT INTO last (updated) VALUES (?)', (now,))
-
-    if os.path.exists('/tmp/verify.sqlite3'):
-        os.remove('/tmp/verify.sqlite3')
-
-    verify = sqlite3.connect('/tmp/verify.sqlite3')
-    verify.execute('CREATE TABLE IF NOT EXISTS verify (pk INTEGER PRIMARY KEY, artifact TEXT, scrid TEXT)')
-    verify.execute('CREATE INDEX artifact_index ON verify (artifact)')
-    verify.execute('CREATE TABLE IF NOT EXISTS desc (pk INTEGER PRIMARY KEY, scrid TEXT, name TEXT, url TEXT)')
-    verify.execute('CREATE TABLE IF NOT EXISTS last (pk INTEGER PRIMARY KEY, updated TEXT)')
-    verify.execute('INSERT INTO last (updated) VALUES (?)', (now,))
+    ip = sqlite3.connect('/tmp/ip.sqlite3')
+    ip.execute('CREATE TABLE IF NOT EXISTS ip (pk INTEGER PRIMARY KEY, artifact TEXT, scrid TEXT)')
+    ip.execute('CREATE INDEX artifact_index ON ip (artifact)')
+    ip.execute('CREATE TABLE IF NOT EXISTS desc (pk INTEGER PRIMARY KEY, scrid TEXT, name TEXT, url TEXT)')
+    ip.execute('CREATE TABLE IF NOT EXISTS last (pk INTEGER PRIMARY KEY, updated TEXT)')
+    ip.execute('INSERT INTO last (updated) VALUES (?)', (now,))
 
     addresses = []
     addresses.append({"id":"1","name":"binarydefense","url":"https://binarydefense.com"})
@@ -96,9 +76,7 @@ def handler(event, context):
     domains.append({"id":"L","name":"urlhaus","url":"https://urlhaus.abuse.ch"})
 
     for address in addresses:
-        ipv4.execute('INSERT INTO desc (scrid, name, url) VALUES (?, ?, ?)', (address["id"], address["name"], address["url"]))
-        ipv6.execute('INSERT INTO desc (scrid, name, url) VALUES (?, ?, ?)', (address["id"], address["name"], address["url"]))
-        verify.execute('INSERT INTO desc (scrid, name, url) VALUES (?, ?, ?)', (address["id"], address["name"], address["url"]))
+        ip.execute('INSERT INTO desc (scrid, name, url) VALUES (?, ?, ?)', (address["id"], address["name"], address["url"]))
 
     for domain in domains:
         dns.execute('INSERT INTO desc (scrid, name, url) VALUES (?, ?, ?)', (domain["id"], domain["name"], domain["url"]))
@@ -118,25 +96,19 @@ def handler(event, context):
     with open('/tmp/ipv4s.csv', 'r') as f:
         for line in f:
             parts = line.strip().split(',')
-            ipv4.execute('INSERT INTO ipv4 (artifact, scrid) VALUES (?, ?)', (parts[0], parts[1]))
-            verify.execute('INSERT INTO verify (artifact, scrid) VALUES (?, ?)', (parts[0], parts[1]))
+            ip.execute('INSERT INTO ip (artifact, scrid) VALUES (?, ?)', (parts[0], parts[1]))
     f.close()
 
     with open('/tmp/ipv6s.csv', 'r') as f:
         for line in f:
             parts = line.strip().split(',')
-            ipv6.execute('INSERT INTO ipv6 (artifact, scrid) VALUES (?, ?)', (parts[0], parts[1]))
-            verify.execute('INSERT INTO verify (artifact, scrid) VALUES (?, ?)', (parts[0], parts[1]))
+            ip.execute('INSERT INTO ip (artifact, scrid) VALUES (?, ?)', (parts[0], parts[1]))
     f.close()
 
     dns.commit()
     dns.close()
-    ipv4.commit()
-    ipv4.close()
-    ipv6.commit()
-    ipv6.close()
-    verify.commit()
-    verify.close()
+    ip.commit()
+    ip.close()
 
     s3 = boto3.resource('s3')
 
@@ -150,27 +122,9 @@ def handler(event, context):
     )
 
     s3.meta.client.upload_file(
-        '/tmp/ipv4.sqlite3',
+        '/tmp/ip.sqlite3',
         os.environ['STAGED_S3'],
-        'ipv4.sqlite3',
-        ExtraArgs = {
-            'ContentType': "application/x-sqlite3"
-        }
-    )
-
-    s3.meta.client.upload_file(
-        '/tmp/ipv6.sqlite3',
-        os.environ['STAGED_S3'],
-        'ipv6.sqlite3',
-        ExtraArgs = {
-            'ContentType': "application/x-sqlite3"
-        }
-    )
-
-    s3.meta.client.upload_file(
-        '/tmp/verify.sqlite3',
-        os.environ['STAGED_S3'],
-        'verify.sqlite3',
+        'ip.sqlite3',
         ExtraArgs = {
             'ContentType': "application/x-sqlite3"
         }

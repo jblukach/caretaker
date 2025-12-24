@@ -2,8 +2,6 @@ import json
 import sqlite3
 
 def handler(event, context):
-    
-    print(event)
 
     if '.' in event['rawQueryString']:
 
@@ -39,7 +37,7 @@ def handler(event, context):
     else:
 
         code = 404
-        msg = 'Invalid Domain'
+        msg = 'ex. https://api.lukach.io/osint/dns?4n6ir.com'
 
     return {
         'statusCode': code,
