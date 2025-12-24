@@ -1,4 +1,5 @@
 import json
+import os
 import sqlite3
 
 def handler(event, context):
@@ -22,7 +23,8 @@ def handler(event, context):
             msg = {
                 'dns': dns,
                 'status': 'unknown',
-                'updated': str(last_updated)
+                'updated': str(last_updated),
+                'region': os.environ['AWS_REGION']
             }
 
         else:
@@ -31,7 +33,8 @@ def handler(event, context):
                 'dns': dns,
                 'status': 'suspect',
                 'attribution':items,
-                'updated': str(last_updated)
+                'updated': str(last_updated),
+                'region': os.environ['AWS_REGION']
             }
 
     else:

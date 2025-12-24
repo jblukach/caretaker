@@ -72,6 +72,6 @@ class CaretakerIpUsw2(Stack):
         logs = _logs.LogGroup(
             self, 'logs',
             log_group_name = '/aws/lambda/'+compute.function_name,
-            retention = _logs.RetentionDays.THIRTEEN_MONTHS,
+            retention = _logs.RetentionDays.ONE_WEEK,
             removal_policy = RemovalPolicy.DESTROY
         )

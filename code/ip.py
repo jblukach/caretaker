@@ -1,5 +1,6 @@
 import ipaddress
 import json
+import os
 import sqlite3
 
 def handler(event, context):
@@ -24,18 +25,20 @@ def handler(event, context):
     if len(items) == 0:
 
         msg = {
-            'dns': ip,
+            'ip': ip,
             'status': 'unknown',
-            'updated': str(last_updated)
+            'updated': str(last_updated),
+            'region': os.environ['AWS_REGION']
         }
 
     else:
 
         msg = {
-            'dns': ip,
+            'ip': ip,
             'status': 'suspect',
             'attribution':items,
-            'updated': str(last_updated)
+            'updated': str(last_updated),
+            'region': os.environ['AWS_REGION']
         }
 
     return {
