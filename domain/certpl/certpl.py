@@ -12,13 +12,14 @@ def handler(event, context):
     year = datetime.datetime.now().strftime('%Y')
     month = datetime.datetime.now().strftime('%m')
     day = datetime.datetime.now().strftime('%d')
+    hour = datetime.datetime.now().strftime('%H')
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
     response = requests.get('https://hole.cert.pl/domains/domains.csv', headers=headers)
     print(f'HTTP Status Code: {response.status_code}')
     data = response.text
 
-    fname = f'{year}-{month}-{day}-certpl.csv'
+    fname = f'{year}-{month}-{day}-{hour}-certpl.csv'
     fpath = f'/tmp/{fname}'
 
     f = open(fpath, 'w')
@@ -29,7 +30,7 @@ def handler(event, context):
             continue
         else:
             line = line.split('\t')[1]
-            f.write(f"{line},B,{year}-{month}-{day}\n")
+            f.write(f"{line},B,{year}-{month}-{day}-{hour}\n")
             count += 1
 
     f.close()

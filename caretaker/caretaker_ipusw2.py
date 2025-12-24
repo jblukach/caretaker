@@ -2,8 +2,6 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
-    aws_events as _events,
-    aws_events_targets as _targets,
     aws_iam as _iam,
     aws_lambda as _lambda,
     aws_logs as _logs,
@@ -12,21 +10,16 @@ from aws_cdk import (
 
 from constructs import Construct
 
-class DomainsUrlhaus(Stack):
+class CaretakerIpUsw2(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-    ### LAMBDA LAYERS ###
+    ### PARAMETERS ###
 
-        layer = _ssm.StringParameter.from_string_parameter_attributes(
-            self, 'layer',
-            parameter_name = '/layer/requests'
-        )
-
-        requests = _lambda.LayerVersion.from_layer_version_arn(
-            self, 'requests',
-            layer_version_arn = layer.string_value
+        organization = _ssm.StringParameter.from_string_parameter_attributes(
+            self, 'organization',
+            parameter_name = '/organization/id'
         )
 
     ### IAM ROLE ###
@@ -47,7 +40,7 @@ class DomainsUrlhaus(Stack):
         role.add_to_policy(
             _iam.PolicyStatement(
                 actions = [
-                    's3:PutObject'
+                    'apigateway:GET'
                 ],
                 resources = [
                     '*'
@@ -59,40 +52,26 @@ class DomainsUrlhaus(Stack):
 
         compute = _lambda.Function(
             self, 'compute',
+            function_name = 'ip',
             runtime = _lambda.Runtime.PYTHON_3_13,
             architecture = _lambda.Architecture.ARM_64,
-            code = _lambda.Code.from_asset('domain/urlhaus'),
-            timeout = Duration.seconds(900),
-            handler = 'urlhaus.handler',
-            environment = dict(
-                S3_BUCKET = 'caretakerbucket',
-                S3_RESEARCH = 'caretakerresearch'
-            ),
-            memory_size = 1024,
-            role = role,
-            layers = [
-                requests
-            ]
+            code = _lambda.Code.from_asset('utility/ip'),
+            handler = 'ip.handler',
+            timeout = Duration.seconds(7),
+            memory_size = 128,
+            role = role
         )
+
+        composite = _iam.CompositePrincipal(
+            _iam.OrganizationPrincipal(organization.string_value),
+            _iam.ServicePrincipal('apigateway.amazonaws.com')
+        )
+
+        compute.grant_invoke_composite_principal(composite)
 
         logs = _logs.LogGroup(
             self, 'logs',
             log_group_name = '/aws/lambda/'+compute.function_name,
-            retention = _logs.RetentionDays.ONE_WEEK,
+            retention = _logs.RetentionDays.THIRTEEN_MONTHS,
             removal_policy = RemovalPolicy.DESTROY
-        )
-
-        event = _events.Rule(
-            self, 'event',
-            schedule = _events.Schedule.cron(
-                minute = '0',
-                hour = '11',
-                month = '*',
-                week_day = '*',
-                year = '*'
-            )
-        )
-
-        event.add_target(
-            _targets.LambdaFunction(compute)
         )

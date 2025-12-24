@@ -12,13 +12,14 @@ def handler(event, context):
     year = datetime.datetime.now().strftime('%Y')
     month = datetime.datetime.now().strftime('%m')
     day = datetime.datetime.now().strftime('%d')
+    hour = datetime.datetime.now().strftime('%H')
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
     response = requests.get('https://threatfox.abuse.ch/downloads/hostfile/', headers=headers)
     print(f'HTTP Status Code: {response.status_code}')
     data = response.text
 
-    fname = f'{year}-{month}-{day}-threatfox.csv'
+    fname = f'{year}-{month}-{day}-{hour}-threatfox.csv'
     fpath = f'/tmp/{fname}'
 
     f = open(fpath, 'w')
@@ -29,7 +30,7 @@ def handler(event, context):
             continue
         else:
             out = line.split('\t')
-            f.write(f"{out[1]},I,{year}-{month}-{day}\n")
+            f.write(f"{out[1]},I,{year}-{month}-{day}-{hour}\n")
             count += 1
 
     f.close()

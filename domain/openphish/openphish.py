@@ -12,13 +12,14 @@ def handler(event, context):
     year = datetime.datetime.now().strftime('%Y')
     month = datetime.datetime.now().strftime('%m')
     day = datetime.datetime.now().strftime('%d')
+    hour = datetime.datetime.now().strftime('%H')
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
     response = requests.get('https://openphish.com/feed.txt', headers=headers)
     print(f'HTTP Status Code: {response.status_code}')
     data = response.text
 
-    fname = f'{year}-{month}-{day}-openphish.csv'
+    fname = f'{year}-{month}-{day}-{hour}-openphish.csv'
     fpath = f'/tmp/{fname}'
 
     f = open(fpath, 'w')
@@ -29,7 +30,7 @@ def handler(event, context):
             continue
         else:
             line = line.split('/')[2]
-            f.write(f"{line},F,{year}-{month}-{day}\n")
+            f.write(f"{line},F,{year}-{month}-{day}-{hour}\n")
             count += 1
 
     f.close()

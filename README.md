@@ -18,12 +18,6 @@ A gray result means no data is currently available from monitoring feeds. This d
 
 An orange result indicates that one or more threat-intelligence feeds have flagged the IP address as suspect. The system will list the specific feeds, allowing for further investigation or remediation.
 
-### Sender Policy Framework
-
-Maintaining a strong domain reputation is essential for ensuring reliable email deliverability, protecting your brand, and enhancing your overall security posture. A domain reputation review helps identify which IP addresses and domains are authorized to send emails on behalf of your domain and highlights any potential threats.
-
-By visiting [https://spf.4n6ir.com/?4n6ir.com](https://spf.4n6ir.com/?4n6ir.com), you can perform a reputation check for the **4n6ir.com** sending domain.
-
 ## Attribution
 
 Open Source Intelligence (OSINT) feeds refresh every morning at **11:00 AM UTC**.

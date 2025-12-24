@@ -30,13 +30,14 @@ from addresses.torlist import AddressesTorList
 from addresses.ultimatehosts import AddressesUltimateHosts
 from caretaker.caretaker_build import CaretakerBuild
 from caretaker.caretaker_deploy import CaretakerDeploy
-from caretaker.caretaker_dns import CaretakerDns
-from caretaker.caretaker_ipv4 import CaretakerIpv4
-from caretaker.caretaker_ipv6 import CaretakerIpv6
-from caretaker.caretaker_spf import CaretakerSpf
+from caretaker.caretaker_dnsuse1 import CaretakerDnsUse1
+from caretaker.caretaker_dnsusw2 import CaretakerDnsUsw2
+from caretaker.caretaker_ipuse1 import CaretakerIpUse1
+from caretaker.caretaker_ipusw2 import CaretakerIpUsw2
 from caretaker.caretaker_sqlite import CaretakerSqlite
-from caretaker.caretaker_stack import CaretakerStack
-from caretaker.caretaker_verify import CaretakerVerify
+from caretaker.caretaker_stackuse1 import CaretakerStackUse1
+from caretaker.caretaker_stackuse2 import CaretakerStackUse2
+from caretaker.caretaker_stackusw2 import CaretakerStackUsw2
 from domains.c2intelfeeds import DomainsC2IntelFeeds
 from domains.certpl import DomainsCertPl
 from domains.disposableemails import DomainsDisposableEmails
@@ -56,10 +57,10 @@ AddressesBinaryDefense(
     app, 'AddressesBinaryDefense',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -67,10 +68,10 @@ AddressesBlocklistDe(
     app, 'AddressesBlocklistDe',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -78,10 +79,10 @@ AddressesBlocklistUa(
     app, 'AddressesBlocklistUa',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -89,10 +90,10 @@ AddressesBotScout(
     app, 'AddressesBotScout',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -100,10 +101,10 @@ AddressesBruteForceBlocker(
     app, 'AddressesBruteForceBlocker',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -111,10 +112,10 @@ AddressesC2IntelFeeds(
     app, 'AddressesC2IntelFeeds',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -122,10 +123,10 @@ AddressesC2Tracker(
     app, 'AddressesC2Tracker',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -133,10 +134,10 @@ AddressesCinsScore(
     app, 'AddressesCinsScore',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -144,10 +145,10 @@ AddressesFeodoTracker(
     app, 'AddressesFeodoTracker',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -155,10 +156,10 @@ AddressesFirehol(
     app, 'AddressesFirehol',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -166,10 +167,10 @@ AddressesFreeProxyList(
     app, 'AddressesFreeProxyList',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -177,10 +178,10 @@ AddressesGreenSnow(
     app, 'AddressesGreenSnow',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -188,10 +189,10 @@ AddressesInversionDnsbl(
     app, 'AddressesInversionDnsbl',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -199,10 +200,10 @@ AddressesIpsum(
     app, 'AddressesIpsum',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -210,10 +211,10 @@ AddressesJamesBrine(
     app, 'AddressesJamesBrine',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -221,10 +222,10 @@ AddressesMyIpms(
     app, 'AddressesMyIpms',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -232,10 +233,10 @@ AddressesNubiNetwork(
     app, 'AddressesNubiNetwork',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -243,10 +244,10 @@ AddressesProofPoint(
     app, 'AddressesProofPoint',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -254,10 +255,10 @@ AddressesRutgers(
     app, 'AddressesRutgers',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -265,10 +266,10 @@ AddressesSansIsc(
     app, 'AddressesSansIsc',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -276,10 +277,10 @@ AddressesSblam(
     app, 'AddressesSblam',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -287,10 +288,10 @@ AddressesStopForumSpam(
     app, 'AddressesStopForumSpam',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -298,10 +299,10 @@ AddressesTorExit(
     app, 'AddressesTorExit',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -309,10 +310,10 @@ AddressesTorList(
     app, 'AddressesTorList',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -320,10 +321,10 @@ AddressesUltimateHosts(
     app, 'AddressesUltimateHosts',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -331,10 +332,10 @@ CaretakerBuild(
     app, 'CaretakerBuild',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -342,54 +343,54 @@ CaretakerDeploy(
     app, 'CaretakerDeploy',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
-CaretakerDns(
-    app, 'CaretakerDns',
+CaretakerDnsUse1(
+    app, 'CaretakerDnsUse1',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
-CaretakerIpv4(
-    app, 'CaretakerIpv4',
+CaretakerDnsUsw2(
+    app, 'CaretakerDnsUsw2',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-west-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
+    )
+)
+
+CaretakerIpUse1(
+    app, 'CaretakerIpUse1',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
-CaretakerIpv6(
-    app, 'CaretakerIpv6',
+CaretakerIpUsw2(
+    app, 'CaretakerIpUsw2',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-west-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
-    )
-)
-
-CaretakerSpf(
-    app, 'CaretakerSpf',
-    env = cdk.Environment(
-        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
-    ),
-    synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -397,32 +398,43 @@ CaretakerSqlite(
     app, 'CaretakerSqlite',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
-CaretakerStack(
-    app, 'CaretakerStack',
+CaretakerStackUse1(
+    app, 'CaretakerStackUse1',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-1'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
-CaretakerVerify(
-    app, 'CaretakerVerify',
+CaretakerStackUse2(
+    app, 'CaretakerStackUse2',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
+    )
+)
+
+CaretakerStackUsw2(
+    app, 'CaretakerStackUsw2',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-west-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
     )
 )
 
@@ -430,10 +442,10 @@ DomainsC2IntelFeeds(
     app, 'DomainsC2IntelFeeds',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -441,10 +453,10 @@ DomainsCertPl(
     app, 'DomainsCertPl',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -452,10 +464,10 @@ DomainsDisposableEmails(
     app, 'DomainsDisposableEmails',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -463,10 +475,10 @@ DomainsInversionDnsbl(
     app, 'DomainsInversionDnsbl',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -474,10 +486,10 @@ DomainsOisd(
     app, 'DomainsOisd',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -485,10 +497,10 @@ DomainsOpenPhish(
     app, 'DomainsOpenPhish',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -496,10 +508,10 @@ DomainsPhishingArmy(
     app, 'DomainsPhishingArmy',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -507,10 +519,10 @@ DomainsPhishTank(
     app, 'DomainsPhishTank',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -518,10 +530,10 @@ DomainsThreatFox(
     app, 'DomainsThreatFox',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -529,10 +541,10 @@ DomainsThreatView(
     app, 'DomainsThreatView',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -540,10 +552,10 @@ DomainsUltimateHosts(
     app, 'DomainsUltimateHosts',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
@@ -551,14 +563,15 @@ DomainsUrlhaus(
     app, 'DomainsUrlhaus',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-        region = 'us-east-1'
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
-        qualifier = '4n6ir'
+        qualifier = 'lukach'
     )
 )
 
-cdk.Tags.of(app).add('Alias','4n6ir.com')
+cdk.Tags.of(app).add('Alias','caretaker')
 cdk.Tags.of(app).add('GitHub','https://github.com/jblukach/caretaker')
+cdk.Tags.of(app).add('Org','lukach.io')
 
 app.synth()

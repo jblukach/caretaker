@@ -12,13 +12,14 @@ def handler(event, context):
     year = datetime.datetime.now().strftime('%Y')
     month = datetime.datetime.now().strftime('%m')
     day = datetime.datetime.now().strftime('%d')
+    hour = datetime.datetime.now().strftime('%H')
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
     response = requests.get('http://data.phishtank.com/data/online-valid.csv', headers=headers)
     print(f'HTTP Status Code: {response.status_code}')
     data = response.text
 
-    fname = f'{year}-{month}-{day}-phishtank.csv'
+    fname = f'{year}-{month}-{day}-{hour}-phishtank.csv'
     fpath = f'/tmp/{fname}'
 
     domains = []
@@ -29,7 +30,7 @@ def handler(event, context):
         else:
             line = line.split(',')[1]
             line = line.split('/')[2]
-            domains.append(f"{line},H,{year}-{month}-{day}\n")
+            domains.append(f"{line},H,{year}-{month}-{day}-{hour}\n")
             count += 1
 
     domains = list(set(domains))

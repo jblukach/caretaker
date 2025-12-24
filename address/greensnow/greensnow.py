@@ -12,13 +12,14 @@ def handler(event, context):
     year = datetime.datetime.now().strftime('%Y')
     month = datetime.datetime.now().strftime('%m')
     day = datetime.datetime.now().strftime('%d')
+    hour = datetime.datetime.now().strftime('%H')
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
     response = requests.get('https://blocklist.greensnow.co/greensnow.txt', headers=headers)
     print(f'HTTP Status Code: {response.status_code}')
     data = response.text
 
-    fname = f'{year}-{month}-{day}-greensnow.csv'
+    fname = f'{year}-{month}-{day}-{hour}-greensnow.csv'
     fpath = f'/tmp/{fname}'
 
     f = open(fpath, 'w')
@@ -28,7 +29,7 @@ def handler(event, context):
         if line.startswith('#'):
             continue
         else:
-            f.write(f"{line},12,{year}-{month}-{day}\n")
+            f.write(f"{line},12,{year}-{month}-{day}-{hour}\n")
             count += 1
 
     f.close()

@@ -12,6 +12,7 @@ def handler(event, context):
     year = datetime.datetime.now().strftime('%Y')
     month = datetime.datetime.now().strftime('%m')
     day = datetime.datetime.now().strftime('%d')
+    hour = datetime.datetime.now().strftime('%H')
 
     feeds = []
     feeds.append('https://iplists.firehol.org/files/firehol_abusers_1d.netset')
@@ -23,7 +24,7 @@ def handler(event, context):
     feeds.append('https://iplists.firehol.org/files/firehol_proxies.netset')
     feeds.append('https://iplists.firehol.org/files/firehol_webserver.netset')
 
-    fname = f'{year}-{month}-{day}-firehol.csv'
+    fname = f'{year}-{month}-{day}-{hour}-firehol.csv'
     fpath = f'/tmp/{fname}'
 
     addresses = []
@@ -39,7 +40,7 @@ def handler(event, context):
             if line.startswith('#'):
                 continue
             else:
-                addresses.append(f"{line},10,{year}-{month}-{day}\n")
+                addresses.append(f"{line},10,{year}-{month}-{day}-{hour}\n")
                 count += 1
 
     addresses = list(set(addresses))

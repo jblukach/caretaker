@@ -19,14 +19,14 @@ class AddressesBinaryDefense(Stack):
 
     ### LAMBDA LAYERS ###
 
-        pkgrequests = _ssm.StringParameter.from_string_parameter_arn(
-            self, 'pkgrequests',
-            'arn:aws:ssm:us-east-1:070176467818:parameter/pkg/requests'
+        layer = _ssm.StringParameter.from_string_parameter_attributes(
+            self, 'layer',
+            parameter_name = '/layer/requests'
         )
 
         requests = _lambda.LayerVersion.from_layer_version_arn(
             self, 'requests',
-            layer_version_arn = pkgrequests.string_value
+            layer_version_arn = layer.string_value
         )
 
     ### IAM ROLE ###

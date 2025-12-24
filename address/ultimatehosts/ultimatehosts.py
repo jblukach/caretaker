@@ -12,8 +12,9 @@ def handler(event, context):
     year = datetime.datetime.now().strftime('%Y')
     month = datetime.datetime.now().strftime('%m')
     day = datetime.datetime.now().strftime('%d')
+    hour = datetime.datetime.now().strftime('%H')
 
-    fname = f'{year}-{month}-{day}-ultimatehosts.csv'
+    fname = f'{year}-{month}-{day}-{hour}-ultimatehosts.csv'
     fpath = f'/tmp/{fname}'
 
     f = open(fpath, 'w')
@@ -32,7 +33,7 @@ def handler(event, context):
                 if line.startswith('#'):
                     continue
                 else:
-                    f.write(f"{line},25,{year}-{month}-{day}\n")
+                    f.write(f"{line},25,{year}-{month}-{day}-{hour}\n")
                     count += 1
         else:
             break

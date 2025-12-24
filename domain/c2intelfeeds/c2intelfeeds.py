@@ -12,13 +12,14 @@ def handler(event, context):
     year = datetime.datetime.now().strftime('%Y')
     month = datetime.datetime.now().strftime('%m')
     day = datetime.datetime.now().strftime('%d')
+    hour = datetime.datetime.now().strftime('%H')
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
     response = requests.get('https://raw.githubusercontent.com/drb-ra/C2IntelFeeds/master/feeds/domainC2s.csv', headers=headers)
     print(f'HTTP Status Code: {response.status_code}')
     data = response.text
 
-    fname = f'{year}-{month}-{day}-c2intelfeeds.csv'
+    fname = f'{year}-{month}-{day}-{hour}-c2intelfeeds.csv'
     fpath = f'/tmp/{fname}'
 
     f = open(fpath, 'w')
@@ -29,7 +30,7 @@ def handler(event, context):
             continue
         else:
             out = line.split(',')
-            f.write(f"{out[0]},A,{year}-{month}-{day}\n")
+            f.write(f"{out[0]},A,{year}-{month}-{day}-{hour}\n")
             count += 1
 
     f.close()
