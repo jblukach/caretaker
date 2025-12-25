@@ -8,15 +8,15 @@ Project Caretaker makes this easy. It offers a simple, transparent way for anyon
 
 ### Internet Connection
 
-When accessing [verify.tundralabs.org](https://verify.4n6ir.com), the color-coded result indicates whether any threat-intelligence feeds currently flag the queried IP address.
+When accessing [https://api.lukach.io/osint/ip](https://api.lukach.io/osint/ip), the result indicates whether any threat-intelligence feeds currently flag the queried IP address.
 
-**Gray Status - Unknown:**
+##### **Unknown**
 
-A gray result means no data is currently available from monitoring feeds. This does **not** guarantee that the IP is safe; it simply indicates there is no evidence at this time linking it to malicious activity.
+An unknown result means no data is currently available from monitoring feeds. This does **not** guarantee that the IP is safe; it simply indicates there is no evidence at this time linking it to malicious activity.
 
-**Orange Status - Suspect:**
+##### **Suspect**
 
-An orange result indicates that one or more threat-intelligence feeds have flagged the IP address as suspect. The system will list the specific feeds, allowing for further investigation or remediation.
+A suspect result indicates that one or more threat-intelligence feeds have flagged the IP address as suspect. The system will list the specific feeds, allowing for further investigation or remediation.
 
 ## Attribution
 

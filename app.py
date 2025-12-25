@@ -28,7 +28,11 @@ from addresses.stopforumspam import AddressesStopForumSpam
 from addresses.torexit import AddressesTorExit
 from addresses.torlist import AddressesTorList
 from addresses.ultimatehosts import AddressesUltimateHosts
+from caretaker.caretaker_asnuse1 import CaretakerAsnUse1
+from caretaker.caretaker_asnusw2 import CaretakerAsnUsw2
 from caretaker.caretaker_build import CaretakerBuild
+from caretaker.caretaker_couse1 import CaretakerCoUse1
+from caretaker.caretaker_cousw2 import CaretakerCoUsw2
 from caretaker.caretaker_deploy import CaretakerDeploy
 from caretaker.caretaker_dnsuse1 import CaretakerDnsUse1
 from caretaker.caretaker_dnsusw2 import CaretakerDnsUsw2
@@ -38,6 +42,8 @@ from caretaker.caretaker_sqlite import CaretakerSqlite
 from caretaker.caretaker_stackuse1 import CaretakerStackUse1
 from caretaker.caretaker_stackuse2 import CaretakerStackUse2
 from caretaker.caretaker_stackusw2 import CaretakerStackUsw2
+from caretaker.caretaker_stuse1 import CaretakerStUse1
+from caretaker.caretaker_stusw2 import CaretakerStUsw2
 from domains.c2intelfeeds import DomainsC2IntelFeeds
 from domains.certpl import DomainsCertPl
 from domains.disposableemails import DomainsDisposableEmails
@@ -328,11 +334,55 @@ AddressesUltimateHosts(
     )
 )
 
+CaretakerAsnUse1(
+    app, 'CaretakerAsnUse1',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
+    )
+)
+
+CaretakerAsnUsw2(
+    app, 'CaretakerAsnUsw2',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-west-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
+    )
+)
+
 CaretakerBuild(
     app, 'CaretakerBuild',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
+    )
+)
+
+CaretakerCoUse1(
+    app, 'CaretakerCoUse1',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
+    )
+)
+
+CaretakerCoUsw2(
+    app, 'CaretakerCoUsw2',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-west-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
         qualifier = 'lukach'
@@ -429,6 +479,28 @@ CaretakerStackUse2(
 
 CaretakerStackUsw2(
     app, 'CaretakerStackUsw2',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-west-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
+    )
+)
+
+CaretakerStUse1(
+    app, 'CaretakerStUse1',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
+    )
+)
+
+CaretakerStUsw2(
+    app, 'CaretakerStUsw2',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-west-2'
