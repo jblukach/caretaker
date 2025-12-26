@@ -36,6 +36,7 @@ from caretaker.caretaker_cousw2 import CaretakerCoUsw2
 from caretaker.caretaker_deploy import CaretakerDeploy
 from caretaker.caretaker_dnsuse1 import CaretakerDnsUse1
 from caretaker.caretaker_dnsusw2 import CaretakerDnsUsw2
+from caretaker.caretaker_geolite import CaretakerGeolite
 from caretaker.caretaker_ipuse1 import CaretakerIpUse1
 from caretaker.caretaker_ipusw2 import CaretakerIpUsw2
 from caretaker.caretaker_sqlite import CaretakerSqlite
@@ -416,6 +417,17 @@ CaretakerDnsUsw2(
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-west-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
+    )
+)
+
+CaretakerGeolite(
+    app, 'CaretakerGeolite',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-2'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
         qualifier = 'lukach'
