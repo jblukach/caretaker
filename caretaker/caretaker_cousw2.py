@@ -57,8 +57,8 @@ class CaretakerCoUsw2(Stack):
             architecture = _lambda.Architecture.ARM_64,
             code = _lambda.Code.from_asset('utility/co'),
             handler = 'co.handler',
-            timeout = Duration.seconds(7),
-            memory_size = 128,
+            timeout = Duration.seconds(30),
+            memory_size = 512,
             role = role
         )
 
