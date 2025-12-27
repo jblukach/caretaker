@@ -20,6 +20,8 @@ class CaretakerGeolite(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
+        account = Stack.of(self).account
+
         year = datetime.datetime.now().strftime('%Y')
         month = datetime.datetime.now().strftime('%m')
         day = datetime.datetime.now().strftime('%d')
@@ -85,6 +87,7 @@ class CaretakerGeolite(Stack):
         role.add_to_policy(
             _iam.PolicyStatement(
                 actions = [
+                    'lambda:UpdateFunctionCode',
                     's3:GetObject',
                     's3:PutObject'
                 ],
@@ -105,9 +108,17 @@ class CaretakerGeolite(Stack):
             handler = 'geolite.handler',
             environment = dict(
                 STAGED_S3 = 'caretakerstaged',
-                STAGED_GEO = 'geolite-staged-lukach-io'
+                STAGED_S3_USE1 = 'caretakerstageduse1',
+                STAGED_S3_USW2 = 'caretakerstagedusw2',
+                STAGED_GEO = 'geolite-staged-lukach-io',
+                LAMBDA_ASN_USE1 = 'arn:aws:lambda:us-east-1:'+str(account)+':function:asn',
+                LAMBDA_ASN_USW2 = 'arn:aws:lambda:us-west-2:'+str(account)+':function:asn',
+                LAMBDA_CO_USE1 = 'arn:aws:lambda:us-east-1:'+str(account)+':function:co',
+                LAMBDA_CO_USW2 = 'arn:aws:lambda:us-west-2:'+str(account)+':function:co',
+                LAMBDA_ST_USE1 = 'arn:aws:lambda:us-east-1:'+str(account)+':function:st',
+                LAMBDA_ST_USW2 = 'arn:aws:lambda:us-west-2:'+str(account)+':function:st'
             ),
-            ephemeral_storage_size = Size.gibibytes(1),
+            ephemeral_storage_size = Size.gibibytes(2),
             memory_size = 3000,
             role = role,
             layers = [

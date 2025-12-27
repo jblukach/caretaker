@@ -15,7 +15,7 @@ def handler(event, context):
     hour = datetime.datetime.now().strftime('%H')
 
     headers = {'User-Agent': 'Project Caretaker (https://github.com/jblukach/caretaker)'}
-    response = requests.get('https://www.dan.me.uk/torlist/', headers=headers)
+    response = requests.get('https://iplists.firehol.org/files/dm_tor.ipset', headers=headers)
     print(f'HTTP Status Code: {response.status_code}')
     data = response.text
 

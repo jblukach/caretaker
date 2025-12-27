@@ -1,11 +1,26 @@
 import boto3
+import datetime
 import geoip2.database
 import json
 import os
+import sqlite3
+import zipfile
 
 def handler(event, context):
 
     s3_client = boto3.client('s3')
+
+    print("Copying asn.updated")
+
+    with open('/tmp/asn.updated', 'wb') as f:
+        s3_client.download_fileobj(os.environ['STAGED_GEO'], 'asn.updated', f) 
+    f.close()
+
+    print("Copying city.updated")
+
+    with open('/tmp/city.updated', 'wb') as f:
+        s3_client.download_fileobj(os.environ['STAGED_GEO'], 'city.updated', f) 
+    f.close()
 
     print("Copying GeoLite2-ASN.mmdb")
 
@@ -17,6 +32,24 @@ def handler(event, context):
 
     with open('/tmp/GeoLite2-City.mmdb', 'wb') as f:
         s3_client.download_fileobj(os.environ['STAGED_GEO'], 'GeoLite2-City.mmdb', f) 
+    f.close()
+
+    print("Copying asn.py")
+
+    with open('/tmp/asn.py', 'wb') as f:
+        s3_client.download_fileobj(os.environ['STAGED_S3'], 'asn.py', f)
+    f.close()
+
+    print("Copying co.py")
+
+    with open('/tmp/co.py', 'wb') as f:
+        s3_client.download_fileobj(os.environ['STAGED_S3'], 'co.py', f)
+    f.close()
+
+    print("Copying st.py")
+
+    with open('/tmp/st.py', 'wb') as f:
+        s3_client.download_fileobj(os.environ['STAGED_S3'], 'st.py', f)
     f.close()
 
     print("Copying unique_ipv4s.csv")
@@ -49,13 +82,9 @@ def handler(event, context):
 
     print("Starting GeoLite2 lookups")
 
-    asn_data = []
-    country_data = []
-    state_data = []
-    
-    asn_label = []
-    country_label = []
-    state_label = []
+    asn = []
+    co = []
+    st = []
 
     with geoip2.database.Reader('/tmp/GeoLite2-ASN.mmdb') as reader2:
         with geoip2.database.Reader('/tmp/GeoLite2-City.mmdb') as reader:
@@ -64,94 +93,59 @@ def handler(event, context):
     
                 try:
                     response = reader.city(ip)
-                    country_code = response.country.iso_code
-                    country_name = response.country.name
-                    state_code = response.subdivisions.most_specific.iso_code
-                    state_name = response.subdivisions.most_specific.name
+                    country = response.country.iso_code
+                    if country is None:
+                        country = 'UNKN'
+                    state = response.subdivisions.most_specific.iso_code
+                    if state is None:
+                        state = 'UNKN'
                 except:
-                    country_code = None
-                    country_name = None
-                    state_code = None
-                    state_name = None
+                    country = 'UNKN'
+                    state = 'UNKN'
 
                 try:
                     response2 = reader2.asn(ip)
-                    asn = response2.autonomous_system_number
-                    org = response2.autonomous_system_organization
+                    id = response2.autonomous_system_number
+                    if id is None:
+                        id = 'UNKN'
                 except:
-                    asn = None
-                    org = None
-    
-                if asn is not None and org is not None:
+                    id = 'UNKN'
 
-                    asn_data.append(str(asn)+','+ip)
-                    asn_label.append(str(asn)+' - '+org)
-
-                if country_code is not None and country_name is not None:
-
-                    country_data.append(country_code+','+ip)
-                    country_label.append(country_code+' - '+country_name)
-
-                if state_code is not None and state_name is not None:
-
-                    state_data.append(state_code+','+ip)
-                    state_label.append(state_code+' - '+state_name)
+                asn.append(str(id)+','+ip)
+                co.append(country+','+ip)
+                st.append(state+','+ip)
 
     print("Deduplicating data")
 
-    asn_data = list(set(asn_data))
-    country_data = list(set(country_data))
-    state_data = list(set(state_data))
-    asn_label = list(set(asn_label))
-    country_label = list(set(country_label))
-    state_label = list(set(state_label))
+    asn = list(set(asn))
+    co = list(set(co))
+    st = list(set(st))
 
     print("Sorting data")
 
-    asn_data.sort()
-    country_data.sort()
-    state_data.sort()
-    asn_label.sort()
-    country_label.sort()
-    state_label.sort()
+    asn.sort()
+    co.sort()
+    st.sort()
 
-    print(f'ASN Data: {len(asn_data)} entries')
-    print(f'Country Data: {len(country_data)} entries')
-    print(f'State Data: {len(state_data)} entries')
-    print(f'ASN Labels: {len(asn_label)} entries')
-    print(f'Country Labels: {len(country_label)} entries')
-    print(f'State Labels: {len(state_label)} entries')
+    print(f'ASN Data: {len(asn)} entries')
+    print(f'Country Data: {len(co)} entries')
+    print(f'State Data: {len(st)} entries')
 
     print("Writing CSVs to /tmp/")
 
-    with open('/tmp/asn_data.csv','w') as f:
-        for asn in asn_data:
-            f.write(asn+'\n')
+    with open('/tmp/asn.csv','w') as f:
+        for line in asn:
+            f.write(line+'\n')
     f.close()
 
-    with open('/tmp/asn_label.csv','w') as f:
-        for asn in asn_label:
-            f.write(asn+'\n')
+    with open('/tmp/co.csv','w') as f:
+        for line in co:
+            f.write(line+'\n')
     f.close()
 
-    with open('/tmp/country_data.csv','w') as f:
-        for country in country_data:
-            f.write(country+'\n')
-    f.close()
-
-    with open('/tmp/country_label.csv','w') as f:
-        for country in country_label:
-            f.write(country+'\n')
-    f.close()
-
-    with open('/tmp/state_data.csv','w') as f:
-        for state in state_data:
-            f.write(state+'\n')
-    f.close()
-
-    with open('/tmp/state_label.csv','w') as f:
-        for state in state_label:
-            f.write(state+'\n')
+    with open('/tmp/st.csv','w') as f:
+        for line in st:
+            f.write(line+'\n')
     f.close()
 
     print("Uploading CSVs to S3")
@@ -159,57 +153,232 @@ def handler(event, context):
     s3 = boto3.resource('s3')
 
     s3.meta.client.upload_file(
-        '/tmp/asn_data.csv',
+        '/tmp/asn.csv',
         os.environ['STAGED_S3'],
-        'asn_data.csv',
+        'asn.csv',
         ExtraArgs = {
             'ContentType': "text/csv"
         }
     )
 
     s3.meta.client.upload_file(
-        '/tmp/asn_label.csv',
+        '/tmp/co.csv',
         os.environ['STAGED_S3'],
-        'asn_label.csv',
+        'co.csv',
+        ExtraArgs = {
+            'ContentType': "text/csv"
+        }
+    )
+ 
+    s3.meta.client.upload_file(
+        '/tmp/st.csv',
+        os.environ['STAGED_S3'],
+        'st.csv',
         ExtraArgs = {
             'ContentType': "text/csv"
         }
     )
 
+    print("Building SQLite database")
+
+    year = datetime.datetime.now().strftime('%Y')
+    month = datetime.datetime.now().strftime('%m')
+    day = datetime.datetime.now().strftime('%d')
+    hour = datetime.datetime.now().strftime('%H')
+    minute = datetime.datetime.now().strftime('%M')
+    second = datetime.datetime.now().strftime('%S')
+    now = str(year)+"-"+str(month)+"-"+str(day)+" "+str(hour)+":"+str(minute)+":"+str(second)+" UTC"
+
+    if os.path.exists('/tmp/asn.sqlite3'):
+        os.remove('/tmp/asn.sqlite3')
+
+    asn = sqlite3.connect('/tmp/asn.sqlite3')
+    asn.execute('CREATE TABLE IF NOT EXISTS asn (pk INTEGER PRIMARY KEY, asnid TEXT, artifact TEXT)')
+    asn.execute('CREATE INDEX asn_index ON asn (asnid)')
+    asn.execute('CREATE TABLE IF NOT EXISTS org (pk INTEGER PRIMARY KEY, updated TEXT)')
+    asn.execute('CREATE TABLE IF NOT EXISTS city (pk INTEGER PRIMARY KEY, updated TEXT)')
+    asn.execute('CREATE TABLE IF NOT EXISTS last (pk INTEGER PRIMARY KEY, updated TEXT)')
+    asn.execute('INSERT INTO last (updated) VALUES (?)', (now,))
+
+    if os.path.exists('/tmp/co.sqlite3'):
+        os.remove('/tmp/co.sqlite3')
+
+    co = sqlite3.connect('/tmp/co.sqlite3')
+    co.execute('CREATE TABLE IF NOT EXISTS co (pk INTEGER PRIMARY KEY, coid TEXT, artifact TEXT)')
+    co.execute('CREATE INDEX co_index ON co (coid)')
+    co.execute('CREATE TABLE IF NOT EXISTS org (pk INTEGER PRIMARY KEY, updated TEXT)')
+    co.execute('CREATE TABLE IF NOT EXISTS city (pk INTEGER PRIMARY KEY, updated TEXT)')
+    co.execute('CREATE TABLE IF NOT EXISTS last (pk INTEGER PRIMARY KEY, updated TEXT)')
+    co.execute('INSERT INTO last (updated) VALUES (?)', (now,))
+
+    if os.path.exists('/tmp/st.sqlite3'):
+        os.remove('/tmp/st.sqlite3')
+
+    st = sqlite3.connect('/tmp/st.sqlite3')
+    st.execute('CREATE TABLE IF NOT EXISTS st (pk INTEGER PRIMARY KEY, stid TEXT, artifact TEXT)')
+    st.execute('CREATE INDEX st_index ON st (stid)')
+    st.execute('CREATE TABLE IF NOT EXISTS org (pk INTEGER PRIMARY KEY, updated TEXT)')
+    st.execute('CREATE TABLE IF NOT EXISTS city (pk INTEGER PRIMARY KEY, updated TEXT)')
+    st.execute('CREATE TABLE IF NOT EXISTS last (pk INTEGER PRIMARY KEY, updated TEXT)')
+    st.execute('INSERT INTO last (updated) VALUES (?)', (now,))
+
+    with open('/tmp/asn.updated', 'r') as f:
+        updated = f.read().strip()
+    f.close()
+    asn.execute('INSERT INTO org (updated) VALUES (?)', (updated,))
+    co.execute('INSERT INTO org (updated) VALUES (?)', (updated,))
+    st.execute('INSERT INTO org (updated) VALUES (?)', (updated,))
+
+    with open('/tmp/city.updated', 'r') as f:
+        updated = f.read().strip()
+    f.close()
+    asn.execute('INSERT INTO city (updated) VALUES (?)', (updated,))
+    co.execute('INSERT INTO city (updated) VALUES (?)', (updated,))
+    st.execute('INSERT INTO city (updated) VALUES (?)', (updated,))
+
+    with open('/tmp/asn.csv', 'r') as f:
+        for line in f:
+            parts = line.strip().split(',')
+            asn.execute('INSERT INTO asn (asnid, artifact) VALUES (?, ?)', (parts[0], parts[1]))
+    f.close()
+
+    with open('/tmp/co.csv', 'r') as f:
+        for line in f:
+            parts = line.strip().split(',')
+            co.execute('INSERT INTO co (coid, artifact) VALUES (?, ?)', (parts[0], parts[1]))
+    f.close()
+
+    with open('/tmp/st.csv', 'r') as f:
+        for line in f:
+            parts = line.strip().split(',')
+            st.execute('INSERT INTO st (stid, artifact) VALUES (?, ?)', (parts[0], parts[1]))
+    f.close()
+
+    asn.commit()
+    asn.close()
+    co.commit()
+    co.close()
+    st.commit()
+    st.close()
+
+    print("Uploading SQLite databases to S3")
+
     s3.meta.client.upload_file(
-        '/tmp/country_data.csv',
+        '/tmp/asn.sqlite3',
         os.environ['STAGED_S3'],
-        'country_data.csv',
+        'asn.sqlite3',
         ExtraArgs = {
-            'ContentType': "text/csv"
+            'ContentType': "application/x-sqlite3"
         }
     )
 
     s3.meta.client.upload_file(
-        '/tmp/country_label.csv',
+        '/tmp/co.sqlite3',
         os.environ['STAGED_S3'],
-        'country_label.csv',
+        'co.sqlite3',
         ExtraArgs = {
-            'ContentType': "text/csv"
+            'ContentType': "application/x-sqlite3"
         }
     )
 
     s3.meta.client.upload_file(
-        '/tmp/state_data.csv',
+        '/tmp/st.sqlite3',
         os.environ['STAGED_S3'],
-        'state_data.csv',
+        'st.sqlite3',
         ExtraArgs = {
-            'ContentType': "text/csv"
+            'ContentType': "application/x-sqlite3"
         }
     )
 
-    s3.meta.client.upload_file(
-        '/tmp/state_label.csv',
-        os.environ['STAGED_S3'],
-        'state_label.csv',
-        ExtraArgs = {
-            'ContentType': "text/csv"
-        }
+    print("Packaging asn.zip")
+
+    with zipfile.ZipFile('/tmp/asn.zip', 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
+        zipf.write('/tmp/asn.py','asn.py')
+        zipf.write('/tmp/asn.sqlite3','asn.sqlite3')
+    zipf.close()
+
+    print("Packaging co.zip")
+
+    with zipfile.ZipFile('/tmp/co.zip', 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
+        zipf.write('/tmp/co.py','co.py')
+        zipf.write('/tmp/co.sqlite3','co.sqlite3')
+    zipf.close()
+
+    print("Packaging st.zip")
+
+    with zipfile.ZipFile('/tmp/st.zip', 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
+        zipf.write('/tmp/st.py','st.py')
+        zipf.write('/tmp/st.sqlite3','st.sqlite3')
+    zipf.close()
+
+    print("Uploading asn.zip")
+
+    s3_client.upload_file('/tmp/asn.zip',os.environ['STAGED_S3'],'asn.zip')
+    s3_client.upload_file('/tmp/asn.zip',os.environ['STAGED_S3_USE1'],'asn.zip')
+    s3_client.upload_file('/tmp/asn.zip',os.environ['STAGED_S3_USW2'],'asn.zip')
+
+    print("Uploading co.zip")
+
+    s3_client.upload_file('/tmp/co.zip',os.environ['STAGED_S3'],'co.zip')
+    s3_client.upload_file('/tmp/co.zip',os.environ['STAGED_S3_USE1'],'co.zip')
+    s3_client.upload_file('/tmp/co.zip',os.environ['STAGED_S3_USW2'],'co.zip')
+
+    print("Uploading st.zip")
+
+    s3_client.upload_file('/tmp/st.zip',os.environ['STAGED_S3'],'st.zip')
+    s3_client.upload_file('/tmp/st.zip',os.environ['STAGED_S3_USE1'],'st.zip')
+    s3_client.upload_file('/tmp/st.zip',os.environ['STAGED_S3_USW2'],'st.zip')
+
+    client = boto3.client('lambda', region_name = 'us-east-1')
+
+    print("Updating "+os.environ['LAMBDA_ASN_USE1'])
+
+    response = client.update_function_code(
+        FunctionName = os.environ['LAMBDA_ASN_USE1'],
+        S3Bucket = os.environ['STAGED_S3_USE1'],
+        S3Key = 'asn.zip'
+    )
+
+    print("Updating "+os.environ['LAMBDA_CO_USE1'])
+
+    response = client.update_function_code(
+        FunctionName = os.environ['LAMBDA_CO_USE1'],
+        S3Bucket = os.environ['STAGED_S3_USE1'],
+        S3Key = 'co.zip'
+    )
+
+    print("Updating "+os.environ['LAMBDA_ST_USE1'])
+
+    response = client.update_function_code(
+        FunctionName = os.environ['LAMBDA_ST_USE1'],
+        S3Bucket = os.environ['STAGED_S3_USE1'],
+        S3Key = 'st.zip'
+    )
+
+    client = boto3.client('lambda', region_name = 'us-west-2')
+
+    print("Updating "+os.environ['LAMBDA_ASN_USW2'])
+
+    response = client.update_function_code(
+        FunctionName = os.environ['LAMBDA_ASN_USW2'],
+        S3Bucket = os.environ['STAGED_S3_USW2'],
+        S3Key = 'asn.zip'
+    )
+
+    print("Updating "+os.environ['LAMBDA_CO_USW2'])
+
+    response = client.update_function_code(
+        FunctionName = os.environ['LAMBDA_CO_USW2'],
+        S3Bucket = os.environ['STAGED_S3_USW2'],
+        S3Key = 'co.zip'
+    )
+
+    print("Updating "+os.environ['LAMBDA_ST_USW2'])
+
+    response = client.update_function_code(
+        FunctionName = os.environ['LAMBDA_ST_USW2'],
+        S3Bucket = os.environ['STAGED_S3_USW2'],
+        S3Key = 'st.zip'
     )
 
     return {

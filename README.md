@@ -8,7 +8,7 @@ Project Caretaker makes this easy. It offers a simple, transparent way for anyon
 
 ### Internet Connection
 
-When accessing [https://api.lukach.io/osint/ip](https://api.lukach.io/osint/ip), the result indicates whether any threat-intelligence feeds currently flag the queried IP address.
+When accessing [https://api.lukach.io/osint/ip](https://api.lukach.io/osint/ip) or [https://api.lukach.io/osint/ip?134.129.111.111](https://api.lukach.io/osint/ip?134.129.111.111), the result indicates whether any threat-intelligence feeds currently flag the queried IP address.
 
 ##### **Unknown**
 
