@@ -58,7 +58,7 @@ class CaretakerStUsw2(Stack):
             code = _lambda.Code.from_asset('utility/st'),
             handler = 'st.handler',
             timeout = Duration.seconds(30),
-            memory_size = 512,
+            memory_size = 256,
             role = role
         )
 

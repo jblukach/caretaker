@@ -58,7 +58,7 @@ class CaretakerAsnUse1(Stack):
             code = _lambda.Code.from_asset('utility/asn'),
             handler = 'asn.handler',
             timeout = Duration.seconds(30),
-            memory_size = 512,
+            memory_size = 256,
             role = role
         )
 

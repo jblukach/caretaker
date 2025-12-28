@@ -58,7 +58,7 @@ class CaretakerCoUse1(Stack):
             code = _lambda.Code.from_asset('utility/co'),
             handler = 'co.handler',
             timeout = Duration.seconds(30),
-            memory_size = 512,
+            memory_size = 256,
             role = role
         )
 

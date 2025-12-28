@@ -18,6 +18,24 @@ An unknown result means no data is currently available from monitoring feeds. Th
 
 A suspect result indicates that one or more threat-intelligence feeds have flagged the IP address as suspect. The system will list the specific feeds, allowing for further investigation or remediation.
 
+### Alternate Searches
+
+##### **ASN**
+
+- [https://api.lukach.io/osint/asn?19530](https://api.lukach.io/osint/asn?19530)
+
+##### **Country**
+
+- [https://api.lukach.io/osint/co?US](https://api.lukach.io/osint/co?US)
+
+##### **Domain**
+
+- [https://api.lukach.io/osint/dns?4n6ir.com](https://api.lukach.io/osint/dns?4n6ir.com)
+
+##### **State**
+
+- [https://api.lukach.io/osint/st?ND](https://api.lukach.io/osint/st?ND)
+
 ## Attribution
 
 Open Source Intelligence (OSINT) feeds refresh every morning at **11:00 AM UTC**.

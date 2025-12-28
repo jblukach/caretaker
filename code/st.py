@@ -11,7 +11,7 @@ def handler(event, context):
 
     else:
 
-        st = str(event['rawQueryString'])
+        st = str(event['rawQueryString']).upper()
 
         conn = sqlite3.connect('st.sqlite3')
         c = conn.cursor()
@@ -26,10 +26,15 @@ def handler(event, context):
         conn.close()
 
         code = 200
+        count = len(items)
+
+        if len(json.dumps(items).encode("utf-8")) >= 2000000:
+            items = []
+            items.append('LARGE PAYLOAD - NOT DISPLAYED')
 
         msg = {
             'st': st,
-            'count': len(items),
+            'count': count,
             'attribution': 'This product includes GeoLite2 data created by MaxMind, available from https://www.maxmind.com.',
             'geolite2-asn.mmdb': str(org_updated),
             'geolite2-city.mmdb': str(city_updated),
