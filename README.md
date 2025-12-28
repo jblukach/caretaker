@@ -20,6 +20,8 @@ A suspect result indicates that one or more threat-intelligence feeds have flagg
 
 ### Alternate Searches
 
+This product includes GeoLite2 data created by MaxMind, available from [https://www.maxmind.com](https://www.maxmind.com).
+
 ##### **ASN**
 
 - [https://api.lukach.io/osint/asn?19530](https://api.lukach.io/osint/asn?19530)
