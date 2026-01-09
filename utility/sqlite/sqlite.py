@@ -6,13 +6,7 @@ import sqlite3
 
 def handler(event, context):
 
-    year = datetime.datetime.now().strftime('%Y')
-    month = datetime.datetime.now().strftime('%m')
-    day = datetime.datetime.now().strftime('%d')
-    hour = datetime.datetime.now().strftime('%H')
-    minute = datetime.datetime.now().strftime('%M')
-    second = datetime.datetime.now().strftime('%S')
-    now = str(year)+"-"+str(month)+"-"+str(day)+" "+str(hour)+":"+str(minute)+":"+str(second)+" UTC"
+    now = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S GMT')
 
     if os.path.exists('/tmp/dns.sqlite3'):
         os.remove('/tmp/dns.sqlite3')
@@ -60,6 +54,7 @@ def handler(event, context):
     addresses.append({"id":"23","name":"torexit","url":"https://www.torproject.org"})
     addresses.append({"id":"24","name":"torlist","url":"https://www.dan.me.uk"})
     addresses.append({"id":"25","name":"ultimatehosts","url":"https://github.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist"})
+    addresses.append({"id":"26","name":"feedwalla","url":"https://github.com/jblukach/feedwalla"})
 
     domains = []
     domains.append({"id":"A","name":"c2intelfeeds","url":"https://github.com/drb-ra/C2IntelFeeds"})

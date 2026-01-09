@@ -11,6 +11,7 @@ from addresses.bruteforceblocker import AddressesBruteForceBlocker
 from addresses.c2intelfeeds import AddressesC2IntelFeeds
 from addresses.c2tracker import AddressesC2Tracker
 from addresses.cinsscore import AddressesCinsScore
+from addresses.feedwalla import AddressesFeedwalla
 from addresses.feodotracker import AddressesFeodoTracker
 from addresses.firehol import AddressesFirehol
 from addresses.freeproxylist import AddressesFreeProxyList
@@ -139,6 +140,17 @@ AddressesC2Tracker(
 
 AddressesCinsScore(
     app, 'AddressesCinsScore',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
+    )
+)
+
+AddressesFeedwalla(
+    app, 'AddressesFeedwalla',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-2'

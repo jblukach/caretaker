@@ -113,7 +113,8 @@ def handler(event, context):
 
                 asn.append(str(id)+','+ip)
                 co.append(country+','+ip)
-                st.append(state+','+ip)
+                if country == 'US':
+                    st.append(state+','+ip)
 
     print("Deduplicating data")
 

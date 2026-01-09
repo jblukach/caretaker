@@ -73,6 +73,7 @@ Huge thanks to everyone who maintains these lists — they take a ton of work to
 | 23 | torexit | https://www.torproject.org |
 | 24 | torlist | https://www.dan.me.uk |
 | 25 | ultimatehosts | https://github.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist |
+| 26 | feedwalla | https://github.com/jblukach/feedwalla |
 
 **+** retired feed
 

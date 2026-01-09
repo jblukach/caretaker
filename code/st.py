@@ -4,7 +4,7 @@ import sqlite3
 
 def handler(event, context):
 
-    if event['rawQueryString'] is None or event['rawQueryString'] == '':
+    if not event['rawQueryString'].isalpha() or len(event['rawQueryString']) != 2 or event['rawQueryString'] is None or event['rawQueryString'] == '':
 
         code = 404
         msg = 'ex. https://api.lukach.io/osint/st?ND'
