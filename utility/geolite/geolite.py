@@ -182,13 +182,7 @@ def handler(event, context):
 
     print("Building SQLite database")
 
-    year = datetime.datetime.now().strftime('%Y')
-    month = datetime.datetime.now().strftime('%m')
-    day = datetime.datetime.now().strftime('%d')
-    hour = datetime.datetime.now().strftime('%H')
-    minute = datetime.datetime.now().strftime('%M')
-    second = datetime.datetime.now().strftime('%S')
-    now = str(year)+"-"+str(month)+"-"+str(day)+" "+str(hour)+":"+str(minute)+":"+str(second)+" UTC"
+    now = datetime.datetime.now().strftime('%a, %d %b %Y %H:%M:%S GMT')
 
     if os.path.exists('/tmp/asn.sqlite3'):
         os.remove('/tmp/asn.sqlite3')
