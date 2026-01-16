@@ -119,7 +119,7 @@ class CaretakerGeolite(Stack):
                 LAMBDA_ST_USW2 = 'arn:aws:lambda:us-west-2:'+str(account)+':function:st'
             ),
             ephemeral_storage_size = Size.gibibytes(2),
-            memory_size = 3000,
+            memory_size = 4096,
             role = role,
             layers = [
                 geoip2,
