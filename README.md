@@ -75,8 +75,6 @@ Huge thanks to everyone who maintains these lists — they take a ton of work to
 | 25 | ultimatehosts | https://github.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist |
 | 26 | feedwalla | https://github.com/jblukach/feedwalla |
 
-**+** retired feed
-
 ### Domains
 
 | id | name | url |
@@ -93,5 +91,7 @@ Huge thanks to everyone who maintains these lists — they take a ton of work to
 | J  | threatview | https://threatview.io |
 | K  | ultimatehosts | https://github.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist |
 | L  | urlhaus | https://urlhaus.abuse.ch |
+| M  | domainsmonitor | https://domains-monitor.com **$** |
 
-**+** retired feed
+##### **$** research only
+##### **+** retired feed

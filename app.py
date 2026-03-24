@@ -49,6 +49,7 @@ from caretaker.caretaker_stusw2 import CaretakerStUsw2
 from domains.c2intelfeeds import DomainsC2IntelFeeds
 from domains.certpl import DomainsCertPl
 from domains.disposableemails import DomainsDisposableEmails
+from domains.domainsmonitor import DomainsMonitor
 from domains.inversiondnsbl import DomainsInversionDnsbl
 from domains.oisd import DomainsOisd
 from domains.openphish import DomainsOpenPhish
@@ -558,6 +559,17 @@ DomainsCertPl(
 
 DomainsDisposableEmails(
     app, 'DomainsDisposableEmails',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = 'lukach'
+    )
+)
+
+DomainsMonitor(
+    app, 'DomainsMonitor',
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-east-2'
